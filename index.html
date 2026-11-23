@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NFL Pool</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NFL Pool">
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--acc:#f2b705;--nav:#0f172a;
+--fav:#2563eb;--favbg:#dbeafe;--dog:#16a34a;--dogbg:#dcfce7;--bad:#dc2626;--badbg:#fee2e2;--warn:#d97706}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#131c2e;--ink:#e5e9f0;--mute:#94a3b8;--line:#22304a;
+--favbg:#172554;--dogbg:#0f2e1c;--badbg:#3b1111}}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--nav);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) 16px 12px}
+header h1{margin:0;font-size:20px;letter-spacing:.5px}header small{color:#cbd5e1}
+main{padding:12px 16px calc(90px + env(safe-area-inset-bottom));max-width:720px;margin:auto}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:9}
+nav button{flex:1;background:none;border:0;color:#94a3b8;font-size:11px;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button span{font-size:20px}nav button.on{color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+.card h2{margin:0 0 8px;font-size:17px}.mute{color:var(--mute);font-size:13px}
+.pick{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.pick:last-child{border:0}
+.num{min-width:34px;height:34px;border-radius:50%;background:var(--nav);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.pt{flex:1}.pt b{font-size:16px}.tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:6px}
+.EDGE{background:#fef3c7;color:#92400e}.RULE{background:#e0e7ff;color:#3730a3}
+.st{font-size:13px;font-weight:700;text-align:right;min-width:86px}.cov{color:var(--dog)}.not{color:var(--bad)}.pend{color:var(--mute)}
+.score{font-size:12px;color:var(--mute)}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--mute);font-weight:600;font-size:12px;padding:6px 4px;border-bottom:1px solid var(--line)}
+td{padding:8px 4px;border-bottom:1px solid var(--line)}td.c,th.c{text-align:center}
+.bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--fav)}
+.do{font-weight:700;font-size:13px}.dofav{color:var(--fav)}.dodog{color:var(--dog)}.doflip{color:var(--mute)}
+.big{display:flex;gap:10px}.big div{flex:1;background:var(--bg);border-radius:12px;padding:10px;text-align:center}.big b{display:block;font-size:24px}
+select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:16px}
+.chip{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;font-weight:700}
+.cf{background:var(--favbg);color:var(--fav)}.cd{background:var(--dogbg);color:var(--dog)}
+.ok{color:var(--dog);font-weight:700}.x{color:var(--bad);font-weight:700}
+.hide{display:none}svg text{fill:var(--mute);font-size:10px}
+.legend span{display:inline-flex;align-items:center;gap:4px;margin-right:12px;font-size:12px}.legend i{width:14px;height:3px;display:inline-block}
+.refresh{float:right;font-size:12px;background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:4px 8px}
+</style>
+</head>
+<body>
+<header><h1>🏈 NFL POOL</h1><small id="sub">Brooks · 2026</small></header>
+<main>
+<section id="week"></section>
+<section id="live" class="hide"></section>
+<section id="trends" class="hide"></section>
+<section id="teams" class="hide"></section>
+<section id="race" class="hide"></section>
+<section id="history" class="hide"></section>
+</main>
+<nav>
+<button data-t="week" class="on"><span>📋</span>This Week</button>
+<button data-t="live"><span>📡</span>Live</button>
+<button data-t="trends"><span>📊</span>Trends</button>
+<button data-t="teams"><span>🔎</span>Teams</button>
+<button data-t="race"><span>🏁</span>Race</button>
+<button data-t="history"><span>🗂️</span>History</button>
+</nav>
+<script>
+const $=s=>document.querySelector(s);
+const ESPN={WAS:'WSH'};const esp=a=>ESPN[a]||a;
+let G=[],W=null,S=null,liveTimer=null;
+function csv(t){const L=t.trim().split(/\r?\n/),h=L[0].split(',');return L.slice(1).map(l=>{const v=l.split(',');const o={};h.forEach((k,i)=>o[k]=v[i]||'');return o})}
+const bucket=x=>x<=2.5?'2.5 or less':x<=4.5?'3.5–4.5':x<=7.5?'5.5–7.5':x<=10.5?'8–10.5':'11+';
+const ADV={'2.5 or less':['Coin flip — edge only, else road team','doflip'],'3.5–4.5':['TAKE THE FAVORITE','dofav'],'5.5–7.5':['TAKE THE DOG (road dog best)','dodog'],'8–10.5':['TAKE THE FAVORITE','dofav'],'11+':['Coin flip — edge only','doflip']};
+const done=g=>g.result==='fav covered'||g.result==='dog covered';
+const pct=(a,b)=>b?Math.round(100*a/b)+'%':'–';
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+ document.querySelectorAll('main section').forEach(s=>s.classList.add('hide'));$('#'+b.dataset.t).classList.remove('hide');
+ if(b.dataset.t==='live')loadLive();try{localStorage.setItem('tab',b.dataset.t)}catch(e){}});
+
+async function init(){
+ const v='?v='+Date.now();
+ const [g,w,s]=await Promise.all([fetch('data/games.csv'+v).then(r=>r.text()),fetch('data/week.json'+v).then(r=>r.json()),fetch('data/standings.json'+v).then(r=>r.json())]);
+ G=csv(g);W=w;S=s;$('#sub').textContent='Brooks · '+W.title;
+ renderWeek();renderTrends();renderTeams();renderRace();renderHistory();$('#live').innerHTML='<div class="card mute">Loading live scores…</div>';
+ let t=null;try{t=localStorage.getItem('tab')}catch(e){} if(t&&document.querySelector(`nav [data-t="${t}"]`))document.querySelector(`nav [data-t="${t}"]`).click();
+}
+
+function renderWeek(){
+ const res=Object.fromEntries(G.filter(g=>+g.week===W.week).map(g=>[+g.fav_num,g]));
+ let h=`<div class="card"><h2>${W.title}</h2><div class="mute">${W.note||''}</div>
+ <div class="big" style="margin-top:10px"><div><span class="mute">Picks</span><b>${W.picks.length}</b></div><div><span class="mute">Tiebreaker</span><b>${W.tiebreaker}</b></div>
+ <div><span class="mute">EDGE</span><b>${W.picks.filter(p=>p.tag==='EDGE').length}</b></div></div></div><div class="card"><h2>Your card</h2>`;
+ for(const p of W.picks){const g=res[p.team===p.fav?p.num:p.num-1];let st='<span class="pend">—</span>';
+  if(g&&done(g)){const won=(g.result==='fav covered')===(p.team===p.fav);st=won?'<span class="cov">✓ WIN</span>':'<span class="not">✗ LOSS</span>'}
+  const ln=p.team===p.fav?'-'+p.line:'+'+p.line;
+  h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${ln}</b> <span class="mute">vs ${p.opp}</span><span class="tag ${p.tag}">${p.tag}</span><div class="mute">${p.why}</div></div><div class="st">${st}</div></div>`}
+ h+='</div>';if(W.recheck&&W.recheck.length)h+=`<div class="card"><h2>Recheck Sunday 11:30</h2>${W.recheck.map(r=>'<div>• '+r+'</div>').join('')}</div>`;
+ $('#week').innerHTML=h;
+}
+
+async function loadLive(){
+ clearTimeout(liveTimer);
+ try{
+  const d=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?_='+Date.now()).then(r=>r.json());
+  const ev={};let anyLive=false;
+  for(const e of d.events||[]){const c=e.competitions[0];const t={};c.competitors.forEach(x=>t[x.team.abbreviation]=+x.score||0);
+   const key=Object.keys(t).sort().join('-');ev[key]={t,state:e.status.type.state,detail:e.status.type.shortDetail};if(e.status.type.state==='in')anyLive=true}
+  let w=0,l=0,cv=0,nc=0;
+  let h=`<div class="card"><button class="refresh" onclick="loadLive()">Refresh</button><h2>Live — your picks</h2><div class="mute">Graded vs the POOL line. ${anyLive?'Auto-updates every minute.':''}</div></div><div class="card">`;
+  for(const p of W.picks){const k=[esp(p.fav),esp(p.dog)].sort().join('-');const e=ev[k];
+   const ln=p.team===p.fav?'-'+p.line:'+'+p.line;let st='<span class="pend">Not on this week’s board</span>',sc='';
+   if(e){const fs=e.t[esp(p.fav)],ds=e.t[esp(p.dog)],m=fs-ds;sc=`${p.fav} ${fs} – ${p.dog} ${ds} · ${e.detail}`;
+    if(e.state==='pre'){st='<span class="pend">Not started</span>';sc=e.detail}
+    else{const favC=m>p.line,push=m===p.line;const mine=p.team===p.fav?favC:(!favC&&!push);
+     if(e.state==='post'){mine?w++:l++;st=mine?'<span class="cov">✓ WIN</span>':'<span class="not">✗ LOSS</span>'}
+     else{mine?cv++:nc++;st=mine?'<span class="cov">Covering</span>':'<span class="not">Not covering</span>'}}}
+   h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${ln}</b><div class="score">${sc}</div></div><div class="st">${st}</div></div>`}
+  h+=`</div><div class="card big"><div><span class="mute">Won</span><b class="ok">${w}</b></div><div><span class="mute">Lost</span><b class="x">${l}</b></div><div><span class="mute">Covering</span><b>${cv}</b></div><div><span class="mute">Not</span><b>${nc}</b></div></div>`;
+  $('#live').innerHTML=h;if(anyLive)liveTimer=setTimeout(loadLive,60000);
+ }catch(e){$('#live').innerHTML='<div class="card">Couldn’t reach live scores. <button class="refresh" onclick="loadLive()">Try again</button></div>'}
+}
+
+function renderTrends(){
+ const D=G.filter(done);const B={};['2.5 or less','3.5–4.5','5.5–7.5','8–10.5','11+'].forEach(b=>B[b]=[0,0]);
+ let hd=[0,0],rd=[0,0],bk=[0,0],sl=[0,0],ty={EDGE:[0,0],RULE:[0,0]};
+ for(const g of D){const f=g.result==='fav covered';B[bucket(+g.pool_line)][f?0:1]++;
+  if(g.home==='dog')hd[f?1:0]++;if(g.home==='fav')rd[f?1:0]++;
+  if(g.brooks_correct)bk[g.brooks_correct==='Y'?0:1]++;if(g.stella_correct)sl[g.stella_correct==='Y'?0:1]++;
+  if(g.pick_type_brooks&&ty[g.pick_type_brooks]&&g.brooks_correct)ty[g.pick_type_brooks][g.brooks_correct==='Y'?0:1]++}
+ let h=`<div class="card"><h2>By spread</h2><div class="mute">${D.length} games on your pool's lines</div><table><tr><th>Spread</th><th class="c">Fav</th><th class="c">Dog</th><th style="width:30%">Fav %</th></tr>`;
+ for(const[b,[f,d]]of Object.entries(B)){const p=f+d?f/(f+d):0;
+  h+=`<tr><td><b>${b}</b><div class="do ${ADV[b][1]}">${ADV[b][0]}</div></td><td class="c">${f}</td><td class="c">${d}</td><td><div class="bar"><i style="width:${p*100}%"></i></div><span class="mute">${pct(f,f+d)}</span></td></tr>`}
+ h+=`</table></div><div class="card"><h2>Dogs</h2><table><tr><th></th><th class="c">Covered</th><th class="c">Didn't</th><th class="c">%</th></tr>
+ <tr><td><b>Home dog</b><div class="do" style="color:var(--bad)">FADE unless edge</div></td><td class="c">${hd[0]}</td><td class="c">${hd[1]}</td><td class="c">${pct(hd[0],hd[0]+hd[1])}</td></tr>
+ <tr><td><b>Road dog</b><div class="do dodog">Best dog spot</div></td><td class="c">${rd[0]}</td><td class="c">${rd[1]}</td><td class="c">${pct(rd[0],rd[0]+rd[1])}</td></tr></table></div>
+ <div class="card"><h2>Pick records</h2><table><tr><th></th><th class="c">Right</th><th class="c">Wrong</th><th class="c">%</th></tr>
+ <tr><td><b>Brooks</b> <span class="mute">since Wk 7</span></td><td class="c">${bk[0]}</td><td class="c">${bk[1]}</td><td class="c">${pct(bk[0],bk[0]+bk[1])}</td></tr>
+ <tr><td><b>Stella</b> <span class="mute">since Wk 9</span></td><td class="c">${sl[0]}</td><td class="c">${sl[1]}</td><td class="c">${pct(sl[0],sl[0]+sl[1])}</td></tr>
+ <tr><td><span class="tag EDGE">EDGE</span> picks</td><td class="c">${ty.EDGE[0]}</td><td class="c">${ty.EDGE[1]}</td><td class="c">${pct(ty.EDGE[0],ty.EDGE[0]+ty.EDGE[1])}</td></tr>
+ <tr><td><span class="tag RULE">RULE</span> picks</td><td class="c">${ty.RULE[0]}</td><td class="c">${ty.RULE[1]}</td><td class="c">${pct(ty.RULE[0],ty.RULE[0]+ty.RULE[1])}</td></tr></table>
+ <div class="mute" style="margin-top:6px">EDGE/RULE tracking starts Week 12.</div></div>
+ <div class="card"><h2>Pick order</h2><ol style="margin:0;padding-left:20px"><li>EDGE: pool line ½+ better than Sunday's market (esp. across 3 or 7)</li><li>No edge → spread table above</li><li>Never a home dog without an edge</li><li>Never flip on injury news alone</li><li>Sunday ~11:30 AM: recheck inactives</li></ol></div>`;
+ $('#trends').innerHTML=h;
+}
+
+function renderTeams(){
+ const T=[...new Set(G.flatMap(g=>[g.favorite,g.underdog]))].sort();
+ $('#teams').innerHTML=`<div class="card"><h2>Team lookup</h2><select id="tsel">${T.map(t=>`<option>${t}</option>`).join('')}</select></div><div id="tout"></div>`;
+ const show=t=>{const D=G.filter(g=>done(g)&&(g.favorite===t||g.underdog===t));let a=[0,0],asf=[0,0],asd=[0,0],hm=[0,0],rd=[0,0];
+  const rows=D.map(g=>{const fav=g.favorite===t,cov=(g.result==='fav covered')===fav,home=(g.home==='fav'&&fav)||(g.home==='dog'&&!fav);
+   a[cov?0:1]++;(fav?asf:asd)[cov?0:1]++;(home?hm:rd)[cov?0:1]++;
+   return `<tr><td class="c">${g.week}</td><td>${home?'vs':'@'} ${fav?g.underdog:g.favorite}</td><td class="c">${fav?'-':'+'}${g.pool_line}</td><td class="c ${cov?'ok':'x'}">${cov?'✓':'✗'}</td></tr>`});
+  $('#tout').innerHTML=`<div class="card big"><div><span class="mute">ATS</span><b>${a[0]}-${a[1]}</b></div><div><span class="mute">As fav</span><b>${asf[0]}-${asf[1]}</b></div><div><span class="mute">As dog</span><b>${asd[0]}-${asd[1]}</b></div></div>
+  <div class="card big"><div><span class="mute">Home</span><b>${hm[0]}-${hm[1]}</b></div><div><span class="mute">Road</span><b>${rd[0]}-${rd[1]}</b></div><div><span class="mute">Cover %</span><b>${pct(a[0],a[0]+a[1])}</b></div></div>
+  <div class="card"><table><tr><th class="c">Wk</th><th>Game</th><th class="c">Line</th><th class="c">Cov</th></tr>${rows.join('')}</table><div class="mute" style="margin-top:6px">Only games that were on your pool sheet.</div></div>`};
+ $('#tsel').onchange=e=>show(e.target.value);show(T[0]);
+}
+
+function renderRace(){
+ const P=S.players,names=Object.keys(P),tot=n=>P[n].reduce((a,b)=>a+b,0);
+ const ord=names.sort((a,b)=>tot(b)-tot(a));const n=P.BROOKS.length,me=tot('BROOKS'),lead=tot(ord[0]),fourth=tot(ord[3]);
+ const left=S.weeks-n,need=Math.max(0,S.target-me),per=left?(need/left).toFixed(1):'0';
+ const paceNow=Math.round(S.target*n/S.weeks);
+ let h=`<div class="card"><h2>Season race</h2><div class="mute">${S.asOf}. Paying spots: top 4.</div>
+ <div class="big" style="margin-top:10px"><div><span class="mute">You</span><b>${me}</b></div><div><span class="mute">Back of 1st</span><b class="x">${lead-me}</b></div><div><span class="mute">Back of 4th</span><b class="x">${fourth-me}</b></div></div>
+ <div class="big" style="margin-top:8px"><div><span class="mute">Target</span><b>${S.target}</b></div><div><span class="mute">Need / week</span><b>${per}</b></div><div><span class="mute">Pace now</span><b>${me>=paceNow?'+':''}${me-paceNow}</b></div></div></div>`;
+ const Wd=320,Hd=180,mx=S.target+5,X=i=>20+i*(Wd-30)/S.weeks,Y=v=>Hd-20-v*(Hd-30)/mx;
+ const line=(arr,col,w)=>{let c=0;return `<polyline fill="none" stroke="${col}" stroke-width="${w}" points="${[`${X(0)},${Y(0)}`].concat(arr.map((v,i)=>{c+=v;return `${X(i+1)},${Y(c)}`})).join(' ')}"/>`};
+ let svg=`<svg viewBox="0 0 ${Wd} ${Hd}" width="100%"><line x1="${X(0)}" y1="${Y(0)}" x2="${X(S.weeks)}" y2="${Y(S.target)}" stroke="#94a3b8" stroke-dasharray="4 4"/>`;
+ svg+=line(P[ord[0]],'#dc2626',2)+line(P[ord[3]],'#d97706',2)+line(P.BROOKS,'#2563eb',3);
+ [0,6,12,18].forEach(i=>svg+=`<text x="${X(i)-4}" y="${Hd-5}">${i}</text>`);[0,65,130].forEach(v=>svg+=`<text x="0" y="${Y(v)+3}">${v}</text>`);svg+='</svg>';
+ h+=`<div class="card"><h2>Pace to ${S.target}</h2>${svg}<div class="legend"><span><i style="background:#2563eb"></i>You</span><span><i style="background:#dc2626"></i>${ord[0]}</span><span><i style="background:#d97706"></i>4th: ${ord[3]}</span><span><i style="background:#94a3b8"></i>130 pace</span></div></div>`;
+ h+=`<div class="card"><h2>Leaderboard</h2><table><tr><th>#</th><th>Name</th><th class="c">Last wk</th><th class="c">Total</th></tr>${ord.map((x,i)=>`<tr ${x==='BROOKS'?'style="font-weight:700;color:var(--fav)"':''}><td>${i+1}</td><td>${x}</td><td class="c">${P[x][n-1]}</td><td class="c">${tot(x)}</td></tr>`).join('')}</table><div class="mute" style="margin-top:6px">Top of the board plus you and Stella.</div></div>`;
+ $('#race').innerHTML=h;
+}
+
+function renderHistory(){
+ const wk=[...new Set(G.map(g=>+g.week))].sort((a,b)=>b-a);
+ $('#history').innerHTML=`<div class="card"><h2>Week history</h2><select id="wsel">${wk.map(w=>`<option value="${w}">Week ${w}</option>`).join('')}</select></div><div id="wout"></div>`;
+ const show=w=>{const R=G.filter(g=>+g.week===w);let bw=0,bl=0,sw=0,sl=0;
+  const rows=R.map(g=>{const cov=g.result==='fav covered'?g.favorite:g.result==='dog covered'?g.underdog:'—';
+   const bp=g.brooks_pick==='fav'?g.favorite:g.brooks_pick==='dog'?g.underdog:'',sp=g.stella_pick==='fav'?g.favorite:g.stella_pick==='dog'?g.underdog:'';
+   if(g.brooks_correct==='Y')bw++;if(g.brooks_correct==='N')bl++;if(g.stella_correct==='Y')sw++;if(g.stella_correct==='N')sl++;
+   const mk=c=>c==='Y'?' <span class="ok">✓</span>':c==='N'?' <span class="x">✗</span>':'';
+   return `<tr><td>${g.favorite} -${g.pool_line}<div class="mute">${g.home==='dog'?'@ ':'vs '}${g.underdog}</div></td><td class="c"><span class="chip ${g.result==='fav covered'?'cf':g.result==='dog covered'?'cd':''}">${cov}</span></td><td class="c">${bp}${mk(g.brooks_correct)}</td><td class="c">${sp}${mk(g.stella_correct)}</td></tr>`});
+  $('#wout').innerHTML=`<div class="card big"><div><span class="mute">Brooks</span><b>${bw+bl?bw+'-'+bl:'–'}</b></div><div><span class="mute">Stella</span><b>${sw+sl?sw+'-'+sl:'–'}</b></div><div><span class="mute">Favs covered</span><b>${R.filter(g=>g.result==='fav covered').length}</b></div></div>
+  <div class="card"><table><tr><th>Game (pool line)</th><th class="c">Covered</th><th class="c">Brooks</th><th class="c">Stella</th></tr>${rows.join('')}</table></div>`};
+ $('#wsel').onchange=e=>show(+e.target.value);show(wk[0]);
+}
+init().catch(e=>{$('#week').innerHTML='<div class="card">Couldn’t load data. Pull to refresh.</div>'});
+</script>
+</body>
+</html>

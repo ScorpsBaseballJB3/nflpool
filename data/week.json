@@ -1,0 +1,130 @@
+{
+ "week": 11,
+ "status": "final-ish",
+ "title": "Week 11 \u00b7 Nov 22\u201323",
+ "tiebreaker": 54,
+ "note": "Monday night: Cincinnati @ Washington. Week 12 card posts Saturday night once the sheet is loaded.",
+ "picks": [
+  {
+   "num": 1,
+   "team": "CAR",
+   "opp": "BAL",
+   "fav": "CAR",
+   "dog": "BAL",
+   "line": 2.5,
+   "tag": "EDGE",
+   "why": "Market -3, pool -2.5 (under the 3)"
+  },
+  {
+   "num": 4,
+   "team": "TB",
+   "opp": "DET",
+   "fav": "DET",
+   "dog": "TB",
+   "line": 6.5,
+   "tag": "EDGE",
+   "why": "Market +4.5, pool gives +6.5"
+  },
+  {
+   "num": 5,
+   "team": "CHI",
+   "opp": "NO",
+   "fav": "CHI",
+   "dog": "NO",
+   "line": 11.5,
+   "tag": "RULE",
+   "why": "Saints missing 3 linemen (flip \u2014 broke the no-injury-flip rule)"
+  },
+  {
+   "num": 8,
+   "team": "ARI",
+   "opp": "KC",
+   "fav": "KC",
+   "dog": "ARI",
+   "line": 16.5,
+   "tag": "EDGE",
+   "why": "Market +15.5"
+  },
+  {
+   "num": 10,
+   "team": "TEN",
+   "opp": "DAL",
+   "fav": "DAL",
+   "dog": "TEN",
+   "line": 8,
+   "tag": "EDGE",
+   "why": "Market +7.5 (flip \u2014 broke the no-injury-flip rule)"
+  },
+  {
+   "num": 12,
+   "team": "MIA",
+   "opp": "BUF",
+   "fav": "BUF",
+   "dog": "MIA",
+   "line": 16.5,
+   "tag": "RULE",
+   "why": "Division dog"
+  },
+  {
+   "num": 14,
+   "team": "PHI",
+   "opp": "PIT",
+   "fav": "PIT",
+   "dog": "PHI",
+   "line": 4.5,
+   "tag": "EDGE",
+   "why": "Market +3.5, low total 37.5"
+  },
+  {
+   "num": 16,
+   "team": "NYJ",
+   "opp": "LAC",
+   "fav": "LAC",
+   "dog": "NYJ",
+   "line": 3.5,
+   "tag": "EDGE",
+   "why": "Market +3, hook past 3"
+  },
+  {
+   "num": 17,
+   "team": "JAX",
+   "opp": "NYG",
+   "fav": "JAX",
+   "dog": "NYG",
+   "line": 5.5,
+   "tag": "EDGE",
+   "why": "Market -6"
+  },
+  {
+   "num": 19,
+   "team": "DEN",
+   "opp": "LV",
+   "fav": "DEN",
+   "dog": "LV",
+   "line": 9.5,
+   "tag": "EDGE",
+   "why": "Market -10.5"
+  },
+  {
+   "num": 22,
+   "team": "MIN",
+   "opp": "SF",
+   "fav": "SF",
+   "dog": "MIN",
+   "line": 3.5,
+   "tag": "RULE",
+   "why": "SF off a shootout"
+  },
+  {
+   "num": 24,
+   "team": "WAS",
+   "opp": "CIN",
+   "fav": "CIN",
+   "dog": "WAS",
+   "line": 6.5,
+   "tag": "EDGE",
+   "why": "Market +6; 5.5\u20137.5 dog"
+  }
+ ],
+ "recheck": []
+}
