@@ -130,7 +130,7 @@ function resetEdits(){LS.set(ekey(who),{});renderWeek()}
 function recapHTML(C,R){if(!R.length||!R.every(done)||!C.length)return'';
  const res=C.map(p=>{const m=(+p.g.fav_score)-(+p.g.dog_score),cm=p.side==='fav'?m-p.line:p.line-m;return{p,cm,w:won(p)}});
  const w=res.filter(r=>r.w).length,l=res.length-w;const best=res.filter(r=>r.w&&p_ok(r)).sort((a,b)=>b.cm-a.cm)[0],worst=res.filter(r=>!r.w&&p_ok(r)).sort((a,b)=>b.cm-a.cm)[0];
- let rank='';if(S&&S.players[who]){const P=S.players,t=n=>P[n].reduce((a,b)=>a+b,0),o=Object.keys(P).sort((a,b)=>t(b)-t(a));rank=`Season: ${t(who)} pts (${S.asOf})`}
+ let rank='';if(S&&S.players[who]){const P=S.players,t=n=>P[n].reduce((a,b)=>a+b,0),o=Object.keys(P).sort((a,b)=>t(b)-t(a));rank=`#${o.indexOf(who)+1} of ${o.length} · ${t(who)} pts (${S.asOf})`}
  window._recap=`${nm(who)} – ${W.title}: ${w}-${l}${best?`\nBest pick: ${best.p.team} ${lineTxt(best.p)} (covered by ${best.cm})`:''}${worst?`\nWorst beat: ${worst.p.team} ${lineTxt(worst.p)} (missed by ${-worst.cm})`:''}${rank?`\n${rank}`:''}`;
  return `<div class="card recap"><div class="mute">WEEK ${W.week} RECAP · ${nm(who).toUpperCase()}</div><b class="n">${w}-${l}</b>
  ${best?`<div>🔥 Best pick: <b>${best.p.team} ${lineTxt(best.p)}</b> — covered by ${best.cm}</div>`:''}${worst?`<div>💔 Worst beat: <b>${worst.p.team} ${lineTxt(worst.p)}</b> — missed by ${-worst.cm}</div>`:''}
@@ -228,7 +228,7 @@ function renderRace(){const P=S.players,names=Object.keys(P),tot=n=>P[n].reduce(
  let svg=`<svg viewBox="0 0 ${Wd} ${Hd}" width="100%"><line x1="${X(0)}" y1="${Y(0)}" x2="${X(S.weeks)}" y2="${Y(S.target)}" stroke="#94a3b8" stroke-dasharray="4 4"/>`+line(P[ord[0]],'#dc2626',2)+line(P[ord[3]],'#d97706',2)+line(P.BROOKS,'#2563eb',3);
  [0,6,12,18].forEach(i=>svg+=`<text x="${X(i)-4}" y="${Hd-5}">${i}</text>`);[0,65,130].forEach(v=>svg+=`<text x="0" y="${Y(v)+3}">${v}</text>`);svg+='</svg>';
  h+=`<div class="card"><h2>Pace to ${S.target}</h2>${svg}<div class="legend"><span><i style="background:#2563eb"></i>You</span><span><i style="background:#dc2626"></i>${ord[0]}</span><span><i style="background:#d97706"></i>4th: ${ord[3]}</span><span><i style="background:#94a3b8"></i>130 pace</span></div></div>
- <div class="card"><h2>Leaderboard</h2><table><tr><th>#</th><th>Name</th><th class="c">Last wk</th><th class="c">Total</th></tr>${ord.map((x,i)=>`<tr ${x==='BROOKS'?'style="font-weight:700;color:var(--fav)"':''}><td>${i+1}</td><td>${x}</td><td class="c">${P[x][n-1]}</td><td class="c">${tot(x)}</td></tr>`).join('')}</table><div class="mute" style="margin-top:6px">Top of the board plus you and Stella.</div></div>`;
+ <div class="card"><h2>Leaderboard</h2><table><tr><th>#</th><th>Name</th><th class="c">Last wk</th><th class="c">Total</th></tr>${ord.map((x,i)=>`<tr ${x==='BROOKS'?'style="font-weight:700;color:var(--fav)"':x==='STELLA'?'style="font-weight:700;color:var(--dog)"':i===3?'style="border-bottom:2px solid var(--acc)"':''}><td>${i+1}</td><td>${x}</td><td class="c">${P[x][n-1]}</td><td class="c">${tot(x)}</td></tr>`).join('')}</table><div class="mute" style="margin-top:6px">${S.asOf}. Paying spots: top 4.</div></div>`;
  $('#race').innerHTML=h}
 
 /* ---------- History ---------- */
