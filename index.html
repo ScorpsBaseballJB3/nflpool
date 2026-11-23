@@ -260,12 +260,36 @@ function renderRace(){const P=S.players,names=Object.keys(P),tot=n=>P[n].reduce(
  let h=`<div class="card"><h2>Season race</h2><div class="mute">${S.asOf}. Paying spots: top 4.</div>
  <div class="big" style="margin-top:10px"><div><span class="mute">You</span><b>${me}</b></div><div><span class="mute">Back of 1st</span><b class="x">${lead-me}</b></div><div><span class="mute">Back of 4th</span><b class="x">${fourth-me}</b></div></div>
  <div class="big" style="margin-top:8px"><div><span class="mute">Target</span><b>${S.target}</b></div><div><span class="mute">Need / week</span><b>${per}</b></div><div><span class="mute">Vs pace</span><b>${me>=paceNow?'+':''}${me-paceNow}</b></div></div></div>`;
- const Wd=320,Hd=180,mx=S.target+5,X=i=>20+i*(Wd-30)/S.weeks,Y=v=>Hd-20-v*(Hd-30)/mx;
- const line=(arr,col,w)=>{let c=0;return `<polyline fill="none" stroke="${col}" stroke-width="${w}" points="${[`${X(0)},${Y(0)}`].concat(arr.map((v,i)=>{c+=v;return `${X(i+1)},${Y(c)}`})).join(' ')}"/>`};
- let svg=`<svg viewBox="0 0 ${Wd} ${Hd}" width="100%"><line x1="${X(0)}" y1="${Y(0)}" x2="${X(S.weeks)}" y2="${Y(S.target)}" stroke="#94a3b8" stroke-dasharray="4 4"/>`+line(P[ord[0]],'#dc2626',2)+line(P[ord[3]],'#d97706',2)+line(P.BROOKS,'#2563eb',3);
- [0,6,12,18].forEach(i=>svg+=`<text x="${X(i)-4}" y="${Hd-5}">${i}</text>`);[0,65,130].forEach(v=>svg+=`<text x="0" y="${Y(v)+3}">${v}</text>`);svg+='</svg>';
- h+=`<div class="card"><h2>Pace to ${S.target}</h2>${svg}<div class="legend"><span><i style="background:#2563eb"></i>You</span><span><i style="background:#dc2626"></i>${ord[0]}</span><span><i style="background:#d97706"></i>4th: ${ord[3]}</span><span><i style="background:#94a3b8"></i>130 pace</span></div></div>
- <div class="card"><h2>Leaderboard</h2><table><tr><th>#</th><th>Name</th><th class="c">Last wk</th><th class="c">Total</th></tr>${ord.map((x,i)=>`<tr ${x==='BROOKS'?'style="font-weight:700;color:var(--fav)"':x==='STELLA'?'style="font-weight:700;color:var(--dog)"':i===3?'style="border-bottom:2px solid var(--acc)"':''}><td>${i+1}</td><td>${x}</td><td class="c">${P[x][n-1]}</td><td class="c">${tot(x)}</td></tr>`).join('')}</table><div class="mute" style="margin-top:6px">${S.asOf}. Paying spots: top 4.</div></div>`;
+ const cum=x=>{let c=0;return P[x].map(v=>c+=v)},C={};names.forEach(x=>C[x]=cum(x));
+ const kth=(k,i)=>names.map(x=>C[x][i]).sort((a,b)=>b-a)[k-1];
+ const ser={BROOKS:C.BROOKS,STELLA:C.STELLA||[]},w4=[...Array(n).keys()].map(i=>kth(4,i)),w1=[...Array(n).keys()].map(i=>kth(1,i));
+ const sty={you:{c:'#2563eb',w:3.5,d:''},stella:{c:'#db2777',w:2.5,d:'6 3'},lead:{c:'#475569',w:2,d:'2 3'},fourth:{c:'#d97706',w:2,d:'8 3 2 3'}};
+ function chart(lines,zeroLbl,tag){const Wd=340,Hd=200,L=34,R=58,T=12,B=22,all=lines.flatMap(l=>l.v).concat([0]);let lo=Math.min(...all),hi=Math.max(...all);const pad=Math.max(2,(hi-lo)*.12);lo=Math.floor(lo-pad);hi=Math.ceil(hi+pad);
+  const X=i=>L+i*(Wd-L-R)/Math.max(1,n-1),Y=v=>T+(hi-v)*(Hd-T-B)/(hi-lo);let g=`<svg viewBox="0 0 ${Wd} ${Hd}" width="100%" style="font:10px Arial">`;
+  g+=`<rect x="${L}" y="${T}" width="${Wd-L-R}" height="${Y(0)-T}" fill="#16a34a" opacity=".08"/><rect x="${L}" y="${Y(0)}" width="${Wd-L-R}" height="${Hd-B-Y(0)}" fill="#dc2626" opacity=".06"/>`;
+  const st=Math.max(1,Math.ceil((hi-lo)/6));for(let v=Math.ceil(lo/st)*st;v<=hi;v+=st)g+=`<line x1="${L}" x2="${Wd-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#94a3b8" stroke-width="${v===0?1.5:.4}"/><text x="${L-4}" y="${Y(v)+3}" text-anchor="end" fill="currentColor">${v>0?'+':''}${v}</text>`;
+  for(let i=0;i<n;i++)g+=`<text x="${X(i)}" y="${Hd-6}" text-anchor="middle" fill="currentColor">${i+1>=3?i+1:i+1}</text>`;
+  const ends=[];lines.forEach(l=>{const s=sty[l.k];g+=`<polyline fill="none" stroke="${s.c}" stroke-width="${s.w}" stroke-dasharray="${s.d}" stroke-linejoin="round" points="${l.v.map((v,i)=>X(i)+','+Y(v)).join(' ')}"/>`;
+   l.v.forEach((v,i)=>{if(l.k==='you')g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="2.6" fill="${s.c}"/>`});ends.push({y:Y(l.v[n-1]),t:`${l.n} ${l.v[n-1]>0?'+':''}${l.v[n-1]}`,c:s.c})});
+  ends.sort((a,b)=>a.y-b.y);for(let i=1;i<ends.length;i++)if(ends[i].y-ends[i-1].y<11)ends[i].y=ends[i-1].y+11;
+  ends.forEach(e=>g+=`<text x="${Wd-R+4}" y="${e.y+3}" fill="${e.c}" font-weight="bold">${e.t}</text>`);return g+'</svg>'}
+ const leg=ks=>`<div class="legend">${ks.map(([k,t])=>`<span><svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="${sty[k].c}" stroke-width="${sty[k].w}" stroke-dasharray="${sty[k].d}"/></svg>${t}</span>`).join('')}</div>`;
+ const gap=a=>a.map((v,i)=>v-w4[i]);
+ const L1=[{k:'lead',n:'1st',v:gap(w1)},{k:'you',n:'You',v:gap(ser.BROOKS)}];if(ser.STELLA.length)L1.push({k:'stella',n:'Stella',v:gap(ser.STELLA)});
+ h+=`<div class="card"><h2>Gap to 4th (the money line)</h2><div class="mute">Above 0 = in a paying spot. Below = points you need to make up.</div>${chart(L1,'4th place','g4')}${leg([['you','You'],['stella','Stella'],['lead','Leader']])}</div>`;
+ const pc=a=>a.map((v,i)=>Math.round((v-S.target*(i+1)/S.weeks)*10)/10);
+ const L2=[{k:'lead',n:'1st',v:pc(w1)},{k:'fourth',n:'4th',v:pc(w4)},{k:'you',n:'You',v:pc(ser.BROOKS)}];if(ser.STELLA.length)L2.push({k:'stella',n:'Stella',v:pc(ser.STELLA)});
+ h+=`<div class="card"><h2>Ahead / behind ${S.target} pace</h2><div class="mute">${S.target} pace = ${(S.target/S.weeks).toFixed(1)} a week. 0 = right on pace.</div>${chart(L2,S.target+' pace','pc')}${leg([['you','You'],['stella','Stella'],['lead','Leader'],['fourth','4th place']])}</div>`;
+ const avg=[...Array(n).keys()].map(i=>{const a=names.map(x=>P[x][i]).filter(v=>v>0);return a.reduce((p,q)=>p+q,0)/a.length});
+ {const Wd=340,Hd=190,L=24,T=10,B=22,mx=Math.max(12,...P.BROOKS,...(P.STELLA||[])),bw=(Wd-L-8)/n,Y=v=>T+(mx-v)*(Hd-T-B)/mx,hasS=!!P.STELLA;let g=`<svg viewBox="0 0 ${Wd} ${Hd}" width="100%" style="font:10px Arial">`;
+  for(let v=0;v<=mx;v+=2)g+=`<line x1="${L}" x2="${Wd-8}" y1="${Y(v)}" y2="${Y(v)}" stroke="#94a3b8" stroke-width=".4"/><text x="${L-4}" y="${Y(v)+3}" text-anchor="end" fill="currentColor">${v}</text>`;
+  for(let i=0;i<n;i++){const x0=L+i*bw+bw*.12,bwi=hasS?bw*.38:bw*.76,b=P.BROOKS[i];g+=`<rect x="${x0}" y="${Y(b)}" width="${bwi}" height="${Y(0)-Y(b)}" fill="#2563eb"/><text x="${x0+bwi/2}" y="${Y(b)-2}" text-anchor="middle" fill="currentColor" font-weight="bold">${b}</text>`;
+   if(hasS){const sv=P.STELLA[i];g+=`<rect x="${x0+bwi}" y="${Y(sv)}" width="${bwi}" height="${Y(0)-Y(sv)}" fill="none" stroke="#db2777" stroke-width="1.5"/>`}
+   g+=`<text x="${L+i*bw+bw/2}" y="${Hd-6}" text-anchor="middle" fill="currentColor">${i+1}</text>`}
+  g+=`<polyline fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="2 3" points="${avg.map((v,i)=>(L+i*bw+bw/2)+','+Y(v)).join(' ')}"/>`;
+  g+=`<line x1="${L}" x2="${Wd-8}" y1="${Y(+per)}" y2="${Y(+per)}" stroke="#16a34a" stroke-width="2" stroke-dasharray="8 4"/><text x="${Wd-10}" y="${Y(+per)-4}" text-anchor="end" fill="#16a34a" font-weight="bold">need ${per}/wk</text></svg>`;
+  h+=`<div class="card"><h2>Weekly scores</h2><div class="mute">Your week-by-week points vs the field average, and what you need from here to hit ${S.target}.</div>${g}<div class="legend"><span><i style="background:#2563eb"></i>You</span>${hasS?'<span><i style="background:none;border:1.5px solid #db2777"></i>Stella</span>':''}<span><svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="#475569" stroke-width="2" stroke-dasharray="2 3"/></svg>Field avg</span><span><svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="#16a34a" stroke-width="2" stroke-dasharray="8 4"/></svg>Need/wk</span></div></div>`}
+ h+=`<div class="card"><h2>Leaderboard</h2><table><tr><th>#</th><th>Name</th><th class="c">Last wk</th><th class="c">Total</th></tr>${ord.map((x,i)=>`<tr ${x==='BROOKS'?'style="font-weight:700;color:var(--fav)"':x==='STELLA'?'style="font-weight:700;color:var(--dog)"':i===3?'style="border-bottom:2px solid var(--acc)"':''}><td>${i+1}</td><td>${x}</td><td class="c">${P[x][n-1]}</td><td class="c">${tot(x)}</td></tr>`).join('')}</table><div class="mute" style="margin-top:6px">${S.asOf}. Paying spots: top 4.</div></div>`;
  $('#race').innerHTML=h}
 
 /* ---------- History ---------- */
