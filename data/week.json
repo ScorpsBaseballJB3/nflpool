@@ -1,7 +1,7 @@
 {
  "week": 11,
  "status": "final-ish",
- "title": "Week 11 \u00b7 Nov 22\u201323",
+ "title": "Week 11 · Nov 22–23",
  "tiebreaker": 54,
  "note": "Monday night: Cincinnati @ Washington. Week 12 card posts Saturday night once the sheet is loaded.",
  "picks": [
@@ -35,7 +35,7 @@
    "dog": "NO",
    "line": 11.5,
    "tag": "RULE",
-   "why": "Saints missing 3 linemen (flip \u2014 broke the no-injury-flip rule)",
+   "why": "Saints missing 3 linemen (flip — broke the no-injury-flip rule)",
    "flags": []
   },
   {
@@ -57,7 +57,7 @@
    "dog": "TEN",
    "line": 8,
    "tag": "EDGE",
-   "why": "Market +7.5 (flip \u2014 broke the no-injury-flip rule)",
+   "why": "Market +7.5 (flip — broke the no-injury-flip rule)",
    "flags": []
   },
   {
@@ -134,7 +134,7 @@
    "dog": "WAS",
    "line": 6.5,
    "tag": "EDGE",
-   "why": "Market +6; 5.5\u20137.5 dog",
+   "why": "Market +6; 5.5–7.5 dog",
    "flags": []
   }
  ],
@@ -155,5 +155,6 @@
    24
   ],
   "tiebreaker": 42
- }
+ },
+ "locked": true
 }

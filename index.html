@@ -81,17 +81,18 @@ const wkRows=()=>G.filter(g=>+g.week===W.week).sort((a,b)=>a.fav_num-b.fav_num);
 function official(w){const nums=w==='BROOKS'?W.picks.map(p=>p.num):(W.stella?W.stella.picks:[]);const o={};
  for(const g of wkRows()){const f=+g.fav_num;if(nums.includes(f))o[f]='fav';else if(nums.includes(f+1))o[f]='dog'}return o}
 const ekey=w=>`edits-${W.week}-${w}`;
-const fkey=w=>`fill-${W.week}-${w}`,fillOn=w=>{const x=LS.get(fkey(w),null);return x&&Object.keys(x.s||{}).length?x:null};
-function card(w){const off=official(w),fl=fillOn(w),ed=fl?fl.s:LS.get(ekey(w),{}),out=[];
+const isLocked=()=>!!(W.locked||(W.lockAt&&Date.now()>=Date.parse(W.lockAt)));
+const fkey=w=>`fill-${W.week}-${w}`,fillOn=w=>{if(isLocked())return null;const x=LS.get(fkey(w),null);return x&&Object.keys(x.s||{}).length?x:null};
+function card(w){const off=official(w),fl=fillOn(w),ed=fl?fl.s:(isLocked()?{}:LS.get(ekey(w),{})),out=[];
  for(const g of wkRows()){const f=+g.fav_num,side=fl?ed[f]:(ed[f]||off[f]);if(!side)continue;
   const fav=side==='fav',num=fav?f:f+1,meta=w==='BROOKS'?(W.picks.find(p=>p.num===num)||{}):{};
   const edited=ed[f]&&ed[f]!==off[f];
   out.push({f,side,num,team:fav?g.favorite:g.underdog,opp:fav?g.underdog:g.favorite,fav:g.favorite,dog:g.underdog,line:+g.pool_line,
    home:g.home,mkt:g.market_line_sunday?+g.market_line_sunday:null,tag:edited?'EDIT':(meta.tag||''),why:edited?'Changed on your phone':(meta.why||''),flags:meta.flags||[],g})}
  return out}
-function flip(w,f){const fl=fillOn(w);if(fl){fl.s[f]=fl.s[f]==='fav'?'dog':'fav';LS.set(fkey(w),fl);renderWeek();return}const off=official(w),ed=LS.get(ekey(w),{}),cur=ed[f]||off[f];const nx=cur==='fav'?'dog':'fav';
+function flip(w,f){if(isLocked())return;const fl=fillOn(w);if(fl){fl.s[f]=fl.s[f]==='fav'?'dog':'fav';LS.set(fkey(w),fl);renderWeek();return}const off=official(w),ed=LS.get(ekey(w),{}),cur=ed[f]||off[f];const nx=cur==='fav'?'dog':'fav';
  if(nx===off[f])delete ed[f];else ed[f]=nx;LS.set(ekey(w),ed);renderWeek()}
-const tieb=w=>{const x=LS.get(fkey(w),null);if(x&&x.tb!==''&&x.tb!=null)return x.tb;return w==='BROOKS'?W.tiebreaker:(W.stella?W.stella.tiebreaker:'')};
+const tieb=w=>{const x=isLocked()?null:LS.get(fkey(w),null);if(x&&x.tb!==''&&x.tb!=null)return x.tb;return w==='BROOKS'?W.tiebreaker:(W.stella?W.stella.tiebreaker:'')};
 const won=p=>done(p.g)?((p.g.result==='fav covered')===(p.side==='fav')):null;
 const lineTxt=p=>(p.side==='fav'?'-':'+')+p.line;
 function moveTxt(p){if(p.mkt==null)return'';const e=p.side==='fav'?p.mkt-p.line:p.line-p.mkt;const m=(p.side==='fav'?'-':'+')+p.mkt;
@@ -116,17 +117,17 @@ async function load(){const v='?v='+Date.now();
 
 /* ---------- This Week ---------- */
 let fillMode=false;
-function renderWeek(){if(fillMode)return renderFill();const C=card(who),R=wkRows();const ed=Object.keys(LS.get(ekey(who),{})).length;
+function renderWeek(){if(fillMode&&isLocked())fillMode=false;if(fillMode)return renderFill();const C=card(who),R=wkRows();const ed=Object.keys(LS.get(ekey(who),{})).length;
  let h=recapHTML(C,R);
  const wins=C.filter(p=>won(p)===true).length,loss=C.filter(p=>won(p)===false).length;
  h+=`<div class="card"><h2>${nm(who)} · ${W.title}</h2><div class="mute">${W.note||''}</div>
  <div class="big" style="margin-top:10px"><div><span class="mute">Record</span><b>${wins}-${loss}</b></div><div><span class="mute">Tiebreaker</span><b>${tieb(who)||'–'}</b></div><div><span class="mute">Edges</span><b>${C.filter(p=>p.mkt!=null&&(p.side==='fav'?p.mkt-p.line:p.line-p.mkt)>0).length}</b></div></div>${tbHelp(false)}
- <button class="btn" style="background:var(--acc);color:#111" onclick="fillMode=true;renderWeek();scrollTo(0,0)">✏️ Fill out my sheet</button><button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${fillOn(who)?'<span class="mute" style="display:block;margin-top:6px">Showing the picks you filled out.</span>':''}${!fillOn(who)&&ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div><div class="card"><h2>Card</h2><div class="mute">Tap ↔ to switch a pick (saved on this phone).</div>`;
+ ${isLocked()?'<span class="btn alt" style="cursor:default">🔒 Picks locked</span>':'<button class="btn" style="background:var(--acc);color:#111" onclick="fillMode=true;renderWeek();scrollTo(0,0)">✏️ Fill out my sheet</button>'}<button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${fillOn(who)?'<span class="mute" style="display:block;margin-top:6px">Showing the picks you filled out.</span>':''}${!isLocked()&&!fillOn(who)&&ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div><div class="card"><h2>Card</h2><div class="mute">${isLocked()?'🔒 Locked — these are the picks turned in.':'Tap ↔ to switch a pick (saved on this phone).'}</div>`;
  for(const p of C){const r=won(p);const st=r===true?'<span class="cov">✓ WIN</span>':r===false?'<span class="not">✗ LOSS</span>':'<span class="pend">—</span>';
   const sc=p.g.fav_score?`<div class="score">${p.fav} ${p.g.fav_score} – ${p.dog} ${p.g.dog_score}</div>`:'';
   h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${lineTxt(p)}</b> <span class="mute">${p.home==='neutral'?'vs':(p.home===p.side?'vs':'@')} ${p.opp}</span>${p.tag?`<span class="tag ${p.tag}">${p.tag}</span>`:''}
   ${p.why?`<div class="mute">${p.why}</div>`:''}${moveTxt(p)}${p.flags.map(f=>`<span class="flag">${f}</span>`).join('')}${sc}
-  ${done(p.g)?'':`<button class="sw" onclick="flip('${who}',${p.f})">↔ Switch to ${p.side==='fav'?p.dog+' +'+p.line:p.fav+' -'+p.line}</button>`}</div><div class="st">${st}</div></div>`}
+  ${done(p.g)||isLocked()?'':`<button class="sw" onclick="flip('${who}',${p.f})">↔ Switch to ${p.side==='fav'?p.dog+' +'+p.line:p.fav+' -'+p.line}</button>`}</div><div class="st">${st}</div></div>`}
  if(!C.length)h+='<div class="mute">No picks loaded for this week yet.</div>';
  h+='</div>';if(who==='BROOKS'&&W.recheck&&W.recheck.length)h+=`<div class="card"><h2>⚠️ Recheck Sunday 11:30</h2>${W.recheck.map(r=>'<div>• '+r+'</div>').join('')}</div>`;
  $('#week').innerHTML=h}
