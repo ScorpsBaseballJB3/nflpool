@@ -13,7 +13,8 @@
    "dog": "BAL",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Market -3, pool -2.5 (under the 3)"
+   "why": "Market -3, pool -2.5 (under the 3)",
+   "flags": []
   },
   {
    "num": 4,
@@ -23,7 +24,8 @@
    "dog": "TB",
    "line": 6.5,
    "tag": "EDGE",
-   "why": "Market +4.5, pool gives +6.5"
+   "why": "Market +4.5, pool gives +6.5",
+   "flags": []
   },
   {
    "num": 5,
@@ -33,7 +35,8 @@
    "dog": "NO",
    "line": 11.5,
    "tag": "RULE",
-   "why": "Saints missing 3 linemen (flip \u2014 broke the no-injury-flip rule)"
+   "why": "Saints missing 3 linemen (flip \u2014 broke the no-injury-flip rule)",
+   "flags": []
   },
   {
    "num": 8,
@@ -43,7 +46,8 @@
    "dog": "ARI",
    "line": 16.5,
    "tag": "EDGE",
-   "why": "Market +15.5"
+   "why": "Market +15.5",
+   "flags": []
   },
   {
    "num": 10,
@@ -53,7 +57,8 @@
    "dog": "TEN",
    "line": 8,
    "tag": "EDGE",
-   "why": "Market +7.5 (flip \u2014 broke the no-injury-flip rule)"
+   "why": "Market +7.5 (flip \u2014 broke the no-injury-flip rule)",
+   "flags": []
   },
   {
    "num": 12,
@@ -63,7 +68,8 @@
    "dog": "MIA",
    "line": 16.5,
    "tag": "RULE",
-   "why": "Division dog"
+   "why": "Division dog",
+   "flags": []
   },
   {
    "num": 14,
@@ -73,7 +79,8 @@
    "dog": "PHI",
    "line": 4.5,
    "tag": "EDGE",
-   "why": "Market +3.5, low total 37.5"
+   "why": "Market +3.5, low total 37.5",
+   "flags": []
   },
   {
    "num": 16,
@@ -83,7 +90,8 @@
    "dog": "NYJ",
    "line": 3.5,
    "tag": "EDGE",
-   "why": "Market +3, hook past 3"
+   "why": "Market +3, hook past 3",
+   "flags": []
   },
   {
    "num": 17,
@@ -93,7 +101,8 @@
    "dog": "NYG",
    "line": 5.5,
    "tag": "EDGE",
-   "why": "Market -6"
+   "why": "Market -6",
+   "flags": []
   },
   {
    "num": 19,
@@ -103,7 +112,8 @@
    "dog": "LV",
    "line": 9.5,
    "tag": "EDGE",
-   "why": "Market -10.5"
+   "why": "Market -10.5",
+   "flags": []
   },
   {
    "num": 22,
@@ -113,7 +123,8 @@
    "dog": "MIN",
    "line": 3.5,
    "tag": "RULE",
-   "why": "SF off a shootout"
+   "why": "SF off a shootout",
+   "flags": []
   },
   {
    "num": 24,
@@ -123,8 +134,26 @@
    "dog": "WAS",
    "line": 6.5,
    "tag": "EDGE",
-   "why": "Market +6; 5.5\u20137.5 dog"
+   "why": "Market +6; 5.5\u20137.5 dog",
+   "flags": []
   }
  ],
- "recheck": []
+ "recheck": [],
+ "stella": {
+  "picks": [
+   1,
+   3,
+   6,
+   8,
+   9,
+   12,
+   14,
+   15,
+   17,
+   19,
+   21,
+   24
+  ],
+  "tiebreaker": 42
+ }
 }

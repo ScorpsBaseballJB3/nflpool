@@ -14,182 +14,238 @@
 <link rel="icon" href="icon-192.png">
 <style>
 :root{--bg:#f4f6fa;--card:#fff;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--acc:#f2b705;--nav:#0f172a;
---fav:#2563eb;--favbg:#dbeafe;--dog:#16a34a;--dogbg:#dcfce7;--bad:#dc2626;--badbg:#fee2e2;--warn:#d97706}
-@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#131c2e;--ink:#e5e9f0;--mute:#94a3b8;--line:#22304a;
---favbg:#172554;--dogbg:#0f2e1c;--badbg:#3b1111}}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,system-ui,Segoe UI,Roboto,Arial,sans-serif}
-header{position:sticky;top:0;z-index:5;background:var(--nav);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) 16px 12px}
-header h1{margin:0;font-size:20px;letter-spacing:.5px}header small{color:#cbd5e1}
+--fav:#2563eb;--favbg:#dbeafe;--dog:#16a34a;--dogbg:#dcfce7;--bad:#dc2626;--badbg:#fee2e2}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#131c2e;--ink:#e5e9f0;--mute:#94a3b8;--line:#22304a;--favbg:#172554;--dogbg:#0f2e1c;--badbg:#3b1111}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,system-ui,Segoe UI,Roboto,Arial,sans-serif;overscroll-behavior-y:contain}
+header{position:sticky;top:0;z-index:5;background:var(--nav);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px}
+header h1{margin:0;font-size:20px;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center}header small{color:#cbd5e1}
+.seg{display:inline-flex;background:#1e293b;border-radius:10px;padding:3px;gap:2px}.seg button{border:0;background:none;color:#cbd5e1;font-size:13px;font-weight:600;padding:5px 10px;border-radius:8px}.seg button.on{background:var(--acc);color:#111}
+#ptr{text-align:center;color:var(--mute);font-size:13px;height:0;overflow:hidden;transition:height .15s}
 main{padding:12px 16px calc(90px + env(safe-area-inset-bottom));max-width:720px;margin:auto}
 nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:9}
-nav button{flex:1;background:none;border:0;color:#94a3b8;font-size:11px;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:2px}
-nav button span{font-size:20px}nav button.on{color:var(--acc)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
-.card h2{margin:0 0 8px;font-size:17px}.mute{color:var(--mute);font-size:13px}
+nav button{flex:1;background:none;border:0;color:#94a3b8;font-size:11px;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:2px}nav button span{font-size:20px}nav button.on{color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}.card h2{margin:0 0 8px;font-size:17px}.mute{color:var(--mute);font-size:13px}
 .pick{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.pick:last-child{border:0}
 .num{min-width:34px;height:34px;border-radius:50%;background:var(--nav);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
-.pt{flex:1}.pt b{font-size:16px}.tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:6px}
-.EDGE{background:#fef3c7;color:#92400e}.RULE{background:#e0e7ff;color:#3730a3}
-.st{font-size:13px;font-weight:700;text-align:right;min-width:86px}.cov{color:var(--dog)}.not{color:var(--bad)}.pend{color:var(--mute)}
+.pt{flex:1;min-width:0}.pt b{font-size:16px}.tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:6px;white-space:nowrap}
+.EDGE{background:#fef3c7;color:#92400e}.RULE{background:#e0e7ff;color:#3730a3}.EDIT{background:#fce7f3;color:#9d174d}
+.st{font-size:13px;font-weight:700;text-align:right;min-width:80px}.cov{color:var(--dog)}.not{color:var(--bad)}.pend{color:var(--mute)}
+.mv{font-size:12px;font-weight:700;margin-top:2px}.up{color:var(--dog)}.dn{color:var(--bad)}.eq{color:var(--mute)}
+.flag{display:inline-block;font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:3px 4px 0 0}
+.sw{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;font-size:12px;padding:5px 8px;margin-top:6px}
 .score{font-size:12px;color:var(--mute)}
-table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--mute);font-weight:600;font-size:12px;padding:6px 4px;border-bottom:1px solid var(--line)}
-td{padding:8px 4px;border-bottom:1px solid var(--line)}td.c,th.c{text-align:center}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--mute);font-weight:600;font-size:12px;padding:6px 4px;border-bottom:1px solid var(--line)}td{padding:8px 4px;border-bottom:1px solid var(--line)}td.c,th.c{text-align:center}
 .bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--fav)}
 .do{font-weight:700;font-size:13px}.dofav{color:var(--fav)}.dodog{color:var(--dog)}.doflip{color:var(--mute)}
 .big{display:flex;gap:10px}.big div{flex:1;background:var(--bg);border-radius:12px;padding:10px;text-align:center}.big b{display:block;font-size:24px}
 select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:16px}
-.chip{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;font-weight:700}
-.cf{background:var(--favbg);color:var(--fav)}.cd{background:var(--dogbg);color:var(--dog)}
-.ok{color:var(--dog);font-weight:700}.x{color:var(--bad);font-weight:700}
-.hide{display:none}svg text{fill:var(--mute);font-size:10px}
+.chip{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;font-weight:700}.cf{background:var(--favbg);color:var(--fav)}.cd{background:var(--dogbg);color:var(--dog)}
+.ok{color:var(--dog);font-weight:700}.x{color:var(--bad);font-weight:700}.hide{display:none!important}svg text{fill:var(--mute);font-size:10px}
 .legend span{display:inline-flex;align-items:center;gap:4px;margin-right:12px;font-size:12px}.legend i{width:14px;height:3px;display:inline-block}
-.refresh{float:right;font-size:12px;background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:4px 8px}
+.btn{display:inline-block;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px;background:var(--nav);color:#fff;margin:4px 6px 0 0}.btn.alt{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.meter{height:14px;border-radius:9px;background:var(--line);overflow:hidden;margin:6px 0}.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--dog),var(--acc))}
+.recap{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border:0}.recap .mute{color:#cbd5e1}.recap b.n{font-size:40px}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+#modal img{max-width:100%;max-height:70vh;border-radius:8px;background:#fff}
 </style>
 </head>
 <body>
-<header><h1>🏈 NFL POOL</h1><small id="sub">Brooks · 2026</small></header>
-<main>
-<section id="week"></section>
-<section id="live" class="hide"></section>
-<section id="trends" class="hide"></section>
-<section id="teams" class="hide"></section>
-<section id="race" class="hide"></section>
-<section id="history" class="hide"></section>
+<header><h1><span>🏈 NFL POOL</span><span class="seg" id="who"><button data-w="BROOKS">Brooks</button><button data-w="STELLA">Stella</button></span></h1><small id="sub">2026</small></header>
+<div id="ptr">↓ Release to refresh</div>
+<main id="main">
+<section id="week"></section><section id="live" class="hide"></section><section id="trends" class="hide"></section>
+<section id="teams" class="hide"></section><section id="race" class="hide"></section><section id="history" class="hide"></section>
 </main>
+<div id="modal" class="hide"></div>
 <nav>
-<button data-t="week" class="on"><span>📋</span>This Week</button>
-<button data-t="live"><span>📡</span>Live</button>
-<button data-t="trends"><span>📊</span>Trends</button>
-<button data-t="teams"><span>🔎</span>Teams</button>
-<button data-t="race"><span>🏁</span>Race</button>
-<button data-t="history"><span>🗂️</span>History</button>
+<button data-t="week" class="on"><span>📋</span>This Week</button><button data-t="live"><span>📡</span>Live</button><button data-t="trends"><span>📊</span>Trends</button>
+<button data-t="teams"><span>🔎</span>Teams</button><button data-t="race"><span>🏁</span>Race</button><button data-t="history"><span>🗂️</span>History</button>
 </nav>
 <script>
-const $=s=>document.querySelector(s);
-const ESPN={WAS:'WSH'};const esp=a=>ESPN[a]||a;
-let G=[],W=null,S=null,liveTimer=null;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const ESPN={WAS:'WSH'},esp=a=>ESPN[a]||a,TABS=['week','live','trends','teams','race','history'];
+let G=[],W=null,S=null,who=LS.get('who','BROOKS'),tab=LS.get('tab','week'),liveTimer=null,liveBoth=LS.get('liveBoth',false);
 function csv(t){const L=t.trim().split(/\r?\n/),h=L[0].split(',');return L.slice(1).map(l=>{const v=l.split(',');const o={};h.forEach((k,i)=>o[k]=v[i]||'');return o})}
 const bucket=x=>x<=2.5?'2.5 or less':x<=4.5?'3.5–4.5':x<=7.5?'5.5–7.5':x<=10.5?'8–10.5':'11+';
 const ADV={'2.5 or less':['Coin flip — edge only, else road team','doflip'],'3.5–4.5':['TAKE THE FAVORITE','dofav'],'5.5–7.5':['TAKE THE DOG (road dog best)','dodog'],'8–10.5':['TAKE THE FAVORITE','dofav'],'11+':['Coin flip — edge only','doflip']};
 const done=g=>g.result==='fav covered'||g.result==='dog covered';
-const pct=(a,b)=>b?Math.round(100*a/b)+'%':'–';
+const pct=(a,b)=>b?Math.round(100*a/b)+'%':'–',nm=w=>w==='BROOKS'?'Brooks':'Stella';
+const wkRows=()=>G.filter(g=>+g.week===W.week).sort((a,b)=>a.fav_num-b.fav_num);
 
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
- document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
- document.querySelectorAll('main section').forEach(s=>s.classList.add('hide'));$('#'+b.dataset.t).classList.remove('hide');
- if(b.dataset.t==='live')loadLive();try{localStorage.setItem('tab',b.dataset.t)}catch(e){}});
+/* ---------- picks (official + phone edits) ---------- */
+function official(w){const nums=w==='BROOKS'?W.picks.map(p=>p.num):(W.stella?W.stella.picks:[]);const o={};
+ for(const g of wkRows()){const f=+g.fav_num;if(nums.includes(f))o[f]='fav';else if(nums.includes(f+1))o[f]='dog'}return o}
+const ekey=w=>`edits-${W.week}-${w}`;
+function card(w){const off=official(w),ed=LS.get(ekey(w),{}),out=[];
+ for(const g of wkRows()){const f=+g.fav_num,side=ed[f]||off[f];if(!side)continue;
+  const fav=side==='fav',num=fav?f:f+1,meta=w==='BROOKS'?(W.picks.find(p=>p.num===num)||{}):{};
+  const edited=ed[f]&&ed[f]!==off[f];
+  out.push({f,side,num,team:fav?g.favorite:g.underdog,opp:fav?g.underdog:g.favorite,fav:g.favorite,dog:g.underdog,line:+g.pool_line,
+   home:g.home,mkt:g.market_line_sunday?+g.market_line_sunday:null,tag:edited?'EDIT':(meta.tag||''),why:edited?'Changed on your phone':(meta.why||''),flags:meta.flags||[],g})}
+ return out}
+function flip(w,f){const off=official(w),ed=LS.get(ekey(w),{}),cur=ed[f]||off[f];const nx=cur==='fav'?'dog':'fav';
+ if(nx===off[f])delete ed[f];else ed[f]=nx;LS.set(ekey(w),ed);renderWeek()}
+const tieb=w=>w==='BROOKS'?W.tiebreaker:(W.stella?W.stella.tiebreaker:'');
+const won=p=>done(p.g)?((p.g.result==='fav covered')===(p.side==='fav')):null;
+const lineTxt=p=>(p.side==='fav'?'-':'+')+p.line;
+function moveTxt(p){if(p.mkt==null)return'';const e=p.side==='fav'?p.mkt-p.line:p.line-p.mkt;const m=(p.side==='fav'?'-':'+')+p.mkt;
+ if(e>0)return`<div class="mv up">▲ Market ${m} · you get ${e} pt${e===1?'':'s'}</div>`;if(e<0)return`<div class="mv dn">▼ Market ${m} · ${-e} worse than market</div>`;return`<div class="mv eq">= Market ${m}</div>`}
 
-async function init(){
- const v='?v='+Date.now();
+/* ---------- header / nav / gestures ---------- */
+function setWho(w){who=w;LS.set('who',w);$$('#who button').forEach(b=>b.classList.toggle('on',b.dataset.w===w));renderWeek();renderHistory();if(tab==='live')loadLive()}
+$$('#who button').forEach(b=>b.onclick=()=>setWho(b.dataset.w));
+function go(t){tab=t;LS.set('tab',t);$$('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===t));$$('main section').forEach(s=>s.classList.add('hide'));$('#'+t).classList.remove('hide');window.scrollTo(0,0);if(t==='live')loadLive();else clearTimeout(liveTimer)}
+$$('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
+let tx=0,ty=0,pull=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;pull=0},{passive:true});
+document.addEventListener('touchmove',e=>{const dy=e.touches[0].clientY-ty;if(window.scrollY<=0&&dy>0&&Math.abs(dy)>Math.abs(e.touches[0].clientX-tx)){pull=dy;$('#ptr').style.height=Math.min(dy/2,40)+'px';$('#ptr').textContent=dy>110?'↻ Release to refresh':'↓ Pull to refresh'}},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+ if(pull>110){$('#ptr').textContent='Refreshing…';load().then(()=>{$('#ptr').style.height=0})}else $('#ptr').style.height=0;
+ if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.5&&!e.target.closest('table,select,svg,#modal')){const i=TABS.indexOf(tab)+(dx<0?1:-1);if(i>=0&&i<TABS.length)go(TABS[i])}});
+
+/* ---------- data ---------- */
+async function load(){const v='?v='+Date.now();
  const [g,w,s]=await Promise.all([fetch('data/games.csv'+v).then(r=>r.text()),fetch('data/week.json'+v).then(r=>r.json()),fetch('data/standings.json'+v).then(r=>r.json())]);
- G=csv(g);W=w;S=s;$('#sub').textContent='Brooks · '+W.title;
- renderWeek();renderTrends();renderTeams();renderRace();renderHistory();$('#live').innerHTML='<div class="card mute">Loading live scores…</div>';
- let t=null;try{t=localStorage.getItem('tab')}catch(e){} if(t&&document.querySelector(`nav [data-t="${t}"]`))document.querySelector(`nav [data-t="${t}"]`).click();
-}
+ G=csv(g);W=w;S=s;$('#sub').textContent=W.title;setWho(who);renderTrends();renderTeams();renderRace();if(tab==='live')loadLive()}
 
-function renderWeek(){
- const res=Object.fromEntries(G.filter(g=>+g.week===W.week).map(g=>[+g.fav_num,g]));
- let h=`<div class="card"><h2>${W.title}</h2><div class="mute">${W.note||''}</div>
- <div class="big" style="margin-top:10px"><div><span class="mute">Picks</span><b>${W.picks.length}</b></div><div><span class="mute">Tiebreaker</span><b>${W.tiebreaker}</b></div>
- <div><span class="mute">EDGE</span><b>${W.picks.filter(p=>p.tag==='EDGE').length}</b></div></div></div><div class="card"><h2>Your card</h2>`;
- for(const p of W.picks){const g=res[p.team===p.fav?p.num:p.num-1];let st='<span class="pend">—</span>';
-  if(g&&done(g)){const won=(g.result==='fav covered')===(p.team===p.fav);st=won?'<span class="cov">✓ WIN</span>':'<span class="not">✗ LOSS</span>'}
-  const ln=p.team===p.fav?'-'+p.line:'+'+p.line;
-  h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${ln}</b> <span class="mute">vs ${p.opp}</span><span class="tag ${p.tag}">${p.tag}</span><div class="mute">${p.why}</div></div><div class="st">${st}</div></div>`}
- h+='</div>';if(W.recheck&&W.recheck.length)h+=`<div class="card"><h2>Recheck Sunday 11:30</h2>${W.recheck.map(r=>'<div>• '+r+'</div>').join('')}</div>`;
- $('#week').innerHTML=h;
-}
+/* ---------- This Week ---------- */
+function renderWeek(){const C=card(who),R=wkRows();const ed=Object.keys(LS.get(ekey(who),{})).length;
+ let h=recapHTML(C,R);
+ const wins=C.filter(p=>won(p)===true).length,loss=C.filter(p=>won(p)===false).length;
+ h+=`<div class="card"><h2>${nm(who)} · ${W.title}</h2><div class="mute">${W.note||''}</div>
+ <div class="big" style="margin-top:10px"><div><span class="mute">Record</span><b>${wins}-${loss}</b></div><div><span class="mute">Tiebreaker</span><b>${tieb(who)||'–'}</b></div><div><span class="mute">Edges</span><b>${C.filter(p=>p.mkt!=null&&(p.side==='fav'?p.mkt-p.line:p.line-p.mkt)>0).length}</b></div></div>
+ <button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div><div class="card"><h2>Card</h2><div class="mute">Tap ↔ to switch a pick (saved on this phone).</div>`;
+ for(const p of C){const r=won(p);const st=r===true?'<span class="cov">✓ WIN</span>':r===false?'<span class="not">✗ LOSS</span>':'<span class="pend">—</span>';
+  const sc=p.g.fav_score?`<div class="score">${p.fav} ${p.g.fav_score} – ${p.dog} ${p.g.dog_score}</div>`:'';
+  h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${lineTxt(p)}</b> <span class="mute">${p.home==='neutral'?'vs':(p.home===p.side?'vs':'@')} ${p.opp}</span>${p.tag?`<span class="tag ${p.tag}">${p.tag}</span>`:''}
+  ${p.why?`<div class="mute">${p.why}</div>`:''}${moveTxt(p)}${p.flags.map(f=>`<span class="flag">${f}</span>`).join('')}${sc}
+  ${done(p.g)?'':`<button class="sw" onclick="flip('${who}',${p.f})">↔ Switch to ${p.side==='fav'?p.dog+' +'+p.line:p.fav+' -'+p.line}</button>`}</div><div class="st">${st}</div></div>`}
+ if(!C.length)h+='<div class="mute">No picks loaded for this week yet.</div>';
+ h+='</div>';if(who==='BROOKS'&&W.recheck&&W.recheck.length)h+=`<div class="card"><h2>⚠️ Recheck Sunday 11:30</h2>${W.recheck.map(r=>'<div>• '+r+'</div>').join('')}</div>`;
+ $('#week').innerHTML=h}
+function resetEdits(){LS.set(ekey(who),{});renderWeek()}
 
-async function loadLive(){
- clearTimeout(liveTimer);
- try{
-  const d=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?_='+Date.now()).then(r=>r.json());
+/* ---------- Weekly recap ---------- */
+function recapHTML(C,R){if(!R.length||!R.every(done)||!C.length)return'';
+ const res=C.map(p=>{const m=(+p.g.fav_score)-(+p.g.dog_score),cm=p.side==='fav'?m-p.line:p.line-m;return{p,cm,w:won(p)}});
+ const w=res.filter(r=>r.w).length,l=res.length-w;const best=res.filter(r=>r.w&&p_ok(r)).sort((a,b)=>b.cm-a.cm)[0],worst=res.filter(r=>!r.w&&p_ok(r)).sort((a,b)=>b.cm-a.cm)[0];
+ let rank='';if(S&&S.players[who]){const P=S.players,t=n=>P[n].reduce((a,b)=>a+b,0),o=Object.keys(P).sort((a,b)=>t(b)-t(a));rank=`Season: ${t(who)} pts (${S.asOf})`}
+ window._recap=`${nm(who)} – ${W.title}: ${w}-${l}${best?`\nBest pick: ${best.p.team} ${lineTxt(best.p)} (covered by ${best.cm})`:''}${worst?`\nWorst beat: ${worst.p.team} ${lineTxt(worst.p)} (missed by ${-worst.cm})`:''}${rank?`\n${rank}`:''}`;
+ return `<div class="card recap"><div class="mute">WEEK ${W.week} RECAP · ${nm(who).toUpperCase()}</div><b class="n">${w}-${l}</b>
+ ${best?`<div>🔥 Best pick: <b>${best.p.team} ${lineTxt(best.p)}</b> — covered by ${best.cm}</div>`:''}${worst?`<div>💔 Worst beat: <b>${worst.p.team} ${lineTxt(worst.p)}</b> — missed by ${-worst.cm}</div>`:''}
+ ${rank?`<div class="mute" style="margin-top:4px">${rank}</div>`:''}<button class="btn alt" style="margin-top:10px" onclick="shareRecap()">📤 Share recap</button></div>`}
+function p_ok(r){return r.p.g.fav_score!==''}
+async function shareRecap(){const t=window._recap||'';try{if(navigator.share)await navigator.share({text:t});else{await navigator.clipboard.writeText(t);alertMsg('Recap copied')}}catch(e){}}
+function alertMsg(t){const m=$('#modal');m.innerHTML=`<div class="card" style="max-width:320px;text-align:center">${t}<br><button class="btn" onclick="closeModal()">OK</button></div>`;m.classList.remove('hide')}
+function closeModal(){$('#modal').classList.add('hide')}
+
+/* ---------- Printable sheet ---------- */
+function showSheet(){const R=wkRows(),C=card(who),pk=new Set(C.map(p=>p.num));
+ const c=document.createElement('canvas'),Wd=1100,rowH=52,Ht=330+R.length*rowH+260;c.width=Wd;c.height=Ht;const x=c.getContext('2d');
+ x.fillStyle='#fff';x.fillRect(0,0,Wd,Ht);x.fillStyle='#000';x.textBaseline='middle';x.textAlign='center';
+ x.font='24px Arial';x.fillText(W.title.toUpperCase(),Wd/2,60);x.fillText('FAVORITE        POINTS        UNDERDOG',Wd/2,140);
+ let y=205;const box=(t,xx,yy)=>{const w=x.measureText(t).width;x.lineWidth=3;x.strokeRect(xx-10,yy-22,w+20,44);};
+ x.textAlign='left';
+ R.forEach((g,i)=>{const f=+g.fav_num;if(i===R.length-1&&R.length>1){y+=20;x.textAlign='center';x.font='22px Arial';x.fillText('MONDAY NITE (last game)',Wd/2,y);y+=50;x.textAlign='left'}
+  x.font='24px Arial';const a=`${f}. ${g.favorite}`,b=`${f+1}. ${g.underdog}`;x.fillText(a,180,y);x.fillText(b,690,y);x.textAlign='center';x.fillText(String(g.pool_line).replace('.5',' ½'),550,y);x.textAlign='left';
+  if(pk.has(f))box(a,180,y);if(pk.has(f+1))box(b,690,y);y+=rowH});
+ x.fillRect(80,y+10,Wd-160,2);const ns=R.map(g=>+g.fav_num);const cols=ns.length,sx=Math.min(70,(Wd-260)/Math.max(cols-1,1));
+ ns.forEach((f,i)=>{[[f,y+70],[f+1,y+125]].forEach(([n,yy])=>{const cx=180+i*sx;x.textAlign='center';x.font='22px Arial';x.fillText(n,cx,yy);if(pk.has(n)){x.beginPath();x.arc(cx,yy,22,0,7);x.lineWidth=3;x.stroke()}})});
+ x.textAlign='left';x.font='24px Arial';x.fillText('NAME',180,y+200);x.font='bold 30px Arial';x.fillText(nm(who).toUpperCase(),290,y+200);
+ x.font='24px Arial';x.fillText('POINTS',640,y+200);x.font='bold 30px Arial';x.fillText(String(tieb(who)||''),760,y+200);
+ const url=c.toDataURL('image/png');const m=$('#modal');
+ m.innerHTML=`<img src="${url}" alt="sheet"><div style="margin-top:10px"><button class="btn" id="shr">📤 Share / Save</button><button class="btn alt" onclick="closeModal()">Close</button></div><div class="mute" style="color:#cbd5e1;margin-top:6px">Or press and hold the sheet to save it.</div>`;
+ m.classList.remove('hide');$('#shr').onclick=()=>c.toBlob(async bl=>{try{const file=new File([bl],`Week${W.week}_${nm(who)}.png`,{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]}))await navigator.share({files:[file]});else{const a=document.createElement('a');a.href=url;a.download=file.name;a.click()}}catch(e){}})}
+
+/* ---------- Live ---------- */
+function probAtLeast(ps,k){let d=[1];for(const p of ps){const n=new Array(d.length+1).fill(0);d.forEach((v,i)=>{n[i]+=v*(1-p);n[i+1]+=v*p});d=n}return d.slice(Math.max(0,k)).reduce((a,b)=>a+b,0)}
+async function loadLive(){clearTimeout(liveTimer);
+ try{const d=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?_='+Date.now()).then(r=>r.json());
   const ev={};let anyLive=false;
-  for(const e of d.events||[]){const c=e.competitions[0];const t={};c.competitors.forEach(x=>t[x.team.abbreviation]=+x.score||0);
-   const key=Object.keys(t).sort().join('-');ev[key]={t,state:e.status.type.state,detail:e.status.type.shortDetail};if(e.status.type.state==='in')anyLive=true}
-  let w=0,l=0,cv=0,nc=0;
-  let h=`<div class="card"><button class="refresh" onclick="loadLive()">Refresh</button><h2>Live — your picks</h2><div class="mute">Graded vs the POOL line. ${anyLive?'Auto-updates every minute.':''}</div></div><div class="card">`;
-  for(const p of W.picks){const k=[esp(p.fav),esp(p.dog)].sort().join('-');const e=ev[k];
-   const ln=p.team===p.fav?'-'+p.line:'+'+p.line;let st='<span class="pend">Not on this week’s board</span>',sc='';
-   if(e){const fs=e.t[esp(p.fav)],ds=e.t[esp(p.dog)],m=fs-ds;sc=`${p.fav} ${fs} – ${p.dog} ${ds} · ${e.detail}`;
-    if(e.state==='pre'){st='<span class="pend">Not started</span>';sc=e.detail}
-    else{const favC=m>p.line,push=m===p.line;const mine=p.team===p.fav?favC:(!favC&&!push);
-     if(e.state==='post'){mine?w++:l++;st=mine?'<span class="cov">✓ WIN</span>':'<span class="not">✗ LOSS</span>'}
-     else{mine?cv++:nc++;st=mine?'<span class="cov">Covering</span>':'<span class="not">Not covering</span>'}}}
-   h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${ln}</b><div class="score">${sc}</div></div><div class="st">${st}</div></div>`}
-  h+=`</div><div class="card big"><div><span class="mute">Won</span><b class="ok">${w}</b></div><div><span class="mute">Lost</span><b class="x">${l}</b></div><div><span class="mute">Covering</span><b>${cv}</b></div><div><span class="mute">Not</span><b>${nc}</b></div></div>`;
-  $('#live').innerHTML=h;if(anyLive)liveTimer=setTimeout(loadLive,60000);
- }catch(e){$('#live').innerHTML='<div class="card">Couldn’t reach live scores. <button class="refresh" onclick="loadLive()">Try again</button></div>'}
-}
+  for(const e of d.events||[]){const c=e.competitions[0],t={};c.competitors.forEach(x=>t[x.team.abbreviation]=+x.score||0);ev[Object.keys(t).sort().join('-')]={t,state:e.status.type.state,detail:e.status.type.shortDetail};if(e.status.type.state==='in')anyLive=true}
+  const status=p=>{const e=ev[[esp(p.fav),esp(p.dog)].sort().join('-')];
+   if(done(p.g)&&!e){return{st:won(p)?'W':'L',sc:p.g.fav_score?`${p.fav} ${p.g.fav_score} – ${p.dog} ${p.g.dog_score} · Final`:'Final'}}
+   if(!e)return{st:'?',sc:'Not on this week’s scoreboard'};const fs=e.t[esp(p.fav)],ds=e.t[esp(p.dog)],m=fs-ds,sc=`${p.fav} ${fs} – ${p.dog} ${ds} · ${e.detail}`;
+   if(e.state==='pre')return{st:'pre',sc:e.detail};const fc=m>p.line,push=m===p.line,mine=p.side==='fav'?fc:(!fc&&!push);
+   return{st:e.state==='post'?(mine?'W':'L'):(mine?'c':'n'),sc}};
+  const lab={W:'<span class="cov">✓ WIN</span>',L:'<span class="not">✗ LOSS</span>',c:'<span class="cov">Covering</span>',n:'<span class="not">Not covering</span>',pre:'<span class="pend">Not started</span>','?':'<span class="pend">—</span>'};
+  const meter=(w)=>{const C=card(w),S2=C.map(status);let wn=S2.filter(s=>s.st==='W').length,ls=S2.filter(s=>s.st==='L').length,rem=C.length-wn-ls;
+   const ps=S2.filter(s=>!['W','L'].includes(s.st)).map(s=>s.st==='c'?0.68:s.st==='n'?0.32:0.5);const need=Math.max(0,8-wn);
+   const p8=probAtLeast(ps,8-wn),p10=probAtLeast(ps,10-wn);
+   const msg=wn+rem<8?`8 is out of reach — max ${wn+rem}`:need===0?'8+ locked in 🎉':`Need ${need} of the last ${rem} for 8`;
+   return `<div class="card"><h2>${nm(w)} · ${wn}-${ls}${rem?` · ${rem} left`:''}</h2><div><b>${msg}</b></div>
+   <div class="mute" style="margin-top:6px">Chance of 8+: <b>${Math.round(p8*100)}%</b></div><div class="meter"><i style="width:${p8*100}%"></i></div>
+   <div class="mute">Chance of 10+ (weekly-win range): <b>${Math.round(p10*100)}%</b></div><div class="meter"><i style="width:${p10*100}%"></i></div>
+   <div class="mute" style="font-size:11px">Rough odds: covering ≈68%, not covering ≈32%, not started 50%.</div></div>`};
+  let h=`<div class="card"><button class="btn alt" style="float:right;margin:0" onclick="loadLive()">↻</button><h2>Live</h2><div class="mute">Graded vs the POOL line.${anyLive?' Auto-updates every minute.':''}</div>
+  <label class="mute"><input type="checkbox" ${liveBoth?'checked':''} onchange="liveBoth=this.checked;LS.set('liveBoth',liveBoth);loadLive()"> Show Brooks & Stella side by side</label></div>`;
+  if(liveBoth){h+=meter('BROOKS')+meter('STELLA');const B=Object.fromEntries(card('BROOKS').map(p=>[p.f,p])),Sx=Object.fromEntries(card('STELLA').map(p=>[p.f,p]));
+   h+=`<div class="card"><table><tr><th>Game</th><th class="c">Brooks</th><th class="c">Stella</th></tr>`;
+   for(const g of wkRows()){const f=+g.fav_num,b=B[f],s=Sx[f],any=b||s;if(!any)continue;const sc=status(any).sc;
+    h+=`<tr><td><b>${g.favorite} -${g.pool_line}</b> v ${g.underdog}<div class="score">${sc}</div></td><td class="c">${b?b.team+'<br>'+lab[status(b).st]:'–'}</td><td class="c">${s?s.team+'<br>'+lab[status(s).st]:'–'}</td></tr>`}
+   h+='</table></div>'}
+  else{h+=meter(who)+'<div class="card">';for(const p of card(who)){const s=status(p);h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${lineTxt(p)}</b><div class="score">${s.sc}</div></div><div class="st">${lab[s.st]}</div></div>`}h+='</div>'}
+  $('#live').innerHTML=h;if(anyLive&&tab==='live')liveTimer=setTimeout(loadLive,60000);
+ }catch(e){$('#live').innerHTML='<div class="card">Couldn’t reach live scores. <button class="btn alt" onclick="loadLive()">Try again</button></div>'}}
 
-function renderTrends(){
- const D=G.filter(done);const B={};['2.5 or less','3.5–4.5','5.5–7.5','8–10.5','11+'].forEach(b=>B[b]=[0,0]);
+/* ---------- Trends ---------- */
+function renderTrends(){const D=G.filter(done),B={};['2.5 or less','3.5–4.5','5.5–7.5','8–10.5','11+'].forEach(b=>B[b]=[0,0]);
  let hd=[0,0],rd=[0,0],bk=[0,0],sl=[0,0],ty={EDGE:[0,0],RULE:[0,0]};
- for(const g of D){const f=g.result==='fav covered';B[bucket(+g.pool_line)][f?0:1]++;
-  if(g.home==='dog')hd[f?1:0]++;if(g.home==='fav')rd[f?1:0]++;
-  if(g.brooks_correct)bk[g.brooks_correct==='Y'?0:1]++;if(g.stella_correct)sl[g.stella_correct==='Y'?0:1]++;
-  if(g.pick_type_brooks&&ty[g.pick_type_brooks]&&g.brooks_correct)ty[g.pick_type_brooks][g.brooks_correct==='Y'?0:1]++}
+ for(const g of D){const f=g.result==='fav covered';B[bucket(+g.pool_line)][f?0:1]++;if(g.home==='dog')hd[f?1:0]++;if(g.home==='fav')rd[f?1:0]++;
+  if(g.brooks_correct)bk[g.brooks_correct==='Y'?0:1]++;if(g.stella_correct)sl[g.stella_correct==='Y'?0:1]++;if(ty[g.pick_type_brooks]&&g.brooks_correct)ty[g.pick_type_brooks][g.brooks_correct==='Y'?0:1]++}
  let h=`<div class="card"><h2>By spread</h2><div class="mute">${D.length} games on your pool's lines</div><table><tr><th>Spread</th><th class="c">Fav</th><th class="c">Dog</th><th style="width:30%">Fav %</th></tr>`;
- for(const[b,[f,d]]of Object.entries(B)){const p=f+d?f/(f+d):0;
-  h+=`<tr><td><b>${b}</b><div class="do ${ADV[b][1]}">${ADV[b][0]}</div></td><td class="c">${f}</td><td class="c">${d}</td><td><div class="bar"><i style="width:${p*100}%"></i></div><span class="mute">${pct(f,f+d)}</span></td></tr>`}
+ for(const[b,[f,d]]of Object.entries(B)){const p=f+d?f/(f+d):0;h+=`<tr><td><b>${b}</b><div class="do ${ADV[b][1]}">${ADV[b][0]}</div></td><td class="c">${f}</td><td class="c">${d}</td><td><div class="bar"><i style="width:${p*100}%"></i></div><span class="mute">${pct(f,f+d)}</span></td></tr>`}
+ const row=(l,a,x)=>`<tr><td>${l}</td><td class="c">${a[0]}</td><td class="c">${a[1]}</td><td class="c">${pct(a[0],a[0]+a[1])}</td></tr>`;
  h+=`</table></div><div class="card"><h2>Dogs</h2><table><tr><th></th><th class="c">Covered</th><th class="c">Didn't</th><th class="c">%</th></tr>
- <tr><td><b>Home dog</b><div class="do" style="color:var(--bad)">FADE unless edge</div></td><td class="c">${hd[0]}</td><td class="c">${hd[1]}</td><td class="c">${pct(hd[0],hd[0]+hd[1])}</td></tr>
- <tr><td><b>Road dog</b><div class="do dodog">Best dog spot</div></td><td class="c">${rd[0]}</td><td class="c">${rd[1]}</td><td class="c">${pct(rd[0],rd[0]+rd[1])}</td></tr></table></div>
+ ${row('<b>Home dog</b><div class="do" style="color:var(--bad)">FADE unless edge</div>',hd)}${row('<b>Road dog</b><div class="do dodog">Best dog spot</div>',rd)}</table></div>
  <div class="card"><h2>Pick records</h2><table><tr><th></th><th class="c">Right</th><th class="c">Wrong</th><th class="c">%</th></tr>
- <tr><td><b>Brooks</b> <span class="mute">since Wk 7</span></td><td class="c">${bk[0]}</td><td class="c">${bk[1]}</td><td class="c">${pct(bk[0],bk[0]+bk[1])}</td></tr>
- <tr><td><b>Stella</b> <span class="mute">since Wk 9</span></td><td class="c">${sl[0]}</td><td class="c">${sl[1]}</td><td class="c">${pct(sl[0],sl[0]+sl[1])}</td></tr>
- <tr><td><span class="tag EDGE">EDGE</span> picks</td><td class="c">${ty.EDGE[0]}</td><td class="c">${ty.EDGE[1]}</td><td class="c">${pct(ty.EDGE[0],ty.EDGE[0]+ty.EDGE[1])}</td></tr>
- <tr><td><span class="tag RULE">RULE</span> picks</td><td class="c">${ty.RULE[0]}</td><td class="c">${ty.RULE[1]}</td><td class="c">${pct(ty.RULE[0],ty.RULE[0]+ty.RULE[1])}</td></tr></table>
+ ${row('<b>Brooks</b> <span class="mute">since Wk 7</span>',bk)}${row('<b>Stella</b> <span class="mute">since Wk 9</span>',sl)}${row('<span class="tag EDGE">EDGE</span> picks',ty.EDGE)}${row('<span class="tag RULE">RULE</span> picks',ty.RULE)}</table>
  <div class="mute" style="margin-top:6px">EDGE/RULE tracking starts Week 12.</div></div>
  <div class="card"><h2>Pick order</h2><ol style="margin:0;padding-left:20px"><li>EDGE: pool line ½+ better than Sunday's market (esp. across 3 or 7)</li><li>No edge → spread table above</li><li>Never a home dog without an edge</li><li>Never flip on injury news alone</li><li>Sunday ~11:30 AM: recheck inactives</li></ol></div>`;
- $('#trends').innerHTML=h;
-}
+ $('#trends').innerHTML=h}
 
-function renderTeams(){
- const T=[...new Set(G.flatMap(g=>[g.favorite,g.underdog]))].sort();
- $('#teams').innerHTML=`<div class="card"><h2>Team lookup</h2><select id="tsel">${T.map(t=>`<option>${t}</option>`).join('')}</select></div><div id="tout"></div>`;
- const show=t=>{const D=G.filter(g=>done(g)&&(g.favorite===t||g.underdog===t));let a=[0,0],asf=[0,0],asd=[0,0],hm=[0,0],rd=[0,0];
-  const rows=D.map(g=>{const fav=g.favorite===t,cov=(g.result==='fav covered')===fav,home=(g.home==='fav'&&fav)||(g.home==='dog'&&!fav);
-   a[cov?0:1]++;(fav?asf:asd)[cov?0:1]++;(home?hm:rd)[cov?0:1]++;
-   return `<tr><td class="c">${g.week}</td><td>${home?'vs':'@'} ${fav?g.underdog:g.favorite}</td><td class="c">${fav?'-':'+'}${g.pool_line}</td><td class="c ${cov?'ok':'x'}">${cov?'✓':'✗'}</td></tr>`});
+/* ---------- Teams ---------- */
+function renderTeams(){const T=[...new Set(G.flatMap(g=>[g.favorite,g.underdog]))].sort(),sel=LS.get('team',T[0]);
+ $('#teams').innerHTML=`<div class="card"><h2>Team lookup</h2><select id="tsel">${T.map(t=>`<option ${t===sel?'selected':''}>${t}</option>`).join('')}</select></div><div id="tout"></div>`;
+ const show=t=>{LS.set('team',t);const D=G.filter(g=>done(g)&&(g.favorite===t||g.underdog===t));let a=[0,0],asf=[0,0],asd=[0,0],hm=[0,0],rd=[0,0];
+  const rows=D.map(g=>{const fav=g.favorite===t,cov=(g.result==='fav covered')===fav,home=(g.home==='fav'&&fav)||(g.home==='dog'&&!fav);a[cov?0:1]++;(fav?asf:asd)[cov?0:1]++;(home?hm:rd)[cov?0:1]++;
+   const sc=g.fav_score?`<div class="score">${fav?g.fav_score+'-'+g.dog_score:g.dog_score+'-'+g.fav_score}</div>`:'';
+   return `<tr><td class="c">${g.week}</td><td>${home?'vs':'@'} ${fav?g.underdog:g.favorite}${sc}</td><td class="c">${fav?'-':'+'}${g.pool_line}</td><td class="c ${cov?'ok':'x'}">${cov?'✓':'✗'}</td></tr>`});
   $('#tout').innerHTML=`<div class="card big"><div><span class="mute">ATS</span><b>${a[0]}-${a[1]}</b></div><div><span class="mute">As fav</span><b>${asf[0]}-${asf[1]}</b></div><div><span class="mute">As dog</span><b>${asd[0]}-${asd[1]}</b></div></div>
   <div class="card big"><div><span class="mute">Home</span><b>${hm[0]}-${hm[1]}</b></div><div><span class="mute">Road</span><b>${rd[0]}-${rd[1]}</b></div><div><span class="mute">Cover %</span><b>${pct(a[0],a[0]+a[1])}</b></div></div>
   <div class="card"><table><tr><th class="c">Wk</th><th>Game</th><th class="c">Line</th><th class="c">Cov</th></tr>${rows.join('')}</table><div class="mute" style="margin-top:6px">Only games that were on your pool sheet.</div></div>`};
- $('#tsel').onchange=e=>show(e.target.value);show(T[0]);
-}
+ $('#tsel').onchange=e=>show(e.target.value);show(sel)}
 
-function renderRace(){
- const P=S.players,names=Object.keys(P),tot=n=>P[n].reduce((a,b)=>a+b,0);
- const ord=names.sort((a,b)=>tot(b)-tot(a));const n=P.BROOKS.length,me=tot('BROOKS'),lead=tot(ord[0]),fourth=tot(ord[3]);
- const left=S.weeks-n,need=Math.max(0,S.target-me),per=left?(need/left).toFixed(1):'0';
- const paceNow=Math.round(S.target*n/S.weeks);
+/* ---------- Race ---------- */
+function renderRace(){const P=S.players,names=Object.keys(P),tot=n=>P[n].reduce((a,b)=>a+b,0),ord=names.sort((a,b)=>tot(b)-tot(a));
+ const n=P.BROOKS.length,me=tot('BROOKS'),lead=tot(ord[0]),fourth=tot(ord[3]),left=S.weeks-n,need=Math.max(0,S.target-me),per=left?(need/left).toFixed(1):'0',paceNow=Math.round(S.target*n/S.weeks);
  let h=`<div class="card"><h2>Season race</h2><div class="mute">${S.asOf}. Paying spots: top 4.</div>
  <div class="big" style="margin-top:10px"><div><span class="mute">You</span><b>${me}</b></div><div><span class="mute">Back of 1st</span><b class="x">${lead-me}</b></div><div><span class="mute">Back of 4th</span><b class="x">${fourth-me}</b></div></div>
- <div class="big" style="margin-top:8px"><div><span class="mute">Target</span><b>${S.target}</b></div><div><span class="mute">Need / week</span><b>${per}</b></div><div><span class="mute">Pace now</span><b>${me>=paceNow?'+':''}${me-paceNow}</b></div></div></div>`;
+ <div class="big" style="margin-top:8px"><div><span class="mute">Target</span><b>${S.target}</b></div><div><span class="mute">Need / week</span><b>${per}</b></div><div><span class="mute">Vs pace</span><b>${me>=paceNow?'+':''}${me-paceNow}</b></div></div></div>`;
  const Wd=320,Hd=180,mx=S.target+5,X=i=>20+i*(Wd-30)/S.weeks,Y=v=>Hd-20-v*(Hd-30)/mx;
  const line=(arr,col,w)=>{let c=0;return `<polyline fill="none" stroke="${col}" stroke-width="${w}" points="${[`${X(0)},${Y(0)}`].concat(arr.map((v,i)=>{c+=v;return `${X(i+1)},${Y(c)}`})).join(' ')}"/>`};
- let svg=`<svg viewBox="0 0 ${Wd} ${Hd}" width="100%"><line x1="${X(0)}" y1="${Y(0)}" x2="${X(S.weeks)}" y2="${Y(S.target)}" stroke="#94a3b8" stroke-dasharray="4 4"/>`;
- svg+=line(P[ord[0]],'#dc2626',2)+line(P[ord[3]],'#d97706',2)+line(P.BROOKS,'#2563eb',3);
+ let svg=`<svg viewBox="0 0 ${Wd} ${Hd}" width="100%"><line x1="${X(0)}" y1="${Y(0)}" x2="${X(S.weeks)}" y2="${Y(S.target)}" stroke="#94a3b8" stroke-dasharray="4 4"/>`+line(P[ord[0]],'#dc2626',2)+line(P[ord[3]],'#d97706',2)+line(P.BROOKS,'#2563eb',3);
  [0,6,12,18].forEach(i=>svg+=`<text x="${X(i)-4}" y="${Hd-5}">${i}</text>`);[0,65,130].forEach(v=>svg+=`<text x="0" y="${Y(v)+3}">${v}</text>`);svg+='</svg>';
- h+=`<div class="card"><h2>Pace to ${S.target}</h2>${svg}<div class="legend"><span><i style="background:#2563eb"></i>You</span><span><i style="background:#dc2626"></i>${ord[0]}</span><span><i style="background:#d97706"></i>4th: ${ord[3]}</span><span><i style="background:#94a3b8"></i>130 pace</span></div></div>`;
- h+=`<div class="card"><h2>Leaderboard</h2><table><tr><th>#</th><th>Name</th><th class="c">Last wk</th><th class="c">Total</th></tr>${ord.map((x,i)=>`<tr ${x==='BROOKS'?'style="font-weight:700;color:var(--fav)"':''}><td>${i+1}</td><td>${x}</td><td class="c">${P[x][n-1]}</td><td class="c">${tot(x)}</td></tr>`).join('')}</table><div class="mute" style="margin-top:6px">Top of the board plus you and Stella.</div></div>`;
- $('#race').innerHTML=h;
-}
+ h+=`<div class="card"><h2>Pace to ${S.target}</h2>${svg}<div class="legend"><span><i style="background:#2563eb"></i>You</span><span><i style="background:#dc2626"></i>${ord[0]}</span><span><i style="background:#d97706"></i>4th: ${ord[3]}</span><span><i style="background:#94a3b8"></i>130 pace</span></div></div>
+ <div class="card"><h2>Leaderboard</h2><table><tr><th>#</th><th>Name</th><th class="c">Last wk</th><th class="c">Total</th></tr>${ord.map((x,i)=>`<tr ${x==='BROOKS'?'style="font-weight:700;color:var(--fav)"':''}><td>${i+1}</td><td>${x}</td><td class="c">${P[x][n-1]}</td><td class="c">${tot(x)}</td></tr>`).join('')}</table><div class="mute" style="margin-top:6px">Top of the board plus you and Stella.</div></div>`;
+ $('#race').innerHTML=h}
 
-function renderHistory(){
- const wk=[...new Set(G.map(g=>+g.week))].sort((a,b)=>b-a);
- $('#history').innerHTML=`<div class="card"><h2>Week history</h2><select id="wsel">${wk.map(w=>`<option value="${w}">Week ${w}</option>`).join('')}</select></div><div id="wout"></div>`;
- const show=w=>{const R=G.filter(g=>+g.week===w);let bw=0,bl=0,sw=0,sl=0;
-  const rows=R.map(g=>{const cov=g.result==='fav covered'?g.favorite:g.result==='dog covered'?g.underdog:'—';
-   const bp=g.brooks_pick==='fav'?g.favorite:g.brooks_pick==='dog'?g.underdog:'',sp=g.stella_pick==='fav'?g.favorite:g.stella_pick==='dog'?g.underdog:'';
-   if(g.brooks_correct==='Y')bw++;if(g.brooks_correct==='N')bl++;if(g.stella_correct==='Y')sw++;if(g.stella_correct==='N')sl++;
-   const mk=c=>c==='Y'?' <span class="ok">✓</span>':c==='N'?' <span class="x">✗</span>':'';
-   return `<tr><td>${g.favorite} -${g.pool_line}<div class="mute">${g.home==='dog'?'@ ':'vs '}${g.underdog}</div></td><td class="c"><span class="chip ${g.result==='fav covered'?'cf':g.result==='dog covered'?'cd':''}">${cov}</span></td><td class="c">${bp}${mk(g.brooks_correct)}</td><td class="c">${sp}${mk(g.stella_correct)}</td></tr>`});
+/* ---------- History ---------- */
+function renderHistory(){const wk=[...new Set(G.map(g=>+g.week))].sort((a,b)=>b-a),sel=LS.get('hweek',wk[0]);
+ $('#history').innerHTML=`<div class="card"><h2>Week history</h2><select id="wsel">${wk.map(w=>`<option value="${w}" ${w==sel?'selected':''}>Week ${w}</option>`).join('')}</select></div><div id="wout"></div>`;
+ const show=w=>{LS.set('hweek',w);const R=G.filter(g=>+g.week===w);let bw=0,bl=0,sw=0,sl=0;
+  const rows=R.map(g=>{const cov=g.result==='fav covered'?g.favorite:g.result==='dog covered'?g.underdog:'—',bp=g.brooks_pick==='fav'?g.favorite:g.brooks_pick==='dog'?g.underdog:'',sp=g.stella_pick==='fav'?g.favorite:g.stella_pick==='dog'?g.underdog:'';
+   if(g.brooks_correct==='Y')bw++;if(g.brooks_correct==='N')bl++;if(g.stella_correct==='Y')sw++;if(g.stella_correct==='N')sl++;const mk=c=>c==='Y'?' <span class="ok">✓</span>':c==='N'?' <span class="x">✗</span>':'';
+   const sc=g.fav_score?` · ${g.fav_score}-${g.dog_score}`:'';
+   return `<tr><td>${g.favorite} -${g.pool_line}<div class="mute">${g.home==='dog'?'@ ':'vs '}${g.underdog}${sc}</div></td><td class="c"><span class="chip ${g.result==='fav covered'?'cf':g.result==='dog covered'?'cd':''}">${cov}</span></td><td class="c">${bp}${mk(g.brooks_correct)}</td><td class="c">${sp}${mk(g.stella_correct)}</td></tr>`});
   $('#wout').innerHTML=`<div class="card big"><div><span class="mute">Brooks</span><b>${bw+bl?bw+'-'+bl:'–'}</b></div><div><span class="mute">Stella</span><b>${sw+sl?sw+'-'+sl:'–'}</b></div><div><span class="mute">Favs covered</span><b>${R.filter(g=>g.result==='fav covered').length}</b></div></div>
   <div class="card"><table><tr><th>Game (pool line)</th><th class="c">Covered</th><th class="c">Brooks</th><th class="c">Stella</th></tr>${rows.join('')}</table></div>`};
- $('#wsel').onchange=e=>show(+e.target.value);show(wk[0]);
-}
-init().catch(e=>{$('#week').innerHTML='<div class="card">Couldn’t load data. Pull to refresh.</div>'});
+ $('#wsel').onchange=e=>show(+e.target.value);show(+sel)}
+
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+go(TABS.includes(tab)?tab:'week');
+load().catch(()=>{$('#week').innerHTML='<div class="card">Couldn’t load data. Pull down to refresh.</div>'});
 </script>
 </body>
 </html>
