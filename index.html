@@ -44,6 +44,10 @@ select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);b
 .legend span{display:inline-flex;align-items:center;gap:4px;margin-right:12px;font-size:12px}.legend i{width:14px;height:3px;display:inline-block}
 .btn{display:inline-block;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px;background:var(--nav);color:#fff;margin:4px 6px 0 0}.btn.alt{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
 .meter{height:14px;border-radius:9px;background:var(--line);overflow:hidden;margin:6px 0}.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--dog),var(--acc))}
+
+.opts{display:flex;gap:8px;margin-top:8px}.opt{flex:1;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 6px;font-size:15px;font-weight:700;text-align:center;position:relative}
+.opt.sel{border-color:var(--acc);background:var(--acc);color:#111}.opt small{display:block;font-weight:500;font-size:11px;opacity:.8}.opt .star{position:absolute;top:-8px;right:-6px;font-size:16px}
+.fillbar{position:sticky;top:calc(env(safe-area-inset-top) + 64px);z-index:4}.tb{width:90px;font-size:20px;font-weight:700;text-align:center;padding:6px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
 .recap{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border:0}.recap .mute{color:#cbd5e1}.recap b.n{font-size:40px}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
 #modal img{max-width:100%;max-height:70vh;border-radius:8px;background:#fff}
@@ -77,16 +81,17 @@ const wkRows=()=>G.filter(g=>+g.week===W.week).sort((a,b)=>a.fav_num-b.fav_num);
 function official(w){const nums=w==='BROOKS'?W.picks.map(p=>p.num):(W.stella?W.stella.picks:[]);const o={};
  for(const g of wkRows()){const f=+g.fav_num;if(nums.includes(f))o[f]='fav';else if(nums.includes(f+1))o[f]='dog'}return o}
 const ekey=w=>`edits-${W.week}-${w}`;
-function card(w){const off=official(w),ed=LS.get(ekey(w),{}),out=[];
- for(const g of wkRows()){const f=+g.fav_num,side=ed[f]||off[f];if(!side)continue;
+const fkey=w=>`fill-${W.week}-${w}`,fillOn=w=>{const x=LS.get(fkey(w),null);return x&&Object.keys(x.s||{}).length?x:null};
+function card(w){const off=official(w),fl=fillOn(w),ed=fl?fl.s:LS.get(ekey(w),{}),out=[];
+ for(const g of wkRows()){const f=+g.fav_num,side=fl?ed[f]:(ed[f]||off[f]);if(!side)continue;
   const fav=side==='fav',num=fav?f:f+1,meta=w==='BROOKS'?(W.picks.find(p=>p.num===num)||{}):{};
   const edited=ed[f]&&ed[f]!==off[f];
   out.push({f,side,num,team:fav?g.favorite:g.underdog,opp:fav?g.underdog:g.favorite,fav:g.favorite,dog:g.underdog,line:+g.pool_line,
    home:g.home,mkt:g.market_line_sunday?+g.market_line_sunday:null,tag:edited?'EDIT':(meta.tag||''),why:edited?'Changed on your phone':(meta.why||''),flags:meta.flags||[],g})}
  return out}
-function flip(w,f){const off=official(w),ed=LS.get(ekey(w),{}),cur=ed[f]||off[f];const nx=cur==='fav'?'dog':'fav';
+function flip(w,f){const fl=fillOn(w);if(fl){fl.s[f]=fl.s[f]==='fav'?'dog':'fav';LS.set(fkey(w),fl);renderWeek();return}const off=official(w),ed=LS.get(ekey(w),{}),cur=ed[f]||off[f];const nx=cur==='fav'?'dog':'fav';
  if(nx===off[f])delete ed[f];else ed[f]=nx;LS.set(ekey(w),ed);renderWeek()}
-const tieb=w=>w==='BROOKS'?W.tiebreaker:(W.stella?W.stella.tiebreaker:'');
+const tieb=w=>{const x=LS.get(fkey(w),null);if(x&&x.tb!==''&&x.tb!=null)return x.tb;return w==='BROOKS'?W.tiebreaker:(W.stella?W.stella.tiebreaker:'')};
 const won=p=>done(p.g)?((p.g.result==='fav covered')===(p.side==='fav')):null;
 const lineTxt=p=>(p.side==='fav'?'-':'+')+p.line;
 function moveTxt(p){if(p.mkt==null)return'';const e=p.side==='fav'?p.mkt-p.line:p.line-p.mkt;const m=(p.side==='fav'?'-':'+')+p.mkt;
@@ -110,12 +115,13 @@ async function load(){const v='?v='+Date.now();
  G=csv(g);W=w;S=s;$('#sub').textContent=W.title;setWho(who);renderTrends();renderTeams();renderRace();if(tab==='live')loadLive()}
 
 /* ---------- This Week ---------- */
-function renderWeek(){const C=card(who),R=wkRows();const ed=Object.keys(LS.get(ekey(who),{})).length;
+let fillMode=false;
+function renderWeek(){if(fillMode)return renderFill();const C=card(who),R=wkRows();const ed=Object.keys(LS.get(ekey(who),{})).length;
  let h=recapHTML(C,R);
  const wins=C.filter(p=>won(p)===true).length,loss=C.filter(p=>won(p)===false).length;
  h+=`<div class="card"><h2>${nm(who)} · ${W.title}</h2><div class="mute">${W.note||''}</div>
  <div class="big" style="margin-top:10px"><div><span class="mute">Record</span><b>${wins}-${loss}</b></div><div><span class="mute">Tiebreaker</span><b>${tieb(who)||'–'}</b></div><div><span class="mute">Edges</span><b>${C.filter(p=>p.mkt!=null&&(p.side==='fav'?p.mkt-p.line:p.line-p.mkt)>0).length}</b></div></div>
- <button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div><div class="card"><h2>Card</h2><div class="mute">Tap ↔ to switch a pick (saved on this phone).</div>`;
+ <button class="btn" style="background:var(--acc);color:#111" onclick="fillMode=true;renderWeek();scrollTo(0,0)">✏️ Fill out my sheet</button><button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${fillOn(who)?'<span class="mute" style="display:block;margin-top:6px">Showing the picks you filled out.</span>':''}${!fillOn(who)&&ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div><div class="card"><h2>Card</h2><div class="mute">Tap ↔ to switch a pick (saved on this phone).</div>`;
  for(const p of C){const r=won(p);const st=r===true?'<span class="cov">✓ WIN</span>':r===false?'<span class="not">✗ LOSS</span>':'<span class="pend">—</span>';
   const sc=p.g.fav_score?`<div class="score">${p.fav} ${p.g.fav_score} – ${p.dog} ${p.g.dog_score}</div>`:'';
   h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${lineTxt(p)}</b> <span class="mute">${p.home==='neutral'?'vs':(p.home===p.side?'vs':'@')} ${p.opp}</span>${p.tag?`<span class="tag ${p.tag}">${p.tag}</span>`:''}
@@ -125,6 +131,30 @@ function renderWeek(){const C=card(who),R=wkRows();const ed=Object.keys(LS.get(e
  h+='</div>';if(who==='BROOKS'&&W.recheck&&W.recheck.length)h+=`<div class="card"><h2>⚠️ Recheck Sunday 11:30</h2>${W.recheck.map(r=>'<div>• '+r+'</div>').join('')}</div>`;
  $('#week').innerHTML=h}
 function resetEdits(){LS.set(ekey(who),{});renderWeek()}
+/* ---------- Fill out my sheet ---------- */
+function getFill(){return LS.get(fkey(who),{s:{},tb:''})}
+function setPick(f,side){const x=getFill();x.s[f]=side;LS.set(fkey(who),x);renderFill(true)}
+function setTb(v){const x=getFill();x.tb=v===''?'':+v;LS.set(fkey(who),x);const c=$('#fcount');if(c)c.innerHTML=fillCount()}
+function useClaude(){const off=official('BROOKS'),x=getFill();x.s={...off};if(x.tb==='')x.tb=W.tiebreaker;LS.set(fkey(who),x);renderFill()}
+function clearFill(){LS.set(fkey(who),{s:{},tb:''});renderFill()}
+function fillCount(){const x=getFill(),n=wkRows().length,k=Object.keys(x.s).length;return `<b>${k} of ${n}</b> picked${x.tb===''?' · <span class="x">tiebreaker missing</span>':' · tiebreaker '+x.tb}${k===n&&x.tb!==''?' <span class="ok">✓ complete</span>':''}`}
+function copyForClaude(){const C=card(who);const t=`Week ${W.week} ${nm(who)} picks: ${C.map(p=>p.num).join(', ')}. Tiebreaker ${tieb(who)}.`;
+ (navigator.share?navigator.share({text:t}):navigator.clipboard.writeText(t).then(()=>alertMsg('Copied — paste it to Claude'))).catch(()=>{})}
+function renderFill(keepScroll){const y=scrollY,x=getFill(),off=official('BROOKS'),R=wkRows();
+ let h=`<div class="card fillbar"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">✏️ ${nm(who)} · Week ${W.week}</h2><button class="btn alt" style="margin:0" onclick="fillMode=false;renderWeek()">Done</button></div>
+ <div id="fcount" class="mute" style="margin-top:6px">${fillCount()}</div>
+ <div style="margin-top:8px;display:flex;align-items:center;gap:10px"><span class="mute">Tiebreaker (MNF total)</span><input class="tb" type="number" inputmode="numeric" value="${x.tb}" placeholder="${W.tiebreaker||''}" oninput="setTb(this.value)"></div>
+ <div><button class="btn alt" onclick="useClaude()">⭐ Use Claude's picks</button><button class="btn alt" onclick="clearFill()">Clear</button></div></div>`;
+ if(!R.length)h+='<div class="card mute">This week’s games aren’t loaded yet — send Claude the pool sheet.</div>';
+ R.forEach((g,i)=>{const f=+g.fav_num,sel=x.s[f],sug=off[f],meta=W.picks.find(p=>p.num===(sug==='fav'?f:f+1))||{};
+  const mk=g.market_line_sunday?` · Market -${g.market_line_sunday}`:'';const last=i===R.length-1&&R.length>1;
+  h+=`<div class="card">${last?'<div class="mute"><b>MONDAY NIGHT</b></div>':''}<div class="mute">#${f} / #${f+1} · Pool line ${g.pool_line}${mk} · ${g.home==='fav'?g.favorite+' home':g.home==='dog'?g.underdog+' home':'neutral site'}</div>
+  <div class="opts"><button class="opt ${sel==='fav'?'sel':''}" onclick="setPick(${f},'fav')">${sug==='fav'?'<span class="star">⭐</span>':''}${f}. ${g.favorite} -${g.pool_line}<small>favorite</small></button>
+  <button class="opt ${sel==='dog'?'sel':''}" onclick="setPick(${f},'dog')">${sug==='dog'?'<span class="star">⭐</span>':''}${f+1}. ${g.underdog} +${g.pool_line}<small>underdog</small></button></div>
+  ${sug&&(meta.tag||meta.why)?`<div class="mute" style="margin-top:6px">⭐ Claude: ${meta.tag?`<span class="tag ${meta.tag}" style="margin:0 4px 0 0">${meta.tag}</span>`:''}${meta.why||''}</div>`:''}</div>`});
+ h+=`<div class="card"><button class="btn" onclick="showSheet()">🖨️ Make my sheet</button><button class="btn alt" onclick="copyForClaude()">📤 Send picks to Claude</button>
+ <div class="mute" style="margin-top:6px">Your picks save on this phone and show on This Week, Live and the printable sheet. Send them to Claude so the tracker logs them.</div></div>`;
+ $('#week').innerHTML=h;if(keepScroll)scrollTo(0,y)}
 
 /* ---------- Weekly recap ---------- */
 function recapHTML(C,R){if(!R.length||!R.every(done)||!C.length)return'';
