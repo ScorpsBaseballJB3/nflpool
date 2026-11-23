@@ -120,7 +120,7 @@ function renderWeek(){if(fillMode)return renderFill();const C=card(who),R=wkRows
  let h=recapHTML(C,R);
  const wins=C.filter(p=>won(p)===true).length,loss=C.filter(p=>won(p)===false).length;
  h+=`<div class="card"><h2>${nm(who)} · ${W.title}</h2><div class="mute">${W.note||''}</div>
- <div class="big" style="margin-top:10px"><div><span class="mute">Record</span><b>${wins}-${loss}</b></div><div><span class="mute">Tiebreaker</span><b>${tieb(who)||'–'}</b></div><div><span class="mute">Edges</span><b>${C.filter(p=>p.mkt!=null&&(p.side==='fav'?p.mkt-p.line:p.line-p.mkt)>0).length}</b></div></div>
+ <div class="big" style="margin-top:10px"><div><span class="mute">Record</span><b>${wins}-${loss}</b></div><div><span class="mute">Tiebreaker</span><b>${tieb(who)||'–'}</b></div><div><span class="mute">Edges</span><b>${C.filter(p=>p.mkt!=null&&(p.side==='fav'?p.mkt-p.line:p.line-p.mkt)>0).length}</b></div></div>${tbHelp(false)}
  <button class="btn" style="background:var(--acc);color:#111" onclick="fillMode=true;renderWeek();scrollTo(0,0)">✏️ Fill out my sheet</button><button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${fillOn(who)?'<span class="mute" style="display:block;margin-top:6px">Showing the picks you filled out.</span>':''}${!fillOn(who)&&ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div><div class="card"><h2>Card</h2><div class="mute">Tap ↔ to switch a pick (saved on this phone).</div>`;
  for(const p of C){const r=won(p);const st=r===true?'<span class="cov">✓ WIN</span>':r===false?'<span class="not">✗ LOSS</span>':'<span class="pend">—</span>';
   const sc=p.g.fav_score?`<div class="score">${p.fav} ${p.g.fav_score} – ${p.dog} ${p.g.dog_score}</div>`:'';
@@ -140,10 +140,16 @@ function clearFill(){LS.set(fkey(who),{s:{},tb:''});renderFill()}
 function fillCount(){const x=getFill(),n=wkRows().length,k=Object.keys(x.s).length;return `<b>${k} of ${n}</b> picked${x.tb===''?' · <span class="x">tiebreaker missing</span>':' · tiebreaker '+x.tb}${k===n&&x.tb!==''?' <span class="ok">✓ complete</span>':''}`}
 function copyForClaude(){const C=card(who);const t=`Week ${W.week} ${nm(who)} picks: ${C.map(p=>p.num).join(', ')}. Tiebreaker ${tieb(who)}.`;
  (navigator.share?navigator.share({text:t}):navigator.clipboard.writeText(t).then(()=>alertMsg('Copied — paste it to Claude'))).catch(()=>{})}
+function mnfInfo(){const R=wkRows();if(!R.length)return null;const g=R[R.length-1],T=parseFloat(g.total);if(!T)return null;
+ const C=[30,33,34,37,38,41,43,44,47,48,51,54,55,58,61];let best=C[0];C.forEach(c=>{if(Math.abs(c-T)<Math.abs(best-T)||(Math.abs(c-T)===Math.abs(best-T)&&c>best))best=c});
+ if(Math.abs(best-T)>3)best=Math.round(T)%5===0?Math.round(T)+1:Math.round(T);
+ return {game:`${g.underdog_is_home||''}`,fav:g.favorite,dog:g.underdog,home:g.home,T,sug:best}}
+function tbHelp(inFill){const m=mnfInfo();if(!m)return '';const mu=m.home==='fav'?`${m.dog} @ ${m.fav}`:`${m.fav} @ ${m.dog}`;
+ return `<div class="mute" style="margin-top:6px;font-size:13px">🏈 MNF ${mu} · market total <b>${m.T}</b> · suggest <b>${m.sug}</b> <span style="opacity:.8">(a common final score near the line, off the round 40/45/50 guesses)</span>${inFill?` <button class="btn alt" style="padding:4px 10px;margin:0 0 0 6px" onclick="setTb(${m.sug});renderFill(true)">Use ${m.sug}</button>`:''}</div>`}
 function renderFill(keepScroll){const y=scrollY,x=getFill(),off=official('BROOKS'),R=wkRows();
  let h=`<div class="card fillbar"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">✏️ ${nm(who)} · Week ${W.week}</h2><button class="btn alt" style="margin:0" onclick="fillMode=false;renderWeek()">Done</button></div>
  <div id="fcount" class="mute" style="margin-top:6px">${fillCount()}</div>
- <div style="margin-top:8px;display:flex;align-items:center;gap:10px"><span class="mute">Tiebreaker (MNF total)</span><input class="tb" type="number" inputmode="numeric" value="${x.tb}" placeholder="${W.tiebreaker||''}" oninput="setTb(this.value)"></div>
+ <div style="margin-top:8px;display:flex;align-items:center;gap:10px"><span class="mute">Tiebreaker (MNF total)</span><input class="tb" type="number" inputmode="numeric" value="${x.tb}" placeholder="${W.tiebreaker||''}" oninput="setTb(this.value)"></div>${tbHelp(true)}
  <div><button class="btn alt" onclick="useClaude()">⭐ Use Claude's picks</button><button class="btn alt" onclick="clearFill()">Clear</button></div></div>`;
  if(!R.length)h+='<div class="card mute">This week’s games aren’t loaded yet — send Claude the pool sheet.</div>';
  R.forEach((g,i)=>{const f=+g.fav_num,sel=x.s[f],sug=off[f],meta=W.picks.find(p=>p.num===(sug==='fav'?f:f+1))||{};
