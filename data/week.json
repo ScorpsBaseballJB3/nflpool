@@ -13,7 +13,7 @@
    "dog": "DET",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Market moved to CHI -1.5 at every book; pool gives DET +2.5. Home dog WITH an edge.",
+   "why": "Strong edge: market CHI -1.5, pool DET +2.5 (a full point).",
    "flags": [
     "THU 12:30"
    ]
@@ -26,10 +26,8 @@
    "dog": "PHI",
    "line": 8.5,
    "tag": "RULE",
-   "why": "8–10.5 bucket: favorites 10–5. Market still 8.5; PHI offense banged up.",
-   "flags": [
-    "THU 4:30"
-   ]
+   "why": "8+ → home team covers 57% (6 seasons). Market still 8.5.",
+   "flags": []
   },
   {
    "num": 5,
@@ -39,7 +37,7 @@
    "dog": "KC",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Market -3, pool -2.5: under the key number. Heavy rain/wind; total down to 46.5.",
+   "why": "Strong edge: market -3, pool -2.5. Rain/wind; total 46.5.",
    "flags": [
     "THU 8:20"
    ]
@@ -52,20 +50,20 @@
    "dog": "PIT",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Market now -3.5/-4, pool -2.5: through the 3. Low total (36.5).",
+   "why": "Strong edge: market -3.5/-4, pool -2.5 (through the 3). Total 36.5.",
    "flags": [
     "FRI"
    ]
   },
   {
-   "num": 9,
-   "team": "NYG",
-   "opp": "IND",
+   "num": 10,
+   "team": "IND",
+   "opp": "NYG",
    "fav": "NYG",
    "dog": "IND",
    "line": 6.5,
    "tag": "RULE",
-   "why": "Dog bucket, but IND is a home dog with no edge → Giants.",
+   "why": "5.5–7.5 → dog (55% over 6 seasons, 20–9 on your sheet).",
    "flags": []
   },
   {
@@ -76,7 +74,7 @@
    "dog": "BAL",
    "line": 6.5,
    "tag": "RULE",
-   "why": "5.5–7.5 bucket: road dogs best (dogs 20–9).",
+   "why": "5.5–7.5 → dog (55% over 6 seasons).",
    "flags": []
   },
   {
@@ -87,7 +85,7 @@
    "dog": "ATL",
    "line": 6.5,
    "tag": "EDGE",
-   "why": "Market -7, pool -6.5: favorite under the 7.",
+   "why": "Strong edge: market -7, pool -6.5 (under the 7) — beats the dog rule.",
    "flags": []
   },
   {
@@ -97,30 +95,30 @@
    "fav": "CIN",
    "dog": "NO",
    "line": 9.5,
-   "tag": "EDGE",
-   "why": "Market -10, pool -9.5; 8–10.5 favorites bucket.",
+   "tag": "RULE",
+   "why": "8+ → home team (57%), plus a small edge (market -10).",
    "flags": []
   },
   {
-   "num": 17,
-   "team": "NYJ",
-   "opp": "MIA",
+   "num": 18,
+   "team": "MIA",
+   "opp": "NYJ",
    "fav": "NYJ",
    "dog": "MIA",
    "line": 3.5,
-   "tag": "RULE",
-   "why": "3.5–4.5 bucket: favorites 26–16. No home dog without edge.",
+   "tag": "FLIP",
+   "why": "3.5–4.5 is a coin flip → division game, dog covers 54%; total 40.5 also leans dog.",
    "flags": []
   },
   {
-   "num": 20,
-   "team": "TEN",
-   "opp": "JAX",
+   "num": 19,
+   "team": "JAX",
+   "opp": "TEN",
    "fav": "JAX",
    "dog": "TEN",
    "line": 14.5,
    "tag": "RULE",
-   "why": "11+ is a coin flip → road team, +14.5 is a lot of cushion.",
+   "why": "11+ → home team covers 58% (6 seasons).",
    "flags": []
   },
   {
@@ -131,7 +129,7 @@
    "dog": "NE",
    "line": 1.5,
    "tag": "RULE",
-   "why": "Coin-flip line → road team. Low total (35.5) helps a dog.",
+   "why": "2.5 or less → road team (54%).",
    "flags": []
   },
   {
@@ -142,29 +140,29 @@
    "dog": "SEA",
    "line": 3.5,
    "tag": "EDGE",
-   "why": "Market 3, pool 3.5: dog gets the hook past 3.",
+   "why": "Strong edge: market 3, pool +3.5 (hook past 3). Division dog too.",
    "flags": []
   },
   {
-   "num": 25,
-   "team": "WAS",
-   "opp": "ARI",
+   "num": 26,
+   "team": "ARI",
+   "opp": "WAS",
    "fav": "WAS",
    "dog": "ARI",
    "line": 7.5,
    "tag": "RULE",
-   "why": "Dog bucket, but ARI is a home dog with no edge → Washington.",
+   "why": "5.5–7.5 → dog (55%), home dogs no worse than road dogs.",
    "flags": []
   },
   {
-   "num": 27,
-   "team": "CLE",
-   "opp": "LV",
+   "num": 28,
+   "team": "LV",
+   "opp": "CLE",
    "fav": "CLE",
    "dog": "LV",
    "line": 4.5,
-   "tag": "RULE",
-   "why": "3.5–4.5 bucket: favorites 26–16. Sunday night game.",
+   "tag": "FLIP",
+   "why": "3.5–4.5 is a coin flip → total 41.5, dogs cover 55% in 40.5–45 totals; public on CLE.",
    "flags": []
   },
   {
@@ -175,7 +173,7 @@
    "dog": "CAR",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Market -3, pool -2.5: under the 3. MNF tiebreaker game.",
+   "why": "Strong edge: market -3, pool -2.5. MNF tiebreaker game.",
    "flags": []
   }
  ],

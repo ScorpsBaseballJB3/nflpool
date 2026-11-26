@@ -28,7 +28,7 @@ nav button{flex:1;background:none;border:0;color:#94a3b8;font-size:11px;padding:
 .pick{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.pick:last-child{border:0}
 .num{min-width:34px;height:34px;border-radius:50%;background:var(--nav);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
 .pt{flex:1;min-width:0}.pt b{font-size:16px}.tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:6px;white-space:nowrap}
-.EDGE{background:#fef3c7;color:#92400e}.RULE{background:#e0e7ff;color:#3730a3}.EDIT{background:#fce7f3;color:#9d174d}
+.EDGE{background:#fef3c7;color:#92400e}.RULE{background:#e0e7ff;color:#3730a3}.FLIP{background:#dcfce7;color:#166534}.EDIT{background:#fce7f3;color:#9d174d}
 .st{font-size:13px;font-weight:700;text-align:right;min-width:80px}.cov{color:var(--dog)}.not{color:var(--bad)}.pend{color:var(--mute)}
 .mv{font-size:12px;font-weight:700;margin-top:2px}.up{color:var(--dog)}.dn{color:var(--bad)}.eq{color:var(--mute)}
 .flag{display:inline-block;font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:3px 4px 0 0}
@@ -228,7 +228,7 @@ async function loadLive(){clearTimeout(liveTimer);
 
 /* ---------- Trends ---------- */
 function renderTrends(){const D=G.filter(done),B={};['2.5 or less','3.5–4.5','5.5–7.5','8–10.5','11+'].forEach(b=>B[b]=[0,0]);
- let hd=[0,0],rd=[0,0],bk=[0,0],sl=[0,0],ty={EDGE:[0,0],RULE:[0,0]};
+ let hd=[0,0],rd=[0,0],bk=[0,0],sl=[0,0],ty={EDGE:[0,0],RULE:[0,0],FLIP:[0,0]};
  for(const g of D){const f=g.result==='fav covered';B[bucket(+g.pool_line)][f?0:1]++;if(g.home==='dog')hd[f?1:0]++;if(g.home==='fav')rd[f?1:0]++;
   if(g.brooks_correct)bk[g.brooks_correct==='Y'?0:1]++;if(g.stella_correct)sl[g.stella_correct==='Y'?0:1]++;if(ty[g.pick_type_brooks]&&g.brooks_correct)ty[g.pick_type_brooks][g.brooks_correct==='Y'?0:1]++}
  let h=`<div class="card"><h2>By spread</h2><div class="mute">${D.length} games on your pool's lines</div><table><tr><th>Spread</th><th class="c">Fav</th><th class="c">Dog</th><th style="width:30%">Fav %</th></tr>`;
@@ -237,8 +237,8 @@ function renderTrends(){const D=G.filter(done),B={};['2.5 or less','3.5–4.5','
  h+=`</table></div><div class="card"><h2>Dogs</h2><table><tr><th></th><th class="c">Covered</th><th class="c">Didn't</th><th class="c">%</th></tr>
  ${row('<b>Home dog</b><div class="do" style="color:var(--bad)">FADE unless edge</div>',hd)}${row('<b>Road dog</b><div class="do dodog">Best dog spot</div>',rd)}</table></div>
  <div class="card"><h2>Pick records</h2><table><tr><th></th><th class="c">Right</th><th class="c">Wrong</th><th class="c">%</th></tr>
- ${row('<b>Brooks</b> <span class="mute">since Wk 7</span>',bk)}${row('<b>Stella</b> <span class="mute">since Wk 9</span>',sl)}${row('<span class="tag EDGE">EDGE</span> picks',ty.EDGE)}${row('<span class="tag RULE">RULE</span> picks',ty.RULE)}</table>
- <div class="mute" style="margin-top:6px">EDGE/RULE tracking starts Week 12.</div></div>
+ ${row('<b>Brooks</b> <span class="mute">since Wk 7</span>',bk)}${row('<b>Stella</b> <span class="mute">since Wk 9</span>',sl)}${row('<span class="tag EDGE">EDGE</span> picks',ty.EDGE)}${row('<span class="tag RULE">RULE</span> picks',ty.RULE)}${row('<span class="tag FLIP">FLIP</span> picks',ty.FLIP)}</table>
+ <div class="mute" style="margin-top:6px">EDGE = beats the market · RULE = 6-season spread rule · FLIP = coin flip, contrarian side. Tracking starts Week 12.</div></div>
  <div class="card"><h2>Pick order</h2><ol style="margin:0;padding-left:20px"><li>EDGE: pool line ½+ better than Sunday's market (esp. across 3 or 7)</li><li>No edge → spread table above</li><li>Never a home dog without an edge</li><li>Never flip on injury news alone</li><li>Sunday ~11:30 AM: recheck inactives</li></ol></div>`;
  $('#trends').innerHTML=h}
 
