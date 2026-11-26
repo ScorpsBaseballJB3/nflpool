@@ -31,7 +31,7 @@ nav button{flex:1;background:none;border:0;color:#94a3b8;font-size:11px;padding:
 .EDGE{background:#fef3c7;color:#92400e}.RULE{background:#e0e7ff;color:#3730a3}.FLIP{background:#dcfce7;color:#166534}.EDIT{background:#fce7f3;color:#9d174d}
 .st{font-size:13px;font-weight:700;text-align:right;min-width:80px}.cov{color:var(--dog)}.not{color:var(--bad)}.pend{color:var(--mute)}
 .mv{font-size:12px;font-weight:700;margin-top:2px}.up{color:var(--dog)}.dn{color:var(--bad)}.eq{color:var(--mute)}
-.sit{margin-top:4px}.sit .flag{font-size:11px}.flag{display:inline-block;font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:3px 4px 0 0}
+.sit{margin-top:4px}.key summary{cursor:pointer;list-style:none}.keyg{display:grid;grid-template-columns:26px 1fr;gap:6px 6px;margin-top:8px;font-size:13px;line-height:1.35}.keyg>div:nth-child(odd){text-align:center}.sit .flag{font-size:11px}.flag{display:inline-block;font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:3px 4px 0 0}
 .sw{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;font-size:12px;padding:5px 8px;margin-top:6px}
 .score{font-size:12px;color:var(--mute)}
 table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--mute);font-weight:600;font-size:12px;padding:6px 4px;border-bottom:1px solid var(--line)}td{padding:8px 4px;border-bottom:1px solid var(--line)}td.c,th.c{text-align:center}
@@ -131,12 +131,23 @@ function sit(g){const L=+g.pool_line,T=parseFloat(g.total),M=g.market_line_sunda
  if([2.5,3.5,6.5,7.5].includes(L))out.push(`🔑 Hook on the ${L<5?3:7}`);
  if(wk>=15)out.push('📅 Late season');
  return out.map(t=>`<span class="flag">${t}</span>`).join('')}
+const KEY=`<details class="card key" ${LS.get('keyOpen',true)?'open':''} ontoggle="LS.set('keyOpen',this.open)"><summary><b>🔑 Flag key</b> <span class="mute">(tap to hide)</span></summary><div class="keyg">
+<div>📏</div><div><b>Spread size</b> — how that spread has covered over 10 NFL seasons (e.g. "Road team 55%"). "Coin flip" = no real lean.</div>
+<div>🏠</div><div><b>Home dog</b> — underdog is playing at home.</div>
+<div>✈️</div><div><b>Road dog</b> — underdog is on the road.</div>
+<div>🤝</div><div><b>Division game</b> — teams play twice a year; dogs cover 52%.</div>
+<div>Σ</div><div><b>Total</b> — Vegas over/under. 40.5–45 leans dog (53%).</div>
+<div>💰</div><div><b>Edge</b> — pool line vs today's Vegas line. <b>STRONG</b> = 1+ point better or across 3/7 → take it. Small = half point.</div>
+<div>🔑</div><div><b>Hook</b> — pool line sits a half point off 3 or 7, the most common winning margins.</div>
+<div>📅</div><div><b>Late season</b> — Weeks 15–18: watch for benched starters and teams playing out the string.</div>
+<div>⭐</div><div><b>Claude's pick.</b> Tags: <span class="tag EDGE">EDGE</span> beats Vegas · <span class="tag RULE">RULE</span> spread rule · <span class="tag FLIP">FLIP</span> coin flip, going against the public.</div>
+</div></details>`;
 function renderWeek(){if(fillMode&&isLocked())fillMode=false;if(fillMode)return renderFill();const C=card(who),R=wkRows();const ed=Object.keys(LS.get(ekey(who),{})).length;
  let h=recapHTML(C,R);
  const wins=C.filter(p=>won(p)===true).length,loss=C.filter(p=>won(p)===false).length;
  h+=`<div class="card"><h2>${nm(who)} · ${W.title}</h2><div class="mute">${W.note||''}</div>
  <div class="big" style="margin-top:10px"><div><span class="mute">Record</span><b>${wins}-${loss}</b></div><div><span class="mute">Tiebreaker</span><b>${tieb(who)||'–'}</b></div><div><span class="mute">Edges</span><b>${C.filter(p=>p.mkt!=null&&(p.side==='fav'?p.mkt-p.line:p.line-p.mkt)>0).length}</b></div></div>${tbHelp(false)}
- ${isLocked()?'<span class="btn alt" style="cursor:default">🔒 Picks locked</span>':'<button class="btn" style="background:var(--acc);color:#111" onclick="fillMode=true;renderWeek();scrollTo(0,0)">✏️ Fill out my sheet</button>'}<button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${fillOn(who)?'<span class="mute" style="display:block;margin-top:6px">Showing the picks you filled out.</span>':''}${!isLocked()&&!fillOn(who)&&ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div><div class="card"><h2>Card</h2><div class="mute">${isLocked()?'🔒 Locked — these are the picks turned in.':'Tap ↔ to switch a pick (saved on this phone).'}</div>`;
+ ${isLocked()?'<span class="btn alt" style="cursor:default">🔒 Picks locked</span>':'<button class="btn" style="background:var(--acc);color:#111" onclick="fillMode=true;renderWeek();scrollTo(0,0)">✏️ Fill out my sheet</button>'}<button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${fillOn(who)?'<span class="mute" style="display:block;margin-top:6px">Showing the picks you filled out.</span>':''}${!isLocked()&&!fillOn(who)&&ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div>${KEY}<div class="card"><h2>Card</h2><div class="mute">${isLocked()?'🔒 Locked — these are the picks turned in.':'Tap ↔ to switch a pick (saved on this phone).'}</div>`;
  for(const p of C){const r=won(p);const st=r===true?'<span class="cov">✓ WIN</span>':r===false?'<span class="not">✗ LOSS</span>':'<span class="pend">—</span>';
   const sc=p.g.fav_score?`<div class="score">${p.fav} ${p.g.fav_score} – ${p.dog} ${p.g.dog_score}</div>`:'';
   h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${lineTxt(p)}</b> <span class="mute">${p.home==='neutral'?'vs':(p.home===p.side?'vs':'@')} ${p.opp}</span>${p.tag?`<span class="tag ${p.tag}">${p.tag}</span>`:''}
@@ -166,7 +177,7 @@ function renderFill(keepScroll){const y=scrollY,x=getFill(),off=official('BROOKS
  <div id="fcount" class="mute" style="margin-top:6px">${fillCount()}</div>
  <div style="margin-top:8px;display:flex;align-items:center;gap:10px"><span class="mute">Tiebreaker (MNF total)</span><input class="tb" type="number" inputmode="numeric" value="${x.tb}" placeholder="${W.tiebreaker||''}" oninput="setTb(this.value)"></div>${tbHelp(true)}
  <div><button class="btn alt" onclick="useClaude()">⭐ Use Claude's picks</button><button class="btn alt" onclick="clearFill()">Clear</button></div></div>`;
- if(!R.length)h+='<div class="card mute">This week’s games aren’t loaded yet — send Claude the pool sheet.</div>';
+ h+=KEY;if(!R.length)h+='<div class="card mute">This week’s games aren’t loaded yet — send Claude the pool sheet.</div>';
  R.forEach((g,i)=>{const f=+g.fav_num,sel=x.s[f],sug=off[f],meta=W.picks.find(p=>p.num===(sug==='fav'?f:f+1))||{};
   const mk=g.market_line_sunday?` · Market -${g.market_line_sunday}`:'';const last=i===R.length-1&&R.length>1;
   h+=`<div class="card">${last?'<div class="mute"><b>MONDAY NIGHT</b></div>':''}<div class="mute">#${f} / #${f+1} · Pool line ${g.pool_line}${mk} · ${g.home==='fav'?g.favorite+' home':g.home==='dog'?g.underdog+' home':'neutral site'}</div>
