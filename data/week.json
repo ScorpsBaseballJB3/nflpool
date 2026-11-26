@@ -3,7 +3,7 @@
  "title": "Week 12 · Thanksgiving · Nov 26–30",
  "tiebreaker": 40,
  "lockAt": "2026-11-29T13:00:00-05:00",
- "note": "Thursday & Friday games (#1–8) are due THURSDAY by 1 PM. The rest Sunday by 1. MNF: Carolina @ Tampa Bay (total 43.5).",
+ "note": "#1–8 due Thu 1 PM · rest Sun 1 PM",
  "picks": [
   {
    "num": 2,
@@ -13,7 +13,7 @@
    "dog": "DET",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Strong edge: market CHI -1.5, pool DET +2.5 (a full point).",
+   "why": "1 pt better than Vegas",
    "flags": [
     "THU 12:30"
    ]
@@ -26,7 +26,7 @@
    "dog": "PHI",
    "line": 8.5,
    "tag": "RULE",
-   "why": "8–10.5 → dog covers 54% (10 seasons). Market still 8.5.",
+   "why": "8–10.5 → dog",
    "flags": [
     "THU 4:30"
    ]
@@ -39,7 +39,7 @@
    "dog": "KC",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Strong edge: market -3, pool -2.5. Rain/wind; total 46.5.",
+   "why": "Under the 3 (mkt -3)",
    "flags": [
     "THU 8:20"
    ]
@@ -52,7 +52,7 @@
    "dog": "PIT",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Strong edge: market -3.5/-4, pool -2.5 (through the 3). Total 36.5.",
+   "why": "Through the 3 (mkt -3.5)",
    "flags": [
     "FRI"
    ]
@@ -65,7 +65,7 @@
    "dog": "IND",
    "line": 6.5,
    "tag": "FLIP",
-   "why": "Coin flip (5.5–7.5 is 51/49 over 10 yrs) → total 41.5, dogs 53%.",
+   "why": "Coin flip · total 41.5",
    "flags": []
   },
   {
@@ -76,7 +76,7 @@
    "dog": "BAL",
    "line": 6.5,
    "tag": "FLIP",
-   "why": "Coin flip → contrarian: public leans the favorite.",
+   "why": "Coin flip · vs public",
    "flags": []
   },
   {
@@ -87,7 +87,7 @@
    "dog": "ATL",
    "line": 6.5,
    "tag": "EDGE",
-   "why": "Strong edge: market -7, pool -6.5 (under the 7) — beats the dog rule.",
+   "why": "Under the 7 (mkt -7)",
    "flags": []
   },
   {
@@ -98,7 +98,7 @@
    "dog": "NO",
    "line": 9.5,
    "tag": "RULE",
-   "why": "8–10.5 → dog covers 54% (10 seasons). Small CIN edge doesn't override.",
+   "why": "8–10.5 → dog",
    "flags": []
   },
   {
@@ -109,7 +109,7 @@
    "dog": "MIA",
    "line": 3.5,
    "tag": "FLIP",
-   "why": "Coin flip → total 40.5 (dogs 53%) and division dog.",
+   "why": "Coin flip · div + total",
    "flags": []
   },
   {
@@ -120,7 +120,7 @@
    "dog": "TEN",
    "line": 14.5,
    "tag": "RULE",
-   "why": "13–14.5 → dog covers 56%; home favs at 14 are a coin flip at best.",
+   "why": "13–14.5 → dog",
    "flags": []
   },
   {
@@ -131,7 +131,7 @@
    "dog": "NE",
    "line": 1.5,
    "tag": "RULE",
-   "why": "1.5 → road team covers 54% (10 seasons).",
+   "why": "1.5 → road team",
    "flags": []
   },
   {
@@ -142,7 +142,7 @@
    "dog": "SEA",
    "line": 3.5,
    "tag": "EDGE",
-   "why": "Strong edge: market 3, pool +3.5 (hook past 3). Division dog too.",
+   "why": "Hook past 3 (mkt 3)",
    "flags": []
   },
   {
@@ -153,7 +153,7 @@
    "dog": "ARI",
    "line": 7.5,
    "tag": "FLIP",
-   "why": "Coin flip → total 42.5, dogs 53%.",
+   "why": "Coin flip · total 42.5",
    "flags": []
   },
   {
@@ -164,7 +164,7 @@
    "dog": "LV",
    "line": 4.5,
    "tag": "FLIP",
-   "why": "Coin flip → total 41.5, dogs 53%; public on CLE.",
+   "why": "Coin flip · total 41.5",
    "flags": []
   },
   {
@@ -175,7 +175,7 @@
    "dog": "CAR",
    "line": 2.5,
    "tag": "EDGE",
-   "why": "Strong edge: market -3, pool -2.5. MNF tiebreaker game.",
+   "why": "Under the 3 · MNF",
    "flags": []
   }
  ],
