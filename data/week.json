@@ -14,22 +14,18 @@
    "line": 2.5,
    "tag": "EDGE",
    "why": "1 pt better than Vegas",
-   "flags": [
-    "THU 12:30"
-   ]
+   "flags": []
   },
   {
-   "num": 3,
-   "team": "DAL",
-   "opp": "PHI",
+   "num": 4,
+   "team": "PHI",
+   "opp": "DAL",
    "fav": "DAL",
    "dog": "PHI",
    "line": 8.5,
-   "tag": "EDIT",
-   "why": "Your pick (Claude: PHI)",
-   "flags": [
-    "THU 4:30"
-   ]
+   "tag": "RULE",
+   "why": "8–10.5 → dog",
+   "flags": []
   },
   {
    "num": 5,
@@ -40,9 +36,7 @@
    "line": 2.5,
    "tag": "EDGE",
    "why": "Under the 3 (mkt -3)",
-   "flags": [
-    "THU 8:20"
-   ]
+   "flags": []
   },
   {
    "num": 7,
@@ -53,9 +47,7 @@
    "line": 2.5,
    "tag": "EDGE",
    "why": "Through the 3 (mkt -3.5)",
-   "flags": [
-    "FRI"
-   ]
+   "flags": []
   },
   {
    "num": 10,
@@ -69,14 +61,14 @@
    "flags": []
   },
   {
-   "num": 11,
-   "team": "HOU",
-   "opp": "BAL",
+   "num": 12,
+   "team": "BAL",
+   "opp": "HOU",
    "fav": "HOU",
    "dog": "BAL",
    "line": 6.5,
-   "tag": "EDIT",
-   "why": "Your pick (Claude: BAL)",
+   "tag": "FLIP",
+   "why": "Coin flip · vs public",
    "flags": []
   },
   {
@@ -185,5 +177,34 @@
  "stella": {
   "picks": [],
   "tiebreaker": ""
- }
+ },
+ "kick": {
+  "1": "2026-11-26T18:00:00Z",
+  "3": "2026-11-26T21:30:00Z",
+  "5": "2026-11-27T01:20:00Z",
+  "7": "2026-11-27T20:00:00Z",
+  "9": "2026-11-29T18:00:00Z",
+  "11": "2026-11-29T18:00:00Z",
+  "13": "2026-11-29T18:00:00Z",
+  "15": "2026-11-29T18:00:00Z",
+  "17": "2026-11-29T18:00:00Z",
+  "19": "2026-11-29T18:00:00Z",
+  "21": "2026-11-29T21:05:00Z",
+  "23": "2026-11-29T21:25:00Z",
+  "25": "2026-11-29T21:25:00Z",
+  "27": "2026-11-30T01:20:00Z",
+  "29": "2026-12-01T01:15:00Z"
+ },
+ "deadlines": [
+  {
+   "label": "Thu 1 PM",
+   "at": "2026-11-26T13:00:00-05:00",
+   "games": "#1–8"
+  },
+  {
+   "label": "Sun 1 PM",
+   "at": "2026-11-29T13:00:00-05:00",
+   "games": "#9–30"
+  }
+ ]
 }

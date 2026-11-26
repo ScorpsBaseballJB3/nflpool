@@ -14,8 +14,9 @@
 <link rel="icon" href="icon-192.png">
 <style>
 :root{--bg:#f4f6fa;--card:#fff;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--acc:#f2b705;--nav:#0f172a;
---fav:#2563eb;--favbg:#dbeafe;--dog:#16a34a;--dogbg:#dcfce7;--bad:#dc2626;--badbg:#fee2e2}
-@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#131c2e;--ink:#e5e9f0;--mute:#94a3b8;--line:#22304a;--favbg:#172554;--dogbg:#0f2e1c;--badbg:#3b1111}}
+--fav:#2563eb;--favbg:#dbeafe;--dog:#16a34a;--dogbg:#dcfce7;--bad:#dc2626;--badbg:#fee2e2;--hl:#fff7d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1220;--card:#131c2e;--ink:#e5e9f0;--mute:#94a3b8;--line:#22304a;--favbg:#172554;--dogbg:#0f2e1c;--badbg:#3b1111;--hl:#3a2f08}}
+:root[data-theme=dark]{--bg:#0b1220;--card:#131c2e;--ink:#e5e9f0;--mute:#94a3b8;--line:#22304a;--favbg:#172554;--dogbg:#0f2e1c;--badbg:#3b1111;--hl:#3a2f08}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,system-ui,Segoe UI,Roboto,Arial,sans-serif;overscroll-behavior-y:contain}
 header{position:sticky;top:0;z-index:5;background:var(--nav);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px}
 header h1{margin:0;font-size:20px;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center}header small{color:#cbd5e1}
@@ -51,24 +52,36 @@ select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);b
 .recap{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border:0}.recap .mute{color:#cbd5e1}.recap b.n{font-size:40px}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
 #modal img{max-width:100%;max-height:70vh;border-radius:8px;background:#fff}
+.hbtn{border:0;background:#1e293b;color:#cbd5e1;border-radius:10px;font-size:15px;padding:5px 9px;margin-left:6px}
+.strip{display:flex;gap:8px;margin:0 0 12px}.strip>div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 6px;text-align:center}
+.strip b{display:block;font-size:17px}.strip .mute{font-size:11px}.strip .due b{color:var(--bad)}
+.day{font-size:12px;font-weight:800;letter-spacing:.6px;color:var(--mute);text-transform:uppercase;margin:12px 0 2px}.day:first-child{margin-top:0}
+details.gm{border-bottom:1px solid var(--line)}details.gm:last-child{border:0}details.gm>summary{list-style:none;display:flex;gap:10px;align-items:center;padding:9px 0;cursor:pointer}
+details.gm>summary::-webkit-details-marker{display:none}.gm .num{min-width:30px;height:30px;font-size:13px}.gm .pt b{font-size:16px}.gm .more{padding:0 0 10px 40px}
+.gm .st{min-width:64px}.lv{font-size:11px;color:var(--mute);font-weight:500;display:block}
+.cmp td{vertical-align:middle}.cmp tr.diff td{background:var(--hl)}.cmp .pk{font-weight:700}
+.fillfoot{position:fixed;left:0;right:0;bottom:calc(58px + env(safe-area-inset-bottom));z-index:8;background:var(--card);border-top:1px solid var(--line);padding:8px 16px;display:flex;align-items:center;gap:8px}
+.fillfoot .grow{flex:1;font-size:14px}.fillfoot .btn{margin:0}.fillpad{height:70px}
+.opt{font-size:17px!important;padding:14px 6px!important}.opt small{font-size:12px!important}
 </style>
 </head>
 <body>
-<header><h1><span>🏈 NFL POOL</span><span class="seg" id="who"><button data-w="BROOKS">Brooks</button><button data-w="STELLA">Stella</button></span></h1><small id="sub">2026</small></header>
+<header><h1><span>🏈 NFL POOL</span><span><span class="seg" id="who"><button data-w="BROOKS">Brooks</button><button data-w="STELLA">Stella</button><button data-w="BOTH">Both</button></span><button class="hbtn" id="theme" title="Light/dark">🌓</button></span></h1><small id="sub">2026</small></header>
 <div id="ptr">↓ Release to refresh</div>
 <main id="main">
-<section id="week"></section><section id="live" class="hide"></section><section id="trends" class="hide"></section>
-<section id="teams" class="hide"></section><section id="race" class="hide"></section><section id="history" class="hide"></section>
+<section id="week"></section><section id="race" class="hide"></section>
+<section id="stats" class="hide"><div id="trends"></div><div id="teams"></div></section><section id="history" class="hide"></section>
 </main>
 <div id="modal" class="hide"></div>
 <nav>
-<button data-t="week" class="on"><span>📋</span>This Week</button><button data-t="live"><span>📡</span>Live</button><button data-t="trends"><span>📊</span>Trends</button>
-<button data-t="teams"><span>🔎</span>Teams</button><button data-t="race"><span>🏁</span>Race</button><button data-t="history"><span>🗂️</span>History</button>
+<button data-t="week" class="on"><span>📋</span>This Week</button><button data-t="race"><span>🏁</span>Standings</button><button data-t="stats"><span>📊</span>Stats</button><button data-t="history"><span>🗂️</span>History</button>
 </nav>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-const ESPN={WAS:'WSH'},esp=a=>ESPN[a]||a,TABS=['week','live','trends','teams','race','history'];
+const THEMES=['auto','light','dark'];function applyTheme(t){if(t==='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=t;$('#theme').textContent=t==='auto'?'🌓':t==='light'?'☀️':'🌙'}
+applyTheme(LS.get('theme','auto'));$('#theme').onclick=()=>{const t=THEMES[(THEMES.indexOf(LS.get('theme','auto'))+1)%3];LS.set('theme',t);applyTheme(t)};
+const ESPN={WAS:'WSH'},esp=a=>ESPN[a]||a,TABS=['week','race','stats','history'];
 let G=[],W=null,S=null,who=LS.get('who','BROOKS'),tab=LS.get('tab','week'),liveTimer=null,liveBoth=LS.get('liveBoth',false);
 function csv(t){const L=t.trim().split(/\r?\n/),h=L[0].split(',');return L.slice(1).map(l=>{const v=l.split(',');const o={};h.forEach((k,i)=>o[k]=v[i]||'');return o})}
 const bucket=x=>x<=2.5?'1.5–2.5':x<=4.5?'3–4.5':x<=7.5?'5.5–7.5':x<=10.5?'8–10.5':x<=12.5?'11–12.5':x<=14.5?'13–14.5':'15+';
@@ -99,9 +112,9 @@ function moveTxt(p){if(p.mkt==null)return'';const e=p.side==='fav'?p.mkt-p.line:
  if(e>0)return`<div class="mv up">▲ Market ${m} · you get ${e} pt${e===1?'':'s'}</div>`;if(e<0)return`<div class="mv dn">▼ Market ${m} · ${-e} worse than market</div>`;return`<div class="mv eq">= Market ${m}</div>`}
 
 /* ---------- header / nav / gestures ---------- */
-function setWho(w){who=w;LS.set('who',w);$$('#who button').forEach(b=>b.classList.toggle('on',b.dataset.w===w));renderWeek();renderHistory();if(tab==='live')loadLive()}
+function setWho(w){who=w;LS.set('who',w);$$('#who button').forEach(b=>b.classList.toggle('on',b.dataset.w===w));if(w==='BOTH')fillMode=false;renderWeek();renderHistory()}
 $$('#who button').forEach(b=>b.onclick=()=>setWho(b.dataset.w));
-function go(t){tab=t;LS.set('tab',t);$$('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===t));$$('main section').forEach(s=>s.classList.add('hide'));$('#'+t).classList.remove('hide');window.scrollTo(0,0);if(t==='live')loadLive();else clearTimeout(liveTimer)}
+function go(t){tab=t;LS.set('tab',t);$$('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===t));$$('main section').forEach(s=>s.classList.add('hide'));$('#'+t).classList.remove('hide');window.scrollTo(0,0);if(t==='week')fetchLive();else clearTimeout(liveTimer)}
 $$('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
 let tx=0,ty=0,pull=0;
 document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;pull=0},{passive:true});
@@ -113,7 +126,7 @@ document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx
 /* ---------- data ---------- */
 async function load(){const v='?v='+Date.now();
  const [g,w,s]=await Promise.all([fetch('data/games.csv'+v).then(r=>r.text()),fetch('data/week.json'+v).then(r=>r.json()),fetch('data/standings.json'+v).then(r=>r.json())]);
- G=csv(g);W=w;S=s;$('#sub').textContent=W.title;setWho(who);renderTrends();renderTeams();renderRace();if(tab==='live')loadLive()}
+ G=csv(g);W=w;S=s;$('#sub').textContent=W.title;setWho(who);renderTrends();renderTeams();renderRace();fetchLive()}
 
 /* ---------- This Week ---------- */
 let fillMode=false;
@@ -133,20 +146,55 @@ const KEY=`<details class="card key" ${LS.get('keyOpen',true)?'open':''} ontoggl
 <div>🏠</div><div>Home team</div><div>📏</div><div>Spread · 10-yr cover %</div><div>🤝</div><div>Division game</div><div>Σ</div><div>Vegas total</div>
 <div>💰</div><div>Edge vs Vegas · STRONG = take it</div><div>🔑</div><div>Half point off 3 or 7</div><div>📅</div><div>Weeks 15–18</div>
 <div>⭐</div><div>Claude's pick · <span class="tag EDGE">EDGE</span> beats Vegas · <span class="tag RULE">RULE</span> spread rule · <span class="tag FLIP">FLIP</span> vs public</div></div></details>`;
-function renderWeek(){if(fillMode&&isLocked())fillMode=false;if(fillMode)return renderFill();const C=card(who),R=wkRows();const ed=Object.keys(LS.get(ekey(who),{})).length;
- let h=recapHTML(C,R);
- const wins=C.filter(p=>won(p)===true).length,loss=C.filter(p=>won(p)===false).length;
- h+=`<div class="card"><h2>${nm(who)}</h2><div class="mute">${W.note||''}</div>
- <div class="big" style="margin-top:10px"><div><span class="mute">Record</span><b>${wins}-${loss}</b></div><div><span class="mute">Tiebreaker</span><b>${tieb(who)||'–'}</b></div><div><span class="mute">Edges</span><b>${C.filter(p=>p.mkt!=null&&(p.side==='fav'?p.mkt-p.line:p.line-p.mkt)>0).length}</b></div></div>${tbHelp(false)}
- ${isLocked()?'<span class="btn alt" style="cursor:default">🔒 Picks locked</span>':'<button class="btn" style="background:var(--acc);color:#111" onclick="fillMode=true;renderWeek();scrollTo(0,0)">✏️ Fill out my sheet</button>'}<button class="btn" onclick="showSheet()">🖨️ Printable sheet</button>${fillOn(who)?'<span class="mute" style="display:block;margin-top:6px">Your filled-out picks</span>':''}${!isLocked()&&!fillOn(who)&&ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed} change${ed>1?'s':''}</button>`:''}</div>${KEY}<div class="card"><h2>Card</h2>${isLocked()?'<div class="mute">🔒 Locked</div>':''}`;
- for(const p of C){const r=won(p);const st=r===true?'<span class="cov">✓ WIN</span>':r===false?'<span class="not">✗ LOSS</span>':'<span class="pend">—</span>';
-  const sc=p.g.fav_score?`<div class="score">${p.fav} ${p.g.fav_score} – ${p.dog} ${p.g.dog_score}</div>`:'';
-  h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team}${p.home===p.side?' 🏠':''} ${lineTxt(p)}</b> <span class="mute">${p.home==='neutral'?'vs':(p.home===p.side?'vs':'@')} ${p.opp}${p.home!=='neutral'&&p.home!==p.side?' 🏠':''}</span>${p.tag?`<span class="tag ${p.tag}">${p.tag}</span>`:''}
-  ${p.why?`<div class="mute">${p.why}</div>`:''}${p.flags.map(f=>`<span class="flag">${f}</span>`).join('')}<div class="sit">${sit(p.g)}</div>${sc}
-  ${done(p.g)||isLocked()?'':`<button class="sw" onclick="flip('${who}',${p.f})">↔ ${p.side==='fav'?p.dog+' +'+p.line:p.fav+' -'+p.line}</button>`}</div><div class="st">${st}</div></div>`}
- if(!C.length)h+='<div class="mute">No picks loaded for this week yet.</div>';
- h+='</div>';if(who==='BROOKS'&&W.recheck&&W.recheck.length)h+=`<div class="card"><h2>⚠️ Recheck Sunday 11:30</h2>${W.recheck.map(r=>'<div>• '+r+'</div>').join('')}</div>`;
+/* ---------- live scores (ESPN) ---------- */
+let LIVE={ev:{},any:false,ok:false};
+async function fetchLive(){clearTimeout(liveTimer);
+ try{const d=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?_='+Date.now()).then(r=>r.json());const ev={};let any=false;
+  for(const e of d.events||[]){const c=e.competitions[0],t={};c.competitors.forEach(x=>t[x.team.abbreviation]=+x.score||0);ev[Object.keys(t).sort().join('-')]={t,state:e.status.type.state,detail:e.status.type.shortDetail,date:e.date};if(e.status.type.state==='in')any=true}
+  LIVE={ev,any,ok:true}}catch(e){LIVE.ok=false}
+ if(W&&!fillMode)renderWeek();if(LIVE.any&&tab==='week')liveTimer=setTimeout(fetchLive,60000)}
+const gev=g=>LIVE.ev[[esp(g.favorite),esp(g.underdog)].sort().join('-')];
+function status(p){const g=p.g,e=gev(g);
+ if(done(g))return{st:won(p)?'W':'L',sc:g.fav_score?`${p.fav} ${g.fav_score}–${g.dog_score} ${p.dog} · Final`:'Final'};
+ if(!e||e.state==='pre')return{st:'pre',sc:''};
+ const fs=e.t[esp(p.fav)],ds=e.t[esp(p.dog)],fc=fs-ds>p.line,mine=p.side==='fav'?fc:!fc;
+ return{st:e.state==='post'?(mine?'W':'L'):(mine?'c':'n'),sc:`${p.fav} ${fs}–${ds} ${p.dog} · ${e.detail}`}}
+const LAB={W:'<span class="cov">✓ WIN</span>',L:'<span class="not">✗ LOSS</span>',c:'<span class="cov">▲ Covering</span>',n:'<span class="not">▼ Not</span>',pre:'<span class="pend">—</span>'};
+function kickOf(g){const k=W.kick&&W.kick[g.fav_num];if(k)return new Date(k);const e=gev(g);return e&&e.date?new Date(e.date):null}
+function dayLbl(g){const d=kickOf(g);if(!d)return'Games';const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'long',hour:'numeric',hourCycle:'h23'}).formatToParts(d).map(x=>[x.type,x.value]));const h=+p.hour;
+ if(p.weekday==='Sunday')return h<16?'Sunday · 1 PM':h<19?'Sunday · 4 PM':'Sunday Night';if(p.weekday==='Monday')return'Monday Night';return p.weekday}
+function byDay(items,gf){const out=[];let cur=null;items.slice().sort((a,b)=>((kickOf(gf(a))||0)-(kickOf(gf(b))||0))||(gf(a).fav_num-gf(b).fav_num)).forEach(it=>{const l=dayLbl(gf(it));if(!cur||cur.l!==l){cur={l,items:[]};out.push(cur)}cur.items.push(it)});return out}
+function stripHTML(w){const now=Date.now(),dl=(W.deadlines||[{label:'Sun 1 PM',at:W.lockAt}]).filter(d=>d.at&&Date.parse(d.at)>now)[0];
+ let due='<div><span class="mute">Deadline</span><b>🔒 All in</b></div>';
+ if(dl){const ms=Date.parse(dl.at)-now,h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);due=`<div class="due"><span class="mute">Due ${dl.label}</span><b>${h>=24?Math.floor(h/24)+'d '+(h%24)+'h':h+'h '+m+'m'}</b></div>`}
+ const rec=x=>{const S2=card(x).map(status);return `${S2.filter(s=>s.st==='W').length}-${S2.filter(s=>s.st==='L').length}`};
+ const P=S&&S.players,t=n=>P[n].reduce((a,b)=>a+b,0),o=P?Object.keys(P).sort((a,b)=>t(b)-t(a)):[];
+ const rk=x=>P&&P[x]?`#${o.indexOf(x)+1}`:'–',back=x=>P&&P[x]?(t(o[3])-t(x)>0?`${t(o[3])-t(x)} back of 4th`:'in the money'):'';
+ if(w==='BOTH')return `<div class="strip">${due}<div><span class="mute">Week · B / S</span><b>${rec('BROOKS')} / ${rec('STELLA')}</b></div><div><span class="mute">Rank · B / S</span><b>${rk('BROOKS')} / ${rk('STELLA')}</b></div></div>`;
+ return `<div class="strip">${due}<div><span class="mute">This week</span><b>${rec(w)}</b></div><div><span class="mute">${back(w)}</span><b>${rk(w)}</b></div></div>`}
+function meterHTML(w){const C=card(w),S2=C.map(status);if(C.length<wkRows().length||!S2.some(s=>s.st!=='pre'))return'';const wn=S2.filter(s=>s.st==='W').length,ls=S2.filter(s=>s.st==='L').length,rem=C.length-wn-ls;
+ const ps=S2.filter(s=>!['W','L'].includes(s.st)).map(s=>s.st==='c'?0.68:s.st==='n'?0.32:0.5),p8=probAtLeast(ps,8-wn),p10=probAtLeast(ps,10-wn);
+ return `<div class="card"><h2>${nm(w)} · ${wn}-${ls}${rem?` · ${rem} left`:''}</h2><div class="mute">8+ <b>${Math.round(p8*100)}%</b></div><div class="meter"><i style="width:${p8*100}%"></i></div><div class="mute">10+ (weekly win) <b>${Math.round(p10*100)}%</b></div><div class="meter"><i style="width:${p10*100}%"></i></div></div>`}
+function probAtLeast(ps,k){let d=[1];for(const p of ps){const n=new Array(d.length+1).fill(0);d.forEach((v,i)=>{n[i]+=v*(1-p);n[i+1]+=v*p});d=n}return d.slice(Math.max(0,k)).reduce((a,b)=>a+b,0)}
+function togG(k,o){const x=LS.get('openG',{});if(o)x[k]=1;else delete x[k];LS.set('openG',x)}
+function renderWeek(){if(!W)return;if(fillMode&&isLocked())fillMode=false;if(who==='BOTH')return renderBoth();if(fillMode)return renderFill();
+ const C=card(who),R=wkRows(),ed=Object.keys(LS.get(ekey(who),{})).length,open=LS.get('openG',{});
+ let h=stripHTML(who)+recapHTML(C,R)+meterHTML(who);
+ h+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">${nm(who)} · TB ${tieb(who)||'–'}</h2>${isLocked()?'<span class="mute">🔒 Locked</span>':''}</div>${tbHelp(false)}
+ ${isLocked()?'':'<button class="btn" style="background:var(--acc);color:#111" onclick="fillMode=true;renderWeek();scrollTo(0,0)">✏️ Fill out</button>'}<button class="btn alt" onclick="showSheet()">🖨️ Sheet</button>${!isLocked()&&!fillOn(who)&&ed?`<button class="btn alt" onclick="resetEdits()">↺ Reset ${ed}</button>`:''}</div>${KEY}<div class="card">`;
+ for(const grp of byDay(C,p=>p.g)){h+=`<div class="day">${grp.l}</div>`;
+  for(const p of grp.items){const s=status(p),k=W.week+'-'+p.f;
+   h+=`<details class="gm" ${open[k]?'open':''} ontoggle="togG('${k}',this.open)"><summary><div class="num">${p.num}</div><div class="pt"><b>${p.team}${p.home===p.side?' 🏠':''} ${lineTxt(p)}</b> <span class="mute">${p.home==='neutral'?'vs':(p.home===p.side?'vs':'@')} ${p.opp}${p.home!=='neutral'&&p.home!==p.side?' 🏠':''}</span>${p.tag?`<span class="tag ${p.tag}">${p.tag}</span>`:''}${s.sc?`<span class="lv">${s.sc}</span>`:''}</div><div class="st">${LAB[s.st]}</div></summary>
+   <div class="more">${p.why?`<div class="mute">${p.why}</div>`:''}<div class="sit">${sit(p.g)}</div>${done(p.g)||isLocked()?'':`<button class="sw" onclick="flip('${who}',${p.f})">↔ ${p.side==='fav'?p.dog+' +'+p.line:p.fav+' -'+p.line}</button>`}</div></details>`}}
+ if(!C.length)h+=`<div class="mute">${who==='STELLA'?'Stella’s picks not in yet.':'No picks yet.'}</div>`;
+ h+='</div>';if(who==='BROOKS'&&W.recheck&&W.recheck.length)h+=`<div class="card"><h2>⚠️ Recheck</h2>${W.recheck.map(r=>'<div>• '+r+'</div>').join('')}</div>`;
  $('#week').innerHTML=h}
+function renderBoth(){const R=wkRows(),B=Object.fromEntries(card('BROOKS').map(p=>[p.f,p])),X=Object.fromEntries(card('STELLA').map(p=>[p.f,p])),hasS=Object.keys(X).length;let nd=0,t='';
+ const cell=p=>p?`<span class="pk">${p.team}${p.home===p.side?' 🏠':''}</span><br>${LAB[status(p).st]}`:'–';
+ for(const grp of byDay(R,g=>g)){t+=`<tr><td colspan="3"><div class="day" style="margin:6px 0 0">${grp.l}</div></td></tr>`;
+  for(const g of grp.items){const f=+g.fav_num,b=B[f],x=X[f],dif=b&&x&&b.side!==x.side;if(dif)nd++;const any=b||x,sc=any?status(any).sc:'';
+   t+=`<tr class="${dif?'diff':''}"><td><b>${g.favorite}${g.home==='fav'?' 🏠':''} -${g.pool_line}</b> <span class="mute">v ${g.underdog}${g.home==='dog'?' 🏠':''}</span>${sc?`<span class="lv">${sc}</span>`:''}</td><td class="c">${cell(b)}</td><td class="c">${cell(x)}</td></tr>`}}
+ $('#week').innerHTML=stripHTML('BOTH')+meterHTML('BROOKS')+(hasS?meterHTML('STELLA'):'')+`<div class="card"><h2>Brooks vs Stella</h2><div class="mute">${hasS?`Split on ${nd} game${nd===1?'':'s'} (highlighted)`:'Stella’s picks not in yet'}</div><table class="cmp"><tr><th>Game</th><th class="c">Brooks</th><th class="c">Stella</th></tr>${t}</table><div class="mute" style="margin-top:6px">TB · Brooks ${tieb('BROOKS')||'–'} · Stella ${tieb('STELLA')||'–'}</div></div>`}
 function resetEdits(){LS.set(ekey(who),{});renderWeek()}
 /* ---------- Fill out my sheet ---------- */
 function getFill(){return LS.get(fkey(who),{s:{},tb:''})}
@@ -154,7 +202,7 @@ function setPick(f,side){const x=getFill();x.s[f]=side;LS.set(fkey(who),x);rende
 function setTb(v){const x=getFill();x.tb=v===''?'':+v;LS.set(fkey(who),x);const c=$('#fcount');if(c)c.innerHTML=fillCount()}
 function useClaude(){const off=official('BROOKS'),x=getFill();x.s={...off};if(x.tb==='')x.tb=W.tiebreaker;LS.set(fkey(who),x);renderFill()}
 function clearFill(){LS.set(fkey(who),{s:{},tb:''});renderFill()}
-function fillCount(){const x=getFill(),n=wkRows().length,k=Object.keys(x.s).length;return `<b>${k} of ${n}</b> picked${x.tb===''?' · <span class="x">tiebreaker missing</span>':' · tiebreaker '+x.tb}${k===n&&x.tb!==''?' <span class="ok">✓ complete</span>':''}`}
+function fillCount(){const x=getFill(),n=wkRows().length,k=Object.keys(x.s).length;return `<b>${k}/${n}</b> picked · ${x.tb===''?'<span class="x">TB missing</span>':'TB '+x.tb}${k===n&&x.tb!==''?' <span class="ok">✓</span>':''}`}
 function copyForClaude(){const C=card(who);const t=`Week ${W.week} ${nm(who)} picks: ${C.map(p=>p.num).join(', ')}. Tiebreaker ${tieb(who)}.`;
  (navigator.share?navigator.share({text:t}):navigator.clipboard.writeText(t).then(()=>alertMsg('Copied — paste it to Claude'))).catch(()=>{})}
 function mnfInfo(){const R=wkRows();if(!R.length)return null;const g=R[R.length-1],T=parseFloat(g.total);if(!T)return null;
@@ -164,19 +212,19 @@ function mnfInfo(){const R=wkRows();if(!R.length)return null;const g=R[R.length-
 function tbHelp(inFill){const m=mnfInfo();if(!m)return '';const mu=m.home==='fav'?`${m.dog} @ ${m.fav}`:`${m.fav} @ ${m.dog}`;
  return `<div class="mute" style="margin-top:6px;font-size:13px">🏈 MNF ${mu} · total <b>${m.T}</b> · pick <b>${m.sug}</b>${inFill?` <button class="btn alt" style="padding:4px 10px;margin:0 0 0 6px" onclick="setTb(${m.sug});renderFill(true)">Use ${m.sug}</button>`:''}</div>`}
 function renderFill(keepScroll){const y=scrollY,x=getFill(),off=official('BROOKS'),R=wkRows();
- let h=`<div class="card fillbar"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">✏️ ${nm(who)} · Week ${W.week}</h2><button class="btn alt" style="margin:0" onclick="fillMode=false;renderWeek()">Done</button></div>
- <div id="fcount" class="mute" style="margin-top:6px">${fillCount()}</div>
- <div style="margin-top:8px;display:flex;align-items:center;gap:10px"><span class="mute">Tiebreaker (MNF total)</span><input class="tb" type="number" inputmode="numeric" value="${x.tb}" placeholder="${W.tiebreaker||''}" oninput="setTb(this.value)"></div>${tbHelp(true)}
+ let h=`<div class="card"><h2>✏️ ${nm(who)} · Week ${W.week}</h2>
+ <div style="display:flex;align-items:center;gap:10px"><span class="mute">Tiebreaker</span><input class="tb" type="number" inputmode="numeric" value="${x.tb}" placeholder="${W.tiebreaker||''}" oninput="setTb(this.value)"></div>${tbHelp(true)}
  <div><button class="btn alt" onclick="useClaude()">⭐ Use Claude's picks</button><button class="btn alt" onclick="clearFill()">Clear</button></div></div>`;
- h+=KEY;if(!R.length)h+='<div class="card mute">This week’s games aren’t loaded yet — send Claude the pool sheet.</div>';
- R.forEach((g,i)=>{const f=+g.fav_num,sel=x.s[f],sug=off[f],meta=W.picks.find(p=>p.num===(sug==='fav'?f:f+1))||{};
-  const mk=g.market_line_sunday?` · mkt ${g.market_line_sunday}`:'';const last=i===R.length-1&&R.length>1;
-  h+=`<div class="card">${last?'<div class="mute"><b>MONDAY NIGHT</b></div>':''}<div class="mute">#${f}/${f+1} · ${g.pool_line}${mk}${g.home==='neutral'?' · neutral':''}</div>
-  <div class="opts"><button class="opt ${sel==='fav'?'sel':''}" onclick="setPick(${f},'fav')">${sug==='fav'?'<span class="star">⭐</span>':''}${f}. ${g.favorite}${g.home==='fav'?' 🏠':''} -${g.pool_line}<small>fav</small></button>
-  <button class="opt ${sel==='dog'?'sel':''}" onclick="setPick(${f},'dog')">${sug==='dog'?'<span class="star">⭐</span>':''}${f+1}. ${g.underdog}${g.home==='dog'?' 🏠':''} +${g.pool_line}<small>dog</small></button></div><div class="sit">${sit(g)}</div>
-  ${sug&&(meta.tag||meta.why)?`<div class="mute" style="margin-top:6px">⭐ Claude: ${meta.tag?`<span class="tag ${meta.tag}" style="margin:0 4px 0 0">${meta.tag}</span>`:''}${meta.why||''}</div>`:''}</div>`});
- h+=`<div class="card"><button class="btn" onclick="showSheet()">🖨️ Make my sheet</button><button class="btn alt" onclick="copyForClaude()">📤 Send picks to Claude</button>
- <div class="mute" style="margin-top:6px">Your picks save on this phone and show on This Week, Live and the printable sheet. Send them to Claude so the tracker logs them.</div></div>`;
+ h+=KEY;if(!R.length)h+='<div class="card mute">Games not loaded yet.</div>';
+ for(const grp of byDay(R,g=>g)){h+=`<div class="day" style="margin:14px 2px 6px">${grp.l}</div>`;
+  for(const g of grp.items){const f=+g.fav_num,sel=x.s[f],sug=off[f],meta=W.picks.find(p=>p.num===(sug==='fav'?f:f+1))||{};
+   const mk=g.market_line_sunday?` · mkt ${g.market_line_sunday}`:'';
+   h+=`<div class="card"><div class="mute">#${f}/${f+1} · ${g.pool_line}${mk}${g.home==='neutral'?' · neutral':''}</div>
+   <div class="opts"><button class="opt ${sel==='fav'?'sel':''}" onclick="setPick(${f},'fav')">${sug==='fav'?'<span class="star">⭐</span>':''}${g.favorite}${g.home==='fav'?' 🏠':''} -${g.pool_line}<small>#${f} · fav</small></button>
+   <button class="opt ${sel==='dog'?'sel':''}" onclick="setPick(${f},'dog')">${sug==='dog'?'<span class="star">⭐</span>':''}${g.underdog}${g.home==='dog'?' 🏠':''} +${g.pool_line}<small>#${f+1} · dog</small></button></div><div class="sit">${sit(g)}</div>
+   ${sug&&(meta.tag||meta.why)?`<div class="mute" style="margin-top:6px">⭐ ${meta.tag?`<span class="tag ${meta.tag}" style="margin:0 4px 0 0">${meta.tag}</span>`:''}${meta.why||''}</div>`:''}</div>`}}
+ h+=`<div class="card"><button class="btn alt" onclick="copyForClaude()">📤 Send picks to Claude</button></div><div class="fillpad"></div>
+ <div class="fillfoot"><div class="grow" id="fcount">${fillCount()}</div><button class="btn" onclick="showSheet()">🖨️ Sheet</button><button class="btn alt" onclick="fillMode=false;renderWeek()">Done</button></div>`;
  $('#week').innerHTML=h;if(keepScroll)scrollTo(0,y)}
 
 /* ---------- Weekly recap ---------- */
@@ -210,37 +258,6 @@ function showSheet(){const R=wkRows(),C=card(who),pk=new Set(C.map(p=>p.num));
  const url=c.toDataURL('image/png');const m=$('#modal');
  m.innerHTML=`<img src="${url}" alt="sheet"><div style="margin-top:10px"><button class="btn" id="shr">📤 Share / Save</button><button class="btn alt" onclick="closeModal()">Close</button></div><div class="mute" style="color:#cbd5e1;margin-top:6px">Or press and hold the sheet to save it.</div>`;
  m.classList.remove('hide');$('#shr').onclick=()=>c.toBlob(async bl=>{try{const file=new File([bl],`Week${W.week}_${nm(who)}.png`,{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]}))await navigator.share({files:[file]});else{const a=document.createElement('a');a.href=url;a.download=file.name;a.click()}}catch(e){}})}
-
-/* ---------- Live ---------- */
-function probAtLeast(ps,k){let d=[1];for(const p of ps){const n=new Array(d.length+1).fill(0);d.forEach((v,i)=>{n[i]+=v*(1-p);n[i+1]+=v*p});d=n}return d.slice(Math.max(0,k)).reduce((a,b)=>a+b,0)}
-async function loadLive(){clearTimeout(liveTimer);
- try{const d=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?_='+Date.now()).then(r=>r.json());
-  const ev={};let anyLive=false;
-  for(const e of d.events||[]){const c=e.competitions[0],t={};c.competitors.forEach(x=>t[x.team.abbreviation]=+x.score||0);ev[Object.keys(t).sort().join('-')]={t,state:e.status.type.state,detail:e.status.type.shortDetail};if(e.status.type.state==='in')anyLive=true}
-  const status=p=>{const e=ev[[esp(p.fav),esp(p.dog)].sort().join('-')];
-   if(done(p.g)&&!e){return{st:won(p)?'W':'L',sc:p.g.fav_score?`${p.fav} ${p.g.fav_score} – ${p.dog} ${p.g.dog_score} · Final`:'Final'}}
-   if(!e)return{st:'?',sc:'Not on this week’s scoreboard'};const fs=e.t[esp(p.fav)],ds=e.t[esp(p.dog)],m=fs-ds,sc=`${p.fav} ${fs} – ${p.dog} ${ds} · ${e.detail}`;
-   if(e.state==='pre')return{st:'pre',sc:e.detail};const fc=m>p.line,push=m===p.line,mine=p.side==='fav'?fc:(!fc&&!push);
-   return{st:e.state==='post'?(mine?'W':'L'):(mine?'c':'n'),sc}};
-  const lab={W:'<span class="cov">✓ WIN</span>',L:'<span class="not">✗ LOSS</span>',c:'<span class="cov">Covering</span>',n:'<span class="not">Not covering</span>',pre:'<span class="pend">Not started</span>','?':'<span class="pend">—</span>'};
-  const meter=(w)=>{const C=card(w),S2=C.map(status);let wn=S2.filter(s=>s.st==='W').length,ls=S2.filter(s=>s.st==='L').length,rem=C.length-wn-ls;
-   const ps=S2.filter(s=>!['W','L'].includes(s.st)).map(s=>s.st==='c'?0.68:s.st==='n'?0.32:0.5);const need=Math.max(0,8-wn);
-   const p8=probAtLeast(ps,8-wn),p10=probAtLeast(ps,10-wn);
-   const msg=wn+rem<8?`8 is out of reach — max ${wn+rem}`:need===0?'8+ locked in 🎉':`Need ${need} of the last ${rem} for 8`;
-   return `<div class="card"><h2>${nm(w)} · ${wn}-${ls}${rem?` · ${rem} left`:''}</h2><div><b>${msg}</b></div>
-   <div class="mute" style="margin-top:6px">Chance of 8+: <b>${Math.round(p8*100)}%</b></div><div class="meter"><i style="width:${p8*100}%"></i></div>
-   <div class="mute">Chance of 10+ (weekly-win range): <b>${Math.round(p10*100)}%</b></div><div class="meter"><i style="width:${p10*100}%"></i></div>
-   <div class="mute" style="font-size:11px">Rough odds: covering ≈68%, not covering ≈32%, not started 50%.</div></div>`};
-  let h=`<div class="card"><button class="btn alt" style="float:right;margin:0" onclick="loadLive()">↻</button><h2>Live</h2><div class="mute">Graded vs the POOL line.${anyLive?' Auto-updates every minute.':''}</div>
-  <label class="mute"><input type="checkbox" ${liveBoth?'checked':''} onchange="liveBoth=this.checked;LS.set('liveBoth',liveBoth);loadLive()"> Show Brooks & Stella side by side</label></div>`;
-  if(liveBoth){h+=meter('BROOKS')+meter('STELLA');const B=Object.fromEntries(card('BROOKS').map(p=>[p.f,p])),Sx=Object.fromEntries(card('STELLA').map(p=>[p.f,p]));
-   h+=`<div class="card"><table><tr><th>Game</th><th class="c">Brooks</th><th class="c">Stella</th></tr>`;
-   for(const g of wkRows()){const f=+g.fav_num,b=B[f],s=Sx[f],any=b||s;if(!any)continue;const sc=status(any).sc;
-    h+=`<tr><td><b>${g.favorite} -${g.pool_line}</b> v ${g.underdog}<div class="score">${sc}</div></td><td class="c">${b?b.team+'<br>'+lab[status(b).st]:'–'}</td><td class="c">${s?s.team+'<br>'+lab[status(s).st]:'–'}</td></tr>`}
-   h+='</table></div>'}
-  else{h+=meter(who)+'<div class="card">';for(const p of card(who)){const s=status(p);h+=`<div class="pick"><div class="num">${p.num}</div><div class="pt"><b>${p.team} ${lineTxt(p)}</b><div class="score">${s.sc}</div></div><div class="st">${lab[s.st]}</div></div>`}h+='</div>'}
-  $('#live').innerHTML=h;if(anyLive&&tab==='live')liveTimer=setTimeout(loadLive,60000);
- }catch(e){$('#live').innerHTML='<div class="card">Couldn’t reach live scores. <button class="btn alt" onclick="loadLive()">Try again</button></div>'}}
 
 /* ---------- Trends ---------- */
 function scorecardHTML(){const D=G.filter(done);
