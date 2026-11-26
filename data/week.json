@@ -19,15 +19,17 @@
    ]
   },
   {
-   "num": 3,
-   "team": "DAL",
-   "opp": "PHI",
+   "num": 4,
+   "team": "PHI",
+   "opp": "DAL",
    "fav": "DAL",
    "dog": "PHI",
    "line": 8.5,
    "tag": "RULE",
-   "why": "8+ → home team covers 57% (6 seasons). Market still 8.5.",
-   "flags": []
+   "why": "8–10.5 → dog covers 54% (10 seasons). Market still 8.5.",
+   "flags": [
+    "THU 4:30"
+   ]
   },
   {
    "num": 5,
@@ -62,8 +64,8 @@
    "fav": "NYG",
    "dog": "IND",
    "line": 6.5,
-   "tag": "RULE",
-   "why": "5.5–7.5 → dog (55% over 6 seasons, 20–9 on your sheet).",
+   "tag": "FLIP",
+   "why": "Coin flip (5.5–7.5 is 51/49 over 10 yrs) → total 41.5, dogs 53%.",
    "flags": []
   },
   {
@@ -73,8 +75,8 @@
    "fav": "HOU",
    "dog": "BAL",
    "line": 6.5,
-   "tag": "RULE",
-   "why": "5.5–7.5 → dog (55% over 6 seasons).",
+   "tag": "FLIP",
+   "why": "Coin flip → contrarian: public leans the favorite.",
    "flags": []
   },
   {
@@ -89,14 +91,14 @@
    "flags": []
   },
   {
-   "num": 15,
-   "team": "CIN",
-   "opp": "NO",
+   "num": 16,
+   "team": "NO",
+   "opp": "CIN",
    "fav": "CIN",
    "dog": "NO",
    "line": 9.5,
    "tag": "RULE",
-   "why": "8+ → home team (57%), plus a small edge (market -10).",
+   "why": "8–10.5 → dog covers 54% (10 seasons). Small CIN edge doesn't override.",
    "flags": []
   },
   {
@@ -107,18 +109,18 @@
    "dog": "MIA",
    "line": 3.5,
    "tag": "FLIP",
-   "why": "3.5–4.5 is a coin flip → division game, dog covers 54%; total 40.5 also leans dog.",
+   "why": "Coin flip → total 40.5 (dogs 53%) and division dog.",
    "flags": []
   },
   {
-   "num": 19,
-   "team": "JAX",
-   "opp": "TEN",
+   "num": 20,
+   "team": "TEN",
+   "opp": "JAX",
    "fav": "JAX",
    "dog": "TEN",
    "line": 14.5,
    "tag": "RULE",
-   "why": "11+ → home team covers 58% (6 seasons).",
+   "why": "13–14.5 → dog covers 56%; home favs at 14 are a coin flip at best.",
    "flags": []
   },
   {
@@ -129,7 +131,7 @@
    "dog": "NE",
    "line": 1.5,
    "tag": "RULE",
-   "why": "2.5 or less → road team (54%).",
+   "why": "1.5 → road team covers 54% (10 seasons).",
    "flags": []
   },
   {
@@ -150,8 +152,8 @@
    "fav": "WAS",
    "dog": "ARI",
    "line": 7.5,
-   "tag": "RULE",
-   "why": "5.5–7.5 → dog (55%), home dogs no worse than road dogs.",
+   "tag": "FLIP",
+   "why": "Coin flip → total 42.5, dogs 53%.",
    "flags": []
   },
   {
@@ -162,7 +164,7 @@
    "dog": "LV",
    "line": 4.5,
    "tag": "FLIP",
-   "why": "3.5–4.5 is a coin flip → total 41.5, dogs cover 55% in 40.5–45 totals; public on CLE.",
+   "why": "Coin flip → total 41.5, dogs 53%; public on CLE.",
    "flags": []
   },
   {
