@@ -19,14 +19,14 @@
    ]
   },
   {
-   "num": 4,
-   "team": "PHI",
-   "opp": "DAL",
+   "num": 3,
+   "team": "DAL",
+   "opp": "PHI",
    "fav": "DAL",
    "dog": "PHI",
    "line": 8.5,
-   "tag": "RULE",
-   "why": "8–10.5 → dog",
+   "tag": "EDIT",
+   "why": "Your pick (Claude: PHI)",
    "flags": [
     "THU 4:30"
    ]
@@ -69,14 +69,14 @@
    "flags": []
   },
   {
-   "num": 12,
-   "team": "BAL",
-   "opp": "HOU",
+   "num": 11,
+   "team": "HOU",
+   "opp": "BAL",
    "fav": "HOU",
    "dog": "BAL",
    "line": 6.5,
-   "tag": "FLIP",
-   "why": "Coin flip · vs public",
+   "tag": "EDIT",
+   "why": "Your pick (Claude: BAL)",
    "flags": []
   },
   {
