@@ -175,7 +175,12 @@
   "Sunday 11:30 inactives"
  ],
  "stella": {
-  "picks": [],
+  "picks": [
+   1,
+   3,
+   5,
+   7
+  ],
   "tiebreaker": ""
  },
  "kick": {
