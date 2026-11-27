@@ -14,7 +14,8 @@
    "line": 2.5,
    "tag": "EDGE",
    "why": "1 pt better than Vegas",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 3,
@@ -25,7 +26,8 @@
    "line": 8.5,
    "tag": "EDIT",
    "why": "Your pick (Claude: PHI)",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 5,
@@ -36,7 +38,8 @@
    "line": 2.5,
    "tag": "EDGE",
    "why": "Under the 3 (mkt -3)",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 7,
@@ -47,7 +50,8 @@
    "line": 2.5,
    "tag": "EDGE",
    "why": "Through the 3 (mkt -3.5)",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 10,
@@ -58,7 +62,8 @@
    "line": 6.5,
    "tag": "FLIP",
    "why": "Coin flip · total 41.5",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 12,
@@ -69,7 +74,8 @@
    "line": 6.5,
    "tag": "FLIP",
    "why": "Coin flip · vs public",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 13,
@@ -80,7 +86,8 @@
    "line": 6.5,
    "tag": "EDGE",
    "why": "Under the 7 (mkt -7)",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 16,
@@ -91,7 +98,8 @@
    "line": 9.5,
    "tag": "RULE",
    "why": "8–10.5 → dog",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 18,
@@ -102,7 +110,8 @@
    "line": 3.5,
    "tag": "FLIP",
    "why": "Coin flip · div + total",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 20,
@@ -113,7 +122,8 @@
    "line": 14.5,
    "tag": "RULE",
    "why": "13–14.5 → dog",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 22,
@@ -124,7 +134,8 @@
    "line": 1.5,
    "tag": "RULE",
    "why": "1.5 → road team",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 24,
@@ -135,7 +146,8 @@
    "line": 3.5,
    "tag": "EDGE",
    "why": "Hook past 3 (mkt 3)",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 26,
@@ -146,7 +158,8 @@
    "line": 7.5,
    "tag": "FLIP",
    "why": "Coin flip · total 42.5",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 28,
@@ -157,7 +170,8 @@
    "line": 4.5,
    "tag": "FLIP",
    "why": "Coin flip · total 41.5",
-   "flags": []
+   "flags": [],
+   "keep": true
   },
   {
    "num": 29,
@@ -168,7 +182,8 @@
    "line": 2.5,
    "tag": "EDGE",
    "why": "Under the 3 · MNF",
-   "flags": []
+   "flags": [],
+   "keep": true
   }
  ],
  "recheck": [
