@@ -95,8 +95,8 @@ function official(w){const nums=w==='BROOKS'?W.picks.map(p=>p.num):(W.stella?W.s
  for(const g of wkRows()){const f=+g.fav_num;if(nums.includes(f))o[f]='fav';else if(nums.includes(f+1))o[f]='dog'}return o}
 const ekey=w=>`edits-${W.week}-${w}`;
 const isLocked=()=>!!(W.locked||(W.lockAt&&Date.now()>=Date.parse(W.lockAt)));
-const fkey=w=>`fill-${W.week}-${w}`,fillOn=w=>{if(isLocked())return null;const x=LS.get(fkey(w),null);return x&&Object.keys(x.s||{}).length?x:null};
-function card(w){const off=official(w),fl=fillOn(w),ed=fl?fl.s:(isLocked()?{}:LS.get(ekey(w),{})),out=[];
+const fkey=w=>`fill-${W.week}-${w}`,fillOn=w=>{if(isLocked())return null;const x=LS.get(fkey(w),null);if(!x||!Object.keys(x.s||{}).length)return null;const lg=W.logged&&W.logged[w];if(lg&&(!x.t||x.t<Date.parse(lg)))return null;return x};
+function card(w){const off=official(w),fl=fillOn(w),ed=fl?fl.s:(isLocked()||(W.logged&&W.logged[w])?{}:LS.get(ekey(w),{})),out=[];
  for(const g of wkRows()){const f=+g.fav_num,side=fl?ed[f]:(ed[f]||off[f]);if(!side)continue;
   const fav=side==='fav',num=fav?f:f+1,meta=w==='BROOKS'?(W.picks.find(p=>p.num===num)||{}):{};
   const edited=ed[f]&&ed[f]!==off[f];
@@ -198,9 +198,9 @@ function renderBoth(){const R=wkRows(),B=Object.fromEntries(card('BROOKS').map(p
 function resetEdits(){LS.set(ekey(who),{});renderWeek()}
 /* ---------- Fill out my sheet ---------- */
 function getFill(){return LS.get(fkey(who),{s:{},tb:''})}
-function setPick(f,side){const x=getFill();x.s[f]=side;LS.set(fkey(who),x);renderFill(true)}
-function setTb(v){const x=getFill();x.tb=v===''?'':+v;LS.set(fkey(who),x);const c=$('#fcount');if(c)c.innerHTML=fillCount()}
-function useClaude(){const off=official('BROOKS'),x=getFill();x.s={...off};if(x.tb==='')x.tb=W.tiebreaker;LS.set(fkey(who),x);renderFill()}
+function setPick(f,side){const x=getFill();x.s[f]=side;x.t=Date.now();LS.set(fkey(who),x);renderFill(true)}
+function setTb(v){const x=getFill();x.tb=v===''?'':+v;x.t=Date.now();LS.set(fkey(who),x);const c=$('#fcount');if(c)c.innerHTML=fillCount()}
+function useClaude(){const off=official('BROOKS'),x=getFill();x.s={...off};x.t=Date.now();if(x.tb==='')x.tb=W.tiebreaker;LS.set(fkey(who),x);renderFill()}
 function clearFill(){LS.set(fkey(who),{s:{},tb:''});renderFill()}
 function fillCount(){const x=getFill(),n=wkRows().length,k=Object.keys(x.s).length;return `<b>${k}/${n}</b> picked · ${x.tb===''?'<span class="x">TB missing</span>':'TB '+x.tb}${k===n&&x.tb!==''?' <span class="ok">✓</span>':''}`}
 function copyForClaude(){const C=card(who);const t=`Week ${W.week} ${nm(who)} picks: ${C.map(p=>p.num).join(', ')}. Tiebreaker ${tieb(who)}.`;
