@@ -84,8 +84,8 @@ applyTheme(LS.get('theme','auto'));$('#theme').onclick=()=>{const t=THEMES[(THEM
 const ESPN={WAS:'WSH'},esp=a=>ESPN[a]||a,TABS=['week','race','stats','history'];
 let G=[],W=null,S=null,who=LS.get('who','BROOKS'),tab=LS.get('tab','week'),liveTimer=null,liveBoth=LS.get('liveBoth',false);
 function csv(t){const L=t.trim().split(/\r?\n/),h=L[0].split(',');return L.slice(1).map(l=>{const v=l.split(',');const o={};h.forEach((k,i)=>o[k]=v[i]||'');return o})}
-const bucket=x=>x<=2.5?'1.5–2.5':x<=4.5?'3–4.5':x<=7.5?'5.5–7.5':x<=10.5?'8–10.5':x<=12.5?'11–12.5':x<=14.5?'13–14.5':'15+';
-const ADV={'1.5–2.5':['Road team · 55%','doflip'],'3–4.5':['Coin flip','doflip'],'5.5–7.5':['Coin flip','doflip'],'8–10.5':['Dog · 54%','dodog'],'11–12.5':['Favorite · 68%','dofav'],'13–14.5':['Dog · 56%','dodog'],'15+':['Coin flip','doflip']};
+const bucket=x=>x<=1.5?'1.5':x<=2.5?'2.5':x<=4.5?'3–4.5':x<=7.5?'5.5–7.5':x<=10.5?'8–10.5':x<=12.5?'11–12.5':x<=14.5?'13–14.5':'15+';
+const ADV={'1.5':['Road team · 55%','doflip'],'2.5':['Coin flip','doflip'],'3–4.5':['Coin flip','doflip'],'5.5–7.5':['Coin flip','doflip'],'8–10.5':['Coin flip','doflip'],'11–12.5':['Coin flip','doflip'],'13–14.5':['Dog · 55%','dodog'],'15+':['Coin flip','doflip']};
 const done=g=>g.result==='fav covered'||g.result==='dog covered';
 const pct=(a,b)=>b?Math.round(100*a/b)+'%':'–',nm=w=>w==='BROOKS'?'Brooks':'Stella';
 const wkRows=()=>G.filter(g=>+g.week===W.week).sort((a,b)=>a.fav_num-b.fav_num);
@@ -133,7 +133,7 @@ let fillMode=false;
 /* ---------- situation flags (10-season backtest 2016–25, closing lines) ---------- */
 const DIVS=[['BUF','MIA','NE','NYJ'],['BAL','CIN','CLE','PIT'],['HOU','IND','JAX','JAC','TEN'],['DEN','KC','LV','LAC'],['DAL','NYG','PHI','WAS','WSH'],['CHI','DET','GB','MIN'],['ATL','CAR','NO','TB'],['ARI','LAR','LA','SEA','SF']];
 const divOf=t=>DIVS.findIndex(d=>d.includes(t));
-const SPB=[[0,1,'Coin flip'],[1.5,1.5,'Road 54%'],[2,2,'Home 60%'],[2.5,2.5,'Road 55%'],[3,7.5,'Coin flip'],[8,10.5,'Dog 54%'],[11,12.5,'Fav 68%'],[13,14.5,'Dog 56%'],[15,99,'Coin flip']];
+const SPB=[[0,1,'Coin flip'],[1.5,1.5,'Road 55%'],[2,12.5,'Coin flip'],[13,14.5,'Dog 55%'],[15,99,'Coin flip']];
 function sit(g){const L=+g.pool_line,T=parseFloat(g.total),M=g.market_line_sunday!==''&&g.market_line_sunday!=null?+g.market_line_sunday:null,wk=+g.week,out=[];
  const b=SPB.find(x=>L>=x[0]&&L<=x[1]);out.push(`📏 ${b?b[2]:'—'}`);
  if(divOf(g.favorite)>=0&&divOf(g.favorite)===divOf(g.underdog))out.push('🤝 Div · dog 52%');
@@ -143,7 +143,7 @@ function sit(g){const L=+g.pool_line,T=parseFloat(g.total),M=g.market_line_sunda
  if(wk>=15)out.push('📅 Wk 15+');
  return out.map(t=>`<span class="flag">${t}</span>`).join('')}
 const KEY=`<details class="card key" ${LS.get('keyOpen',true)?'open':''} ontoggle="LS.set('keyOpen',this.open)"><summary><b>🔑 Key</b></summary><div class="keyg">
-<div>🏠</div><div>Home team</div><div>📏</div><div>Spread · 10-yr cover %</div><div>🤝</div><div>Division game</div><div>Σ</div><div>Vegas total</div>
+<div>🏠</div><div>Home team</div><div>📏</div><div>Spread · cover % (held 20 yrs)</div><div>🤝</div><div>Division game</div><div>Σ</div><div>Vegas total</div>
 <div>💰</div><div>Edge vs Vegas · STRONG = take it</div><div>🔑</div><div>Half point off 3 or 7</div><div>📅</div><div>Weeks 15–18</div>
 <div>⭐</div><div>Claude's pick · <span class="tag EDGE">EDGE</span> beats Vegas · <span class="tag RULE">RULE</span> spread rule · <span class="tag FLIP">FLIP</span> vs public</div></div></details>`;
 /* ---------- live scores (ESPN) ---------- */
@@ -264,8 +264,7 @@ function scorecardHTML(){const D=G.filter(done);
  const lean=g=>{const L=+g.pool_line,T=parseFloat(g.total),M=g.market_line_sunday!==''?+g.market_line_sunday:null,out=[];
   if(M!=null&&M!==L){const d=M-L,strong=Math.abs(d)>=1||(d>0?((L<3&&M>=3)||(L<7&&M>=7)):((M<=3&&L>3)||(M<=7&&L>7)));out.push([strong?'💰 Strong edge':'💰 Small edge',d>0?'fav':'dog'])}
   const road=g.home==='fav'?'dog':g.home==='dog'?'fav':null;
-  if((L===1.5||L===2.5)&&road)out.push(['📏 1.5/2.5 → road team',road]);
-  if(L>=8&&L<=10.5)out.push(['📏 8–10.5 → dog','dog']);if(L>=11&&L<=12.5)out.push(['📏 11–12.5 → fav','fav']);if(L>=13&&L<=14.5)out.push(['📏 13–14.5 → dog','dog']);
+  if(L===1.5&&road)out.push(['📏 1.5 → road team',road]);if(L>=13&&L<=14.5)out.push(['📏 13–14.5 → dog','dog']);
   if(T>=40.5&&T<=45)out.push(['Σ Total 40.5–45 → dog','dog']);
   if(divOf(g.favorite)>=0&&divOf(g.favorite)===divOf(g.underdog))out.push(['🤝 Division → dog','dog']);
   if(g.home==='dog')out.push(['🏠 Home dog','dog']);if(g.home==='fav')out.push(['✈️ Road dog','dog']);return out};
@@ -279,7 +278,7 @@ function renderTrends(){const D=G.filter(done),B={};Object.keys(ADV).forEach(b=>
  let hd=[0,0],rd=[0,0],bk=[0,0],sl=[0,0],ty={EDGE:[0,0],RULE:[0,0],FLIP:[0,0]};
  for(const g of D){const f=g.result==='fav covered';B[bucket(+g.pool_line)][f?0:1]++;if(g.home==='dog')hd[f?1:0]++;if(g.home==='fav')rd[f?1:0]++;
   if(g.brooks_correct)bk[g.brooks_correct==='Y'?0:1]++;if(g.stella_correct)sl[g.stella_correct==='Y'?0:1]++;if(ty[g.pick_type_brooks]&&g.brooks_correct)ty[g.pick_type_brooks][g.brooks_correct==='Y'?0:1]++}
- let h=`<div class="card"><h2>By spread</h2><div class="mute">${D.length} games this season · rule = 10 NFL seasons</div><table><tr><th>Spread</th><th class="c">Fav</th><th class="c">Dog</th><th style="width:30%">Fav %</th></tr>`;
+ let h=`<div class="card"><h2>By spread</h2><div class="mute">${D.length} games this season · rule = held in both of the last 2 decades</div><table><tr><th>Spread</th><th class="c">Fav</th><th class="c">Dog</th><th style="width:30%">Fav %</th></tr>`;
  for(const[b,[f,d]]of Object.entries(B)){const p=f+d?f/(f+d):0;h+=`<tr><td><b>${b}</b><div class="do ${ADV[b][1]}">${ADV[b][0]}</div></td><td class="c">${f}</td><td class="c">${d}</td><td><div class="bar"><i style="width:${p*100}%"></i></div><span class="mute">${pct(f,f+d)}</span></td></tr>`}
  const row=(l,a,x)=>`<tr><td>${l}</td><td class="c">${a[0]}</td><td class="c">${a[1]}</td><td class="c">${pct(a[0],a[0]+a[1])}</td></tr>`;
  h+=`</table></div><div class="card"><h2>Dogs</h2><table><tr><th></th><th class="c">Covered</th><th class="c">Didn't</th><th class="c">%</th></tr>
