@@ -62,7 +62,7 @@ details.gm>summary::-webkit-details-marker{display:none}.gm .num{min-width:30px;
 .cmp td{vertical-align:middle}.cmp tr.diff td{background:var(--hl)}.cmp .pk{font-weight:700}
 .fillfoot{position:fixed;left:0;right:0;bottom:calc(58px + env(safe-area-inset-bottom));z-index:8;background:var(--card);border-top:1px solid var(--line);padding:8px 16px;display:flex;align-items:center;gap:8px}
 .fillfoot .grow{flex:1;font-size:14px}.fillfoot .btn{margin:0}.fillpad{height:70px}
-.spls{margin-top:6px}.spl{margin-top:4px}.spb{height:8px;border-radius:9px;background:var(--dog);overflow:hidden}.spb i{display:block;height:100%;background:var(--fav)}.spt{display:flex;justify-content:space-between;font-size:11px;color:var(--mute)}
+.spls{margin-top:6px}.hist{font-size:12px;margin-top:6px}.hist td,.hist th{padding:3px 2px}.spl{margin-top:4px}.spb{height:8px;border-radius:9px;background:var(--dog);overflow:hidden}.spb i{display:block;height:100%;background:var(--fav)}.spt{display:flex;justify-content:space-between;font-size:11px;color:var(--mute)}
 .opt{font-size:17px!important;padding:14px 6px!important}.opt small{font-size:12px!important}
 </style>
 </head>
@@ -145,7 +145,7 @@ function sit(g){const L=+g.pool_line,T=parseFloat(g.total),M=g.market_line_sunda
  const gf=(W&&W.gameflags&&W.gameflags[g.fav_num])||[];
  return gf.map(t=>`<span class="flag" style="border-color:var(--acc)">${t}</span>`).join('')+out.map(t=>`<span class="flag">${t}</span>`).join('')}
 const KEY=`<details class="card key" ${LS.get('keyOpen',true)?'open':''} ontoggle="LS.set('keyOpen',this.open)"><summary><b>🔑 Key</b></summary><div class="keyg">
-<div>🏠</div><div>Home team</div><div>📏</div><div>Spread · cover % (20 yrs, recent weighted)</div><div>🩹</div><div>Injury / QB news</div><div>🛏️🌬️🥶</div><div>Rest · wind · cold (🥶 ≤32°F → fav 56%; rest &amp; wind = info only)</div><div>📈</div><div>Expected Vegas move from news</div><div>💵</div><div>Betting splits · big money = money % 15+ over bets % (info only)</div><div>🤝</div><div>Division game</div><div>Σ</div><div>Vegas total</div>
+<div>🏠</div><div>Home team</div><div>📏</div><div>Spread · cover % (20 yrs, recent weighted)</div><div>🩹</div><div>Injury / QB news</div><div>🛏️🌬️🥶</div><div>Rest · wind · cold (🥶 ≤32°F → fav 56%; rest &amp; wind = info only)</div><div>📈</div><div>Expected Vegas move from news</div><div>💵</div><div>Betting splits · big money = money % 15+ over bets % (info only)</div><div>🔄</div><div>Line moved against the public (sharp money · info only)</div><div>🤝</div><div>Division game</div><div>Σ</div><div>Vegas total</div>
 <div>💰</div><div>Edge vs Vegas · STRONG = take it</div><div>🔑</div><div>Half point off 3 or 7</div><div>📅</div><div>Weeks 15–18</div>
 <div>⭐</div><div>Claude's pick · <span class="tag EDGE">EDGE</span> beats Vegas · <span class="tag RULE">RULE</span> spread rule · <span class="tag FLIP">FLIP</span> vs public</div></div></details>`;
 /* ---------- live scores (ESPN) ---------- */
@@ -183,6 +183,10 @@ function splitsHTML(g){const x=W&&W.splits&&W.splits[g.fav_num];if(!x)return'';
  let h='';if(x.sp){h+=bar('Spread · bets',x.sp.fav[0],x.sp.dog[0],g.favorite,g.underdog)+(x.sp.fav[1]==null?'':bar('Spread · money',x.sp.fav[1],x.sp.dog[1],g.favorite,g.underdog));
   const sharp=(x.sp.fav[1]-x.sp.fav[0]>=15)?g.favorite:(x.sp.dog[1]-x.sp.dog[0]>=15)?g.underdog:null;if(sharp)h+=`<span class="flag">💵 Big money on ${sharp}</span>`}
  if(x.tot){h+=bar('Total · bets',x.tot.over[0],x.tot.under[0],'Over','Under')+bar('Total · money',x.tot.over[1],x.tot.under[1],'Over','Under')}
+ const hs=W.splitHist&&W.splitHist[g.fav_num];
+ if(hs&&hs.length){const ln=m=>m>=0?`${g.favorite} -${m}`:`${g.underdog} -${-m}`;
+  h+=`<table class="hist"><tr><th>When</th><th>Line</th><th class="c">${g.favorite} bets/$</th><th class="c">${g.underdog} bets/$</th></tr>${hs.map(r=>`<tr><td>${r.t}</td><td>${ln(r.m)}</td><td class="c">${r.fav[0]}/${r.fav[1]??'–'}</td><td class="c">${r.dog[0]}/${r.dog[1]??'–'}</td></tr>`).join('')}</table>`;
+  if(hs.length>1){const a=hs[0],b=hs[hs.length-1],mv=b.m-a.m;if(mv>0&&b.fav[0]<50)h+=`<span class="flag">🔄 Line moved toward ${g.favorite} vs public</span>`;if(mv<0&&b.dog[0]<50)h+=`<span class="flag">🔄 Line moved toward ${g.underdog} vs public</span>`}}
  return h?`<div class="spls">${h}${x.src?`<div class="mute" style="font-size:11px">${x.src}</div>`:''}</div>`:''}
 function togG(k,o){const x=LS.get('openG',{});if(o)x[k]=1;else delete x[k];LS.set('openG',x)}
 function renderWeek(){if(!W)return;if(fillMode&&isLocked())fillMode=false;if(who==='BOTH')return renderBoth();if(fillMode)return renderFill();
