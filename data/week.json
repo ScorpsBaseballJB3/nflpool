@@ -172,7 +172,10 @@
   }
  ],
  "recheck": [
-  "Sunday 11:30 inactives"
+  "Sunday 11:30 inactives",
+  "Covers shows CIN -10.5 (pool 9.5) — confirm market; could become a CIN edge",
+  "Covers shows NYJ -4.5 (pool 3.5) — confirm market; could become a NYJ edge",
+  "Covers shows NE favored (pool LAC -1.5) — NE edge bigger"
  ],
  "stella": {
   "picks": [
@@ -227,5 +230,202 @@
   "BROOKS": "2026-11-27T01:11:14Z",
   "STELLA": "2026-11-27T01:11:14Z"
  },
- "gameflags": {}
+ "gameflags": {},
+ "splits": {
+  "1": {
+   "sp": {
+    "fav": [
+     40,
+     null
+    ],
+    "dog": [
+     60,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "3": {
+   "sp": {
+    "fav": [
+     51,
+     null
+    ],
+    "dog": [
+     49,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "5": {
+   "sp": {
+    "fav": [
+     65,
+     null
+    ],
+    "dog": [
+     35,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "7": {
+   "sp": {
+    "fav": [
+     70,
+     null
+    ],
+    "dog": [
+     30,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "9": {
+   "sp": {
+    "fav": [
+     72,
+     null
+    ],
+    "dog": [
+     28,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "11": {
+   "sp": {
+    "fav": [
+     70,
+     null
+    ],
+    "dog": [
+     30,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "13": {
+   "sp": {
+    "fav": [
+     74,
+     null
+    ],
+    "dog": [
+     26,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "15": {
+   "sp": {
+    "fav": [
+     67,
+     null
+    ],
+    "dog": [
+     33,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "17": {
+   "sp": {
+    "fav": [
+     51,
+     null
+    ],
+    "dog": [
+     49,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "19": {
+   "sp": {
+    "fav": [
+     49,
+     null
+    ],
+    "dog": [
+     51,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "21": {
+   "sp": {
+    "fav": [
+     47,
+     null
+    ],
+    "dog": [
+     53,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "23": {
+   "sp": {
+    "fav": [
+     66,
+     null
+    ],
+    "dog": [
+     34,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "25": {
+   "sp": {
+    "fav": [
+     60,
+     null
+    ],
+    "dog": [
+     40,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "27": {
+   "sp": {
+    "fav": [
+     51,
+     null
+    ],
+    "dog": [
+     49,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  },
+  "29": {
+   "sp": {
+    "fav": [
+     67,
+     null
+    ],
+    "dog": [
+     33,
+     null
+    ]
+   },
+   "src": "Covers consensus picks · Thu 9 PM (no money data)"
+  }
+ }
 }

@@ -180,7 +180,7 @@ function meterHTML(w){const C=card(w),S2=C.map(status),todo=Math.max(0,wkRows().
 function probAtLeast(ps,k){let d=[1];for(const p of ps){const n=new Array(d.length+1).fill(0);d.forEach((v,i)=>{n[i]+=v*(1-p);n[i+1]+=v*p});d=n}return d.slice(Math.max(0,k)).reduce((a,b)=>a+b,0)}
 function splitsHTML(g){const x=W&&W.splits&&W.splits[g.fav_num];if(!x)return'';
  const bar=(lab,a,b,la,lb)=>a==null?'':`<div class="spl"><div class="mute">${lab}</div><div class="spb"><i style="width:${a}%"></i></div><div class="spt"><span>${la} ${a}%</span><span>${lb} ${b}%</span></div></div>`;
- let h='';if(x.sp){h+=bar('Spread · bets',x.sp.fav[0],x.sp.dog[0],g.favorite,g.underdog)+bar('Spread · money',x.sp.fav[1],x.sp.dog[1],g.favorite,g.underdog);
+ let h='';if(x.sp){h+=bar('Spread · bets',x.sp.fav[0],x.sp.dog[0],g.favorite,g.underdog)+(x.sp.fav[1]==null?'':bar('Spread · money',x.sp.fav[1],x.sp.dog[1],g.favorite,g.underdog));
   const sharp=(x.sp.fav[1]-x.sp.fav[0]>=15)?g.favorite:(x.sp.dog[1]-x.sp.dog[0]>=15)?g.underdog:null;if(sharp)h+=`<span class="flag">💵 Big money on ${sharp}</span>`}
  if(x.tot){h+=bar('Total · bets',x.tot.over[0],x.tot.under[0],'Over','Under')+bar('Total · money',x.tot.over[1],x.tot.under[1],'Over','Under')}
  return h?`<div class="spls">${h}${x.src?`<div class="mute" style="font-size:11px">${x.src}</div>`:''}</div>`:''}
