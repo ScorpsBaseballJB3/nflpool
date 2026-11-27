@@ -19,8 +19,8 @@
 :root[data-theme=dark]{--bg:#0b1220;--card:#131c2e;--ink:#e5e9f0;--mute:#94a3b8;--line:#22304a;--favbg:#172554;--dogbg:#0f2e1c;--badbg:#3b1111;--hl:#3a2f08}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,system-ui,Segoe UI,Roboto,Arial,sans-serif;overscroll-behavior-y:contain}
 header{position:sticky;top:0;z-index:5;background:var(--nav);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px}
-header h1{margin:0;font-size:20px;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center}header small{color:#cbd5e1}
-.seg{display:inline-flex;background:#1e293b;border-radius:10px;padding:3px;gap:2px}.seg button{border:0;background:none;color:#cbd5e1;font-size:13px;font-weight:600;padding:5px 10px;border-radius:8px}.seg button.on{background:var(--acc);color:#111}
+header h1{margin:0;font-size:18px;letter-spacing:.3px;display:flex;justify-content:space-between;align-items:center;gap:6px}header h1>span{white-space:nowrap;display:flex;align-items:center}header small{color:#cbd5e1}
+.seg{display:inline-flex;background:#1e293b;border-radius:10px;padding:3px;gap:2px}.seg button{border:0;background:none;color:#cbd5e1;font-size:13px;font-weight:600;padding:5px 8px;border-radius:8px}.seg button.on{background:var(--acc);color:#111}
 #ptr{text-align:center;color:var(--mute);font-size:13px;height:0;overflow:hidden;transition:height .15s}
 main{padding:12px 16px calc(90px + env(safe-area-inset-bottom));max-width:720px;margin:auto}
 nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:9}
@@ -52,7 +52,7 @@ select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);b
 .recap{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border:0}.recap .mute{color:#cbd5e1}.recap b.n{font-size:40px}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
 #modal img{max-width:100%;max-height:70vh;border-radius:8px;background:#fff}
-.hbtn{border:0;background:#1e293b;color:#cbd5e1;border-radius:10px;font-size:15px;padding:5px 9px;margin-left:6px}
+.hbtn{border:0;background:#1e293b;color:#cbd5e1;border-radius:10px;font-size:14px;padding:5px 7px;margin-left:4px}
 .strip{display:flex;gap:8px;margin:0 0 12px}.strip>div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 6px;text-align:center}
 .strip b{display:block;font-size:17px}.strip .mute{font-size:11px}.strip .due b{color:var(--bad)}
 .day{font-size:12px;font-weight:800;letter-spacing:.6px;color:var(--mute);text-transform:uppercase;margin:12px 0 2px}.day:first-child{margin-top:0}
@@ -66,7 +66,7 @@ details.gm>summary::-webkit-details-marker{display:none}.gm .num{min-width:30px;
 </style>
 </head>
 <body>
-<header><h1><span>🏈 NFL POOL</span><span><span class="seg" id="who"><button data-w="BROOKS">Brooks</button><button data-w="STELLA">Stella</button><button data-w="BOTH">Both</button></span><button class="hbtn" id="theme" title="Light/dark">🌓</button></span></h1><small id="sub">2026</small></header>
+<header><h1><span>🏈 POOL</span><span><span class="seg" id="who"><button data-w="BROOKS">Brooks</button><button data-w="STELLA">Stella</button><button data-w="BOTH">Both</button></span><button class="hbtn" id="theme" title="Light/dark">🌓</button></span></h1><small id="sub">2026</small></header>
 <div id="ptr">↓ Release to refresh</div>
 <main id="main">
 <section id="week"></section><section id="race" class="hide"></section>
